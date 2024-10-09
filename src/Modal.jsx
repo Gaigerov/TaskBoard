@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {
     Link,
-    useNavigate,
 } from "react-router-dom";
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -15,8 +14,6 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
     const setGlobalStore = useSetGlobalStore();
 
     const modalRef = useRef(null);
-
-    const navigate = useNavigate();
 
     const checkTaskIdinUrl = () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -251,7 +248,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
                             <p className="modalModeText__date">{task.date}</p>
                         </div>
                         <div className="modalButtons">
-                            <Link to={`/edit?id=${task.id}`} className="btn modalEditfromViewButton" onClick={() => onEdit(task)}>Edit</Link>
+                            <Link to={`edit?id=${task.id}`} className="btn modalEditfromViewButton" onClick={() => onEdit(task)}>Edit</Link>
                             <button className="btn modalCloneButton" onClick={handleCloneTask}>Copy</button>
                             <button className="btn modalCancelButton" onClick={handleClose}>Cancel</button>
                         </div>
