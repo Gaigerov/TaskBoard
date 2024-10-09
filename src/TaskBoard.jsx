@@ -81,14 +81,14 @@ export const TaskBoard = () => {
         setGlobalStore({
             currentTaskId: null,
         });
-        navigate('/create');
+        navigate('create');
     };
 
     const openEditModal = (task) => {
         setGlobalStore({
             currentTaskId: task.id,
         });
-        navigate(`/edit/${task.id}`);
+        navigate(`edit/${task.id}`);
     };
 
     const openViewModal = (task) => {
@@ -101,7 +101,7 @@ export const TaskBoard = () => {
         setGlobalStore({
             currentTaskId: task.id,
         });
-        navigate(`/remove/${task.id}`);
+        navigate(`remove/${task.id}`);
     };
 
     return (
