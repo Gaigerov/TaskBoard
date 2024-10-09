@@ -6,7 +6,6 @@ import {
 
 
 import {useGlobalStore} from './GlobalStoreContext';
-import {useSetGlobalStore} from './GlobalStoreContext';
 
 const editButton = require('../src/image/edit.svg');
 const deleteButton = require('../src/image/delete.svg');
@@ -21,6 +20,8 @@ export const Task = ({task, onEdit, onView, onDelete, onClone}) => {
     const params = new URLSearchParams(url.search);
     params.set("id", task.id);
     params.toString();
+
+    // const id = params.get("id");
 
     return (
         <div className="btn taskContainer" onClick={onView}

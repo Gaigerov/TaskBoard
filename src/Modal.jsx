@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {
     Link,
+    useNavigate,
 } from "react-router-dom";
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -10,10 +11,26 @@ import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 
 export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, onClone}) => {
-    const {title, description, date, errors, isDirty} = useGlobalStore();
+    const {title, description, date, errors, isDirty, validMode} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
 
     const modalRef = useRef(null);
+
+    const navigate = useNavigate();
+
+    const checkTaskIdinUrl = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const taskIdFromUrl = urlParams.get('id');
+        const tasksJson = localStorage.getItem('tasks');
+        const tasks = tasksJson ? JSON.parse(tasksJson) : [];
+
+        const taskExists = tasks.some(task => task.id === taskIdFromUrl);
+        if (!taskExists) {
+            console.log('Такого id не существует. Переход не возможен');
+        return false;
+    }
+    return true;
+}
 
     const validate = () => {
         let newErrors = {title: '', description: '', date: ''};
@@ -190,7 +207,10 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
         })
     }
 
-    if (!mode) return null;
+    if (!mode &&
+        !validMode.includes(mode) && 
+        !checkTaskIdinUrl()) 
+        return null;
 
     return (
         <div className="modalOverlay">

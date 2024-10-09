@@ -6,19 +6,22 @@ const storedTasks = localStorage.getItem('tasks');
 const tasks = storedTasks ? JSON.parse(storedTasks) : [];
 
 export const GlobalStoreController = ({children}) => {
+
+
     const [state, setState] = useState({
         tasks: tasks,
-        isDirty: false,
-        currentTaskId: null,
-        id: Date.now(),
         title: '',
         description: '',
         date: '',
+
+        isDirty: false,
         errors: {
             title: '',
             description: '',
             date: ''
         },
+        validMode: ['/create', '/view', '/edit', '/remove'],
+        currentTaskId: null,
     });
 
     return (

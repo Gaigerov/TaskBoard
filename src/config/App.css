@@ -149,7 +149,6 @@ label {
         margin-bottom: 30px; 
     }
 
-
     .taskContent {
         display: grid;
         grid-template-columns: auto auto;
@@ -231,6 +230,14 @@ label {
         background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 50%);
       }
 
+      .tasksContainer .taskContainer:first-child {
+        margin-top: 30px; 
+    }
+    
+    .tasksContainer .taskContainer:last-child {
+        margin-bottom: 30px; 
+    }
+    
       .tasksContainer__scroller {
         overflow-y: scroll;
         width: 100%;
