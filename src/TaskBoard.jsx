@@ -154,7 +154,7 @@ export const TaskBoard = () => {
                 onRemove={handleDeleteTask}
                 onClose={closeModal}
                 onClone={cloneTask}
-            />;
+            />
         </div>
     );
 };
