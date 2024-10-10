@@ -22203,7 +22203,7 @@ const TaskBoard = () => {
     onRemove: handleDeleteTask,
     onClose: closeModal,
     onClone: cloneTask
-  }), ";");
+  }));
 };
 ;// CONCATENATED MODULE: ./src/App.jsx
 
