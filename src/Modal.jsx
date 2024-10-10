@@ -15,20 +15,6 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
 
     const modalRef = useRef(null);
 
-    const checkTaskIdinUrl = () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const taskIdFromUrl = urlParams.get('id');
-        const tasksJson = localStorage.getItem('tasks');
-        const tasks = tasksJson ? JSON.parse(tasksJson) : [];
-
-        const taskExists = tasks.some(task => task.id === taskIdFromUrl);
-        if (!taskExists) {
-            console.log('Такого id не существует. Переход не возможен');
-        return false;
-    }
-    return true;
-}
-
     const validate = () => {
         let newErrors = {title: '', description: '', date: ''};
         let isValid = true;
@@ -205,8 +191,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
     }
 
     if (!mode &&
-        !validMode.includes(mode) && 
-        !checkTaskIdinUrl()) 
+        !validMode.includes(mode)) 
         return null;
 
     return (

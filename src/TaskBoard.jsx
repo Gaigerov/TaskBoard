@@ -104,6 +104,20 @@ export const TaskBoard = () => {
         navigate(`remove/${task.id}`);
     };
 
+    const checkTaskIdinUrl = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const taskIdFromUrl = urlParams.get('id');
+        const tasksJson = localStorage.getItem('tasks');
+        const tasks = tasksJson ? JSON.parse(tasksJson) : [];
+
+        const taskExists = tasks.some(task => task.id === taskIdFromUrl);
+        if (!taskExists) {
+            console.log('Такого id не существует. Переход не возможен');
+            return false;
+        }
+        return true;
+    }
+
     return (
         <div className="taskBoard">
             <div className="createButtonContainer">
@@ -140,7 +154,7 @@ export const TaskBoard = () => {
                 onRemove={handleDeleteTask}
                 onClose={closeModal}
                 onClone={cloneTask}
-            />
+            />;
         </div>
     );
 };
