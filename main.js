@@ -7324,34 +7324,34 @@ try {
   // no-op
 }
 function createBrowserRouter(routes, opts) {
-  return router_createRouter({
+  return createRouter({
     basename: opts == null ? void 0 : opts.basename,
     future: react_router_dom_dist_extends({}, opts == null ? void 0 : opts.future, {
       v7_prependBasename: true
     }),
-    history: router_createBrowserHistory({
+    history: createBrowserHistory({
       window: opts == null ? void 0 : opts.window
     }),
     hydrationData: (opts == null ? void 0 : opts.hydrationData) || parseHydrationData(),
     routes,
-    mapRouteProperties: mapRouteProperties,
+    mapRouteProperties: UNSAFE_mapRouteProperties,
     unstable_dataStrategy: opts == null ? void 0 : opts.unstable_dataStrategy,
     unstable_patchRoutesOnNavigation: opts == null ? void 0 : opts.unstable_patchRoutesOnNavigation,
     window: opts == null ? void 0 : opts.window
   }).initialize();
 }
 function createHashRouter(routes, opts) {
-  return createRouter({
+  return router_createRouter({
     basename: opts == null ? void 0 : opts.basename,
     future: react_router_dom_dist_extends({}, opts == null ? void 0 : opts.future, {
       v7_prependBasename: true
     }),
-    history: createHashHistory({
+    history: router_createHashHistory({
       window: opts == null ? void 0 : opts.window
     }),
     hydrationData: (opts == null ? void 0 : opts.hydrationData) || parseHydrationData(),
     routes,
-    mapRouteProperties: UNSAFE_mapRouteProperties,
+    mapRouteProperties: mapRouteProperties,
     unstable_dataStrategy: opts == null ? void 0 : opts.unstable_dataStrategy,
     unstable_patchRoutesOnNavigation: opts == null ? void 0 : opts.unstable_patchRoutesOnNavigation,
     window: opts == null ? void 0 : opts.window
@@ -8541,17 +8541,17 @@ const GlobalStoreController = _ref => {
   } = _ref;
   const [state, setState] = (0,react.useState)({
     tasks: tasks,
-    isDirty: false,
-    currentTaskId: null,
-    id: Date.now(),
     title: '',
     description: '',
     date: '',
+    isDirty: false,
     errors: {
       title: '',
       description: '',
       date: ''
-    }
+    },
+    validMode: ['create', 'view', 'edit', 'remove'],
+    currentTaskId: null
   });
   return /*#__PURE__*/react.createElement(GlobalStoreContext.Provider, {
     value: {
@@ -8595,7 +8595,6 @@ const ErrorPage = () => {
 
 
 
-
 const editButton = __webpack_require__(422);
 const deleteButton = __webpack_require__(603);
 const cloneButton = __webpack_require__(350);
@@ -8615,6 +8614,9 @@ const Task = _ref => {
   const params = new URLSearchParams(url.search);
   params.set("id", task.id);
   params.toString();
+
+  // const id = params.get("id");
+
   return /*#__PURE__*/react.createElement("div", {
     className: "btn taskContainer",
     onClick: onView,
@@ -21692,7 +21694,8 @@ const Modal = _ref => {
     description,
     date,
     errors,
-    isDirty
+    isDirty,
+    validMode
   } = useGlobalStore();
   const setGlobalStore = useSetGlobalStore();
   const modalRef = (0,react.useRef)(null);
@@ -21868,7 +21871,7 @@ const Modal = _ref => {
       date: ''
     });
   };
-  if (!mode) return null;
+  if (!mode && !validMode.includes(mode)) return null;
   return /*#__PURE__*/react.createElement("div", {
     className: "modalOverlay"
   }, /*#__PURE__*/react.createElement("div", {
@@ -21913,7 +21916,7 @@ const Modal = _ref => {
   }, task.date)), /*#__PURE__*/react.createElement("div", {
     className: "modalButtons"
   }, /*#__PURE__*/react.createElement(Link, {
-    to: `/edit?id=${task.id}`,
+    to: `edit?id=${task.id}`,
     className: "btn modalEditfromViewButton",
     onClick: () => onEdit(task)
   }, "Edit"), /*#__PURE__*/react.createElement("button", {
@@ -22099,6 +22102,7 @@ const TaskBoard = () => {
     if (taskToClone) {
       const newTask = {
         ...taskToClone,
+        title: taskToClone.title + ' Copy',
         id: Date.now()
       };
       const updatedTasks = [...tasks, newTask];
@@ -22129,13 +22133,13 @@ const TaskBoard = () => {
     setGlobalStore({
       currentTaskId: null
     });
-    navigate('/create');
+    navigate('create');
   };
   const openEditModal = task => {
     setGlobalStore({
       currentTaskId: task.id
     });
-    navigate(`/edit/${task.id}`);
+    navigate(`edit/${task.id}`);
   };
   const openViewModal = task => {
     setGlobalStore({
@@ -22146,7 +22150,19 @@ const TaskBoard = () => {
     setGlobalStore({
       currentTaskId: task.id
     });
-    navigate(`/remove/${task.id}`);
+    navigate(`remove/${task.id}`);
+  };
+  const checkTaskIdinUrl = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const taskIdFromUrl = urlParams.get('id');
+    const tasksJson = localStorage.getItem('tasks');
+    const tasks = tasksJson ? JSON.parse(tasksJson) : [];
+    const taskExists = tasks.some(task => task.id === taskIdFromUrl);
+    if (!taskExists) {
+      console.log('Такого id не существует. Переход не возможен');
+      return false;
+    }
+    return true;
   };
   return /*#__PURE__*/react.createElement("div", {
     className: "taskBoard"
@@ -22174,7 +22190,6 @@ const TaskBoard = () => {
   }, tasks.map(task => /*#__PURE__*/react.createElement(Task, {
     key: task.id,
     task: task,
-    mode: mode,
     onView: () => openViewModal(task),
     onEdit: () => openEditModal(task),
     onClone: cloneTask,
@@ -22188,7 +22203,7 @@ const TaskBoard = () => {
     onRemove: handleDeleteTask,
     onClose: closeModal,
     onClone: cloneTask
-  }));
+  }), ";");
 };
 ;// CONCATENATED MODULE: ./src/App.jsx
 
@@ -22198,7 +22213,7 @@ const TaskBoard = () => {
 
 
 
-const router = createBrowserRouter([{
+const router = createHashRouter([{
   path: "/:mode?",
   element: /*#__PURE__*/react.createElement(TaskBoard, null),
   errorElement: /*#__PURE__*/react.createElement(ErrorPage, null)
