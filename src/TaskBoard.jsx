@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Link,
     useParams,
     useNavigate,
+    useLocation,
 } from "react-router-dom";
 
 import './config/App.css';
@@ -19,15 +20,38 @@ export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
 
     const state = useGlobalStore();
-    const {tasks, currentTaskId} = state;
+    const {tasks} = state;
 
     const {mode} = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
+    const taskIdFromUrl = new URLSearchParams(location.search).get('id'); 
+    
+    const [currentTaskId, setCurrentTaskId] = useState(null)
+
+    const checkTaskIdinUrl = () => {
+        const tasksJson = localStorage.getItem('tasks');  // получили из localStorage массив тасок и положили в переменную tasksJson
+        const tasks = tasksJson ? JSON.parse(tasksJson) : []; // при наличии массива тасок парсим его и кладем в переменную tasks, в противном случае пустой массив в tasks
+
+        const taskExists = tasks.some(t => t.id.toString() === taskIdFromUrl); // проверяем у каждого компонента Task task.id из localStorage и сравниваем с тем id который в url
+        if (!taskExists) { //если taskExist возвращает false
+            console.log('Такого id не существует. Переход не возможен'); // консолим
+            closeModal()
+            return true; // возвращаем булевое значение true
+        }
+        return false; // возвращаем булевое значение false
+    }
+
+    useEffect(() => {
+        const isInvalidTaskId = checkTaskIdinUrl();
+        if (!isInvalidTaskId) {
+            setCurrentTaskId(taskIdFromUrl); // Устанавливаем текущий id задачи, если он валиден
+        }
+    }, [taskIdFromUrl]);
+
 
     const closeModal = () => {
-        setGlobalStore({
-            currentTaskId: null,
-        });
+        setCurrentTaskId(null);
         navigate('/')
     };
 
@@ -78,45 +102,23 @@ export const TaskBoard = () => {
     };
 
     const openCreateModal = () => {
-        setGlobalStore({
-            currentTaskId: null,
-        });
+        setCurrentTaskId(null);
         navigate('create');
     };
 
     const openEditModal = (task) => {
-        setGlobalStore({
-            currentTaskId: task.id,
-        });
-        navigate(`edit/${task.id}`);
+        setCurrentTaskId(task.id);
     };
 
     const openViewModal = (task) => {
-        setGlobalStore({
-            currentTaskId: task.id,
-        });
+        setCurrentTaskId(task.id);
     };
 
     const openRemoveModal = (task) => {
-        setGlobalStore({
-            currentTaskId: task.id,
-        });
+        setCurrentTaskId(task.id);
         navigate(`remove/${task.id}`);
     };
 
-    const checkTaskIdinUrl = () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const taskIdFromUrl = urlParams.get('id');
-        const tasksJson = localStorage.getItem('tasks');
-        const tasks = tasksJson ? JSON.parse(tasksJson) : [];
-
-        const taskExists = tasks.some(task => task.id === taskIdFromUrl);
-        if (!taskExists) {
-            console.log('Такого id не существует. Переход не возможен');
-            return false;
-        }
-        return true;
-    }
 
     return (
         <div className="taskBoard">
@@ -133,7 +135,7 @@ export const TaskBoard = () => {
             </div>
             <div className="tasksContainer">
                 <div className="tasksContainer__scroller">
-                    {tasks.map((task) => (
+                    {tasks.map((task) => (                 
                         <Task
                             key={task.id}
                             task={task}
@@ -141,11 +143,13 @@ export const TaskBoard = () => {
                             onEdit={() => openEditModal(task)}
                             onClone={cloneTask}
                             onDelete={() => openRemoveModal(task)}
+                            currentTaskId={currentTaskId}
                         />
                     ))}
                 </div>
             </div>
-            <Modal
+            {checkTaskIdinUrl && (
+                <Modal
                 task={tasks.find(t => t.id === currentTaskId)}
                 mode={mode}
                 onCreate={handleCreateTask}
@@ -154,7 +158,8 @@ export const TaskBoard = () => {
                 onRemove={handleDeleteTask}
                 onClose={closeModal}
                 onClone={cloneTask}
-            />
+            />     
+            )}   
         </div>
     );
 };

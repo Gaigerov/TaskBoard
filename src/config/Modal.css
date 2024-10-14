@@ -46,7 +46,7 @@
 
 .modalCloseButton:hover {
     cursor: pointer;
-    color: var(--secondary-light);
+    filter: invert(45%) sepia(15%) saturate(267%) hue-rotate(166deg) brightness(96%) contrast(86%);
 }
 
 .modalCloneButton:hover {
@@ -93,9 +93,9 @@
 .modalCloseButton {
     display: flex;
     align-items: end;
-    padding: 8px;
-    width: 20px;
-    height: 20px;
+    padding: 2px;
+    width: 16px;
+    height: 16px;
 }
 
 .modalCloneButton {

@@ -21,7 +21,7 @@ export const GlobalStoreController = ({children}) => {
             date: ''
         },
         validMode: ['create', 'view', 'edit', 'remove'],
-        currentTaskId: null,
+        // currentTaskId: null,
     });
 
     return (

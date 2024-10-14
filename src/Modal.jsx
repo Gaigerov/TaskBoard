@@ -3,9 +3,7 @@ import {
     Link,
 } from "react-router-dom";
 
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faXmark} from '@fortawesome/free-solid-svg-icons';
-
+const xButton = require('../src/image/x.svg');
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 
@@ -175,24 +173,33 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
     const clearFirstFields = () => {
         setGlobalStore({
             title: '',
+            description: task.description,
+            date: task.date,
         })
     }
 
     const clearSecondFields = () => {
         setGlobalStore({
+            title: task.title,
             description: '',
+            date: task.date,
         })
     }
 
     const clearThirdFields = () => {
         setGlobalStore({
+            title: task.title,
+            description: task.description,
             date: '',
         })
     }
 
-    if (!mode &&
-        !validMode.includes(mode)) 
-        return null;
+
+    if (!validMode.includes(mode)) 
+        {console.log('Некорректный режим работы или режим не выбран')
+            return null;
+        }
+        
 
     return (
         <div className="modalOverlay">
@@ -201,11 +208,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
                     <>
                         <div className="modalHeader">
                             <h2 className="modalHeaderName">Remove Task</h2>
-                            <FontAwesomeIcon
-                                className="modalCloseButton"
-                                onClick={handleClose}
-                                icon={faXmark}
-                            />
+                            <img className="modalCloseButton" src={xButton} onClick={handleClose} />
                         </div>
                         <div className="modalModeText">
                             <p className="modalRemoveParagraph">Are you sure you want to delete the task "<span className="modalBoldText">{task.title}</span>"?</p>
@@ -219,11 +222,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
                     <>
                         <div className="modalHeader">
                             <h2 className="modalHeaderName">{mode === 'view' ? task.title : mode === 'edit' ? 'Edit Task' : 'Create Task'}</h2>
-                            <FontAwesomeIcon
-                                className="modalCloseButton"
-                                onClick={handleClose}
-                                icon={faXmark}
-                            />
+                            <img className="modalCloseButton" src={xButton} onClick={handleClose} />
                         </div>
                     </>)}
                 {mode === 'view' && (
@@ -254,11 +253,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
                                         borderColor: errors.title ? 'var(--danger)' : 'var(--light-grey)',
                                     }}
                                 />
-                                <FontAwesomeIcon
-                                    className="inputClearButton"
-                                    onClick={clearFirstFields}
-                                    icon={faXmark}
-                                />
+                                <img className="inputClearButton" src={xButton} onClick={clearFirstFields} />
                             </div>
                             {errors.title && <span style={{color: 'red'}}>{errors.title}</span>}
                         </label>
@@ -275,11 +270,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
                                         borderColor: errors.description ? 'var(--danger)' : 'var(--light-grey)',
                                     }}
                                 />
-                                <FontAwesomeIcon
-                                    className="inputClearButton"
-                                    onClick={clearSecondFields}
-                                    icon={faXmark}
-                                />
+                                <img className="inputClearButton" src={xButton} onClick={clearSecondFields} />
                             </div>
                             {errors.description && <span style={{color: 'red'}}>{errors.description}</span>}
                         </label>
@@ -296,11 +287,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
                                         borderColor: errors.date ? 'var(--danger)' : 'var(--light-grey)',
                                     }}
                                 />
-                                <FontAwesomeIcon
-                                    className="inputClearButton"
-                                    onClick={clearThirdFields}
-                                    icon={faXmark}
-                                />
+                                <img className="inputClearButton" src={xButton} onClick={clearThirdFields} />
                             </div>
                             {errors.date && <span style={{color: 'red'}}>{errors.date}</span>}
                         </label>
