@@ -6,9 +6,9 @@ import {
 
 import {useGlobalStore} from './GlobalStoreContext';
 
-const editButton = require('../src/image/edit.svg');
-const deleteButton = require('../src/image/delete.svg');
-const cloneButton = require('../src/image/clone.svg');
+const editButton = require('./image/edit.svg');
+const deleteButton = require('./image/delete.svg');
+const cloneButton = require('./image/clone.svg');
 
 export const Task = ({task, onEdit, onView, onDelete, onClone, currentTaskId}) => {
     const {validMode} = useGlobalStore();
