@@ -19,7 +19,6 @@ export const Task = ({task, onEdit, onView, onDelete, onClone, currentTaskId}) =
     params.set("id", task.id);
     params.toString();
  
-
     return (
         <div className="taskContainer" onClick={onView}
             style={{
