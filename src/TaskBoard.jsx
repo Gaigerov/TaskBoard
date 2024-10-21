@@ -148,7 +148,7 @@ export const TaskBoard = () => {
                     ))}
                 </div>
             </div>
-            {checkTaskIdinUrl && (
+            {/* {checkTaskIdinUrl && ( */}
                 <Modal
                 task={tasks.find(t => t.id === currentTaskId)}
                 mode={mode}
@@ -159,7 +159,7 @@ export const TaskBoard = () => {
                 onClose={closeModal}
                 onClone={cloneTask}
             />     
-            )}   
+            {/* )}    */}
         </div>
     );
 };

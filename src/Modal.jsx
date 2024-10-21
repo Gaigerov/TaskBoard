@@ -3,9 +3,11 @@ import {
     Link,
 } from "react-router-dom";
 
-const xButton = require('../src/image/x.svg');
+
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
+
+const xButton = require('./image/x.svg');
 
 export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, onClone}) => {
     const {title, description, date, errors, isDirty, validMode} = useGlobalStore();
@@ -173,23 +175,17 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
     const clearFirstFields = () => {
         setGlobalStore({
             title: '',
-            description: task.description,
-            date: task.date,
         })
     }
 
     const clearSecondFields = () => {
         setGlobalStore({
-            title: task.title,
             description: '',
-            date: task.date,
         })
     }
 
     const clearThirdFields = () => {
         setGlobalStore({
-            title: task.title,
-            description: task.description,
             date: '',
         })
     }
