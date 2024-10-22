@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
     Link,
     useParams,
@@ -14,7 +14,7 @@ import {Modal} from './Modal';
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 
-const plus = require('../src/image/plus.svg');
+const plus = require('./image/plus.svg');
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
@@ -25,29 +25,56 @@ export const TaskBoard = () => {
     const {mode} = useParams();
     const navigate = useNavigate();
     const location = useLocation();
-    const taskIdFromUrl = new URLSearchParams(location.search).get('id'); 
-    
+
     const [currentTaskId, setCurrentTaskId] = useState(null)
 
-    const checkTaskIdinUrl = () => {
-        const tasksJson = localStorage.getItem('tasks');  // получили из localStorage массив тасок и положили в переменную tasksJson
-        const tasks = tasksJson ? JSON.parse(tasksJson) : []; // при наличии массива тасок парсим его и кладем в переменную tasks, в противном случае пустой массив в tasks
+    // const updateGlobalStoreFromURL = () => {
+    //     const { setGlobalStore } = useContext(GlobalStoreContext);
 
-        const taskExists = tasks.some(t => t.id.toString() === taskIdFromUrl); // проверяем у каждого компонента Task task.id из localStorage и сравниваем с тем id который в url
-        if (!taskExists) { //если taskExist возвращает false
-            console.log('Такого id не существует. Переход не возможен'); // консолим
-            closeModal()
-            return true; // возвращаем булевое значение true
-        }
-        return false; // возвращаем булевое значение false
-    }
+    //     // Получаем текущий URL и извлекаем параметр id
+    //     const urlParams = new URLSearchParams(window.location.search);
+    //     const id = urlParams.get('id');
 
-    useEffect(() => {
-        const isInvalidTaskId = checkTaskIdinUrl();
-        if (!isInvalidTaskId) {
-            setCurrentTaskId(taskIdFromUrl); // Устанавливаем текущий id задачи, если он валиден
-        }
-    }, [taskIdFromUrl]);
+    //     // Проверяем, есть ли id в localStorage
+    //     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    //     // Находим задачу с соответствующим id
+    //     const task = tasks.find(task => task.id === id);
+
+    //     if (task) {
+    //       // Если задача найдена, извлекаем необходимые данные
+    //       const { title, description, date } = task;
+
+    //       // Обновляем глобальный стор
+    //       useSetGlobalStore({
+    //         title,
+    //         description,
+    //         date,
+    //       });
+    //     }
+    //   };
+
+
+
+    // const checkTaskIdinUrl = () => {
+    //     const tasksJson = localStorage.getItem('tasks');  // получили из localStorage массив тасок и положили в переменную tasksJson
+    //     const tasks = tasksJson ? JSON.parse(tasksJson) : []; // при наличии массива тасок парсим его и кладем в переменную tasks, в противном случае пустой массив в tasks
+
+    //     const taskExists = tasks.some(t => t.id.toString() === taskIdFromUrl); // проверяем у каждого компонента Task task.id из localStorage и сравниваем с тем id который в url
+    //     if (!taskExists) { //если taskExist возвращает false
+    //         console.log('Такого id не существует. Переход не возможен'); // консолим
+    //         closeModal()
+    //         return true; // возвращаем булевое значение true
+    //     }
+    //     return false; // возвращаем булевое значение false
+    // }
+
+    // useEffect(() => {
+    //     const isInvalidTaskId = checkTaskIdinUrl();
+    //     if (!isInvalidTaskId) {
+    //         setCurrentTaskId(taskIdFromUrl); // Устанавливаем текущий id задачи, если он валиден
+    //     }
+    // }, [taskIdFromUrl]);
 
 
     const closeModal = () => {
@@ -70,7 +97,7 @@ export const TaskBoard = () => {
         if (taskToClone) {
             const newTask = {
                 ...taskToClone,
-                title: taskToClone.title + ' Copy',
+                title: 'Copy ' + taskToClone.title,
                 id: Date.now()
             };
             const updatedTasks = [...tasks, newTask];
@@ -129,13 +156,14 @@ export const TaskBoard = () => {
                 </Link>
             </div>
             <div className="titlesContainer">
+                <div className="titlesNames">Status</div>
                 <div className="titlesNames">Title</div>
                 <div className="titlesNames">Description</div>
                 <div className="titlesNames">Date</div>
             </div>
             <div className="tasksContainer">
                 <div className="tasksContainer__scroller">
-                    {tasks.map((task) => (                 
+                    {tasks.map((task) => (
                         <Task
                             key={task.id}
                             task={task}
@@ -148,8 +176,7 @@ export const TaskBoard = () => {
                     ))}
                 </div>
             </div>
-            {/* {checkTaskIdinUrl && ( */}
-                <Modal
+            <Modal
                 task={tasks.find(t => t.id === currentTaskId)}
                 mode={mode}
                 onCreate={handleCreateTask}
@@ -158,8 +185,7 @@ export const TaskBoard = () => {
                 onRemove={handleDeleteTask}
                 onClose={closeModal}
                 onClone={cloneTask}
-            />     
-            {/* )}    */}
+            />
         </div>
     );
 };

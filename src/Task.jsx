@@ -11,14 +11,14 @@ const deleteButton = require('./image/delete.svg');
 const cloneButton = require('./image/clone.svg');
 
 export const Task = ({task, onEdit, onView, onDelete, onClone, currentTaskId}) => {
-    const {validMode} = useGlobalStore();
-    
+    const {validMode, taskStatus} = useGlobalStore();
+
     const navigate = useNavigate();
 
     const params = new URLSearchParams(window.location.search);
     params.set("id", task.id);
     params.toString();
- 
+
     return (
         <div className="taskContainer" onClick={onView}
             style={{
@@ -40,6 +40,17 @@ export const Task = ({task, onEdit, onView, onDelete, onClone, currentTaskId}) =
                         </Link>
                     </span>
                 </span>
+                {taskStatus[0] && (
+                    <>
+                        <div className="toDoButton" onClick={(e) => e.stopPropagation()}>to Do
+                            <div className="statusContainer">
+                                <div className="toDoButton">to Do</div>
+                                <div className="inProgressButton">in progress</div>
+                                <div className="doneButton">Done</div>
+                            </div>
+                        </div>
+                    </>
+                )}
                 <p className="taskDate">{task.date}</p>
             </div>
         </div>
