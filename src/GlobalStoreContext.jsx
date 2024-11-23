@@ -12,17 +12,18 @@ export const GlobalStoreController = ({children}) => {
         tasks: tasks,
         title: '',
         description: '',
+        time: '',
         date: '',
+        status: '',
 
         isDirty: false,
-        taskStatus: ['to Do', 'in progress', 'Done'],
+       
         errors: {
             title: '',
             description: '',
-            date: ''
+            time: '',
+            date: '',
         },
-        validMode: ['create', 'view', 'edit', 'remove'],
-        // currentTaskId: null,
     });
 
     return (

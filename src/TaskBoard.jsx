@@ -3,18 +3,20 @@ import {
     Link,
     useParams,
     useNavigate,
-    useLocation,
+    useSearchParams,
 } from "react-router-dom";
 
 import './config/App.css';
 
-import {Task} from './Task';
+
 import {Modal} from './Modal';
+import {Breakpoints} from './Breakpoints'
+
 
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 
-const plus = require('./image/plus.svg');
+import plus from './image/plus.svg';
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
@@ -22,60 +24,12 @@ export const TaskBoard = () => {
     const state = useGlobalStore();
     const {tasks} = state;
 
+    const taskStatus = ['to Do', 'in progress', 'Done'];
+
     const {mode} = useParams();
     const navigate = useNavigate();
-    const location = useLocation();
 
     const [currentTaskId, setCurrentTaskId] = useState(null)
-
-    // const updateGlobalStoreFromURL = () => {
-    //     const { setGlobalStore } = useContext(GlobalStoreContext);
-
-    //     // Получаем текущий URL и извлекаем параметр id
-    //     const urlParams = new URLSearchParams(window.location.search);
-    //     const id = urlParams.get('id');
-
-    //     // Проверяем, есть ли id в localStorage
-    //     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
-    //     // Находим задачу с соответствующим id
-    //     const task = tasks.find(task => task.id === id);
-
-    //     if (task) {
-    //       // Если задача найдена, извлекаем необходимые данные
-    //       const { title, description, date } = task;
-
-    //       // Обновляем глобальный стор
-    //       useSetGlobalStore({
-    //         title,
-    //         description,
-    //         date,
-    //       });
-    //     }
-    //   };
-
-
-
-    // const checkTaskIdinUrl = () => {
-    //     const tasksJson = localStorage.getItem('tasks');  // получили из localStorage массив тасок и положили в переменную tasksJson
-    //     const tasks = tasksJson ? JSON.parse(tasksJson) : []; // при наличии массива тасок парсим его и кладем в переменную tasks, в противном случае пустой массив в tasks
-
-    //     const taskExists = tasks.some(t => t.id.toString() === taskIdFromUrl); // проверяем у каждого компонента Task task.id из localStorage и сравниваем с тем id который в url
-    //     if (!taskExists) { //если taskExist возвращает false
-    //         console.log('Такого id не существует. Переход не возможен'); // консолим
-    //         closeModal()
-    //         return true; // возвращаем булевое значение true
-    //     }
-    //     return false; // возвращаем булевое значение false
-    // }
-
-    // useEffect(() => {
-    //     const isInvalidTaskId = checkTaskIdinUrl();
-    //     if (!isInvalidTaskId) {
-    //         setCurrentTaskId(taskIdFromUrl); // Устанавливаем текущий id задачи, если он валиден
-    //     }
-    // }, [taskIdFromUrl]);
-
 
     const closeModal = () => {
         setCurrentTaskId(null);
@@ -146,7 +100,6 @@ export const TaskBoard = () => {
         navigate(`remove/${task.id}`);
     };
 
-
     return (
         <div className="taskBoard">
             <div className="createButtonContainer">
@@ -155,27 +108,19 @@ export const TaskBoard = () => {
                     Create
                 </Link>
             </div>
-            <div className="titlesContainer">
-                <div className="titlesNames">Status</div>
-                <div className="titlesNames">Title</div>
-                <div className="titlesNames">Description</div>
-                <div className="titlesNames">Date</div>
-            </div>
             <div className="tasksContainer">
                 <div className="tasksContainer__scroller">
-                    {tasks.map((task) => (
-                        <Task
-                            key={task.id}
-                            task={task}
-                            onView={() => openViewModal(task)}
-                            onEdit={() => openEditModal(task)}
-                            onClone={cloneTask}
-                            onDelete={() => openRemoveModal(task)}
-                            currentTaskId={currentTaskId}
-                        />
-                    ))}
+                    <Breakpoints
+                        tasks={tasks}
+                        onView={() => openViewModal(tasks.find(t => {return t}))}
+                        onEdit={() => openEditModal(tasks.find(t => {return t}))}
+                        onClone={cloneTask}
+                        onDelete={() => openRemoveModal(tasks.find(t => {return t}))}
+                        currentTaskId={currentTaskId}
+                    />
                 </div>
             </div>
+
             <Modal
                 task={tasks.find(t => t.id === currentTaskId)}
                 mode={mode}

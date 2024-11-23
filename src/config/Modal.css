@@ -18,22 +18,6 @@
     z-index: 1;
 }
 
-.modalContent {
-    width: 260px;
-    background: white;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.modalRemoveContent {
-    width: 260px;
-    background: white;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
 .modalRemoveParagraph {
     margin: 0;
     font-size: 16px;
@@ -60,7 +44,7 @@
     text-wrap: wrap;
     border: 1px solid var(--light-grey);
     border-radius: 8px;
-    width: 250px;
+    width: 100%;
     height: 39px;
     padding-left: 10px;
 }
@@ -69,7 +53,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 20px;
     word-break: break-all;
 }
@@ -92,7 +76,7 @@
 
 .modalCloseButton {
     display: flex;
-    align-items: end;
+    align-items: flex-start;
     padding: 2px;
     width: 16px;
     height: 16px;
@@ -121,13 +105,28 @@
     word-break: break-all;
 }
 
+.modalModeDate {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.modalModeText__time {
+    margin: 0;
+    font-size: 12px;
+    text-align: right;
+}
+
 .modalModeText__date {
     margin: 0;
     font-size: 12px;
     text-align: right;
 }
 
-.modalCreateButton {
+.Button_create {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -143,12 +142,12 @@
     line-height: 19.5px;
 }
 
-.modalCreateButton:hover {
+.Button_create:hover {
     cursor: pointer;
     background-color: var(--success-light);
 }
 
-.modalCancelButton {
+.Button_cancel {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -163,13 +162,13 @@
     line-height: 19.5px;
 }
 
-.modalCancelButton:hover {
+.Button_cancel:hover {
     cursor: pointer;
     background-color: var(--secondary-light);
     color: var(--light);
 }
 
-.modalEditButton {
+.Button_save {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -185,7 +184,7 @@
     line-height: 19.5px;
 }
 
-.modalCloneButton {
+.Button_clone {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -201,18 +200,18 @@
     line-height: 19.5px;
 }
 
-.modalCloneButton:hover {
+.Button_clone:hover {
     cursor: pointer;
     background-color: var(--warning-light);
     color: var(--dark-grey);
 }
 
-.modalEditButton:hover {
+.Button_save:hover {
     cursor: pointer;
     background-color: var(--warning-light);
 }
 
-.modalEditfromViewButton {
+.Button_edit {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -228,12 +227,12 @@
     line-height: 19.5px;
 }
 
-.modalEditfromViewButton:hover {
+.Button_edit:hover {
     cursor: pointer;
     background-color: var(--info-light);
 }
 
-.modalRemoveButton {
+.Button_remove {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -249,7 +248,7 @@
     line-height: 19.5px;
 }
 
-.modalRemoveButton:hover {
+.Button_remove:hover {
     cursor: pointer;
     background-color: var(--danger-light);
 }

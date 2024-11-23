@@ -1,19 +1,56 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
     Link,
+    useSearchParams,
 } from "react-router-dom";
 
 
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
+import {VALID_MODE, VALID_MODES} from './constant';
+import {Button} from './components/Button';
+import xButton from './image/x.svg';
 
-const xButton = require('./image/x.svg');
 
 export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, onClone}) => {
-    const {title, description, date, errors, isDirty, validMode} = useGlobalStore();
+    const {title, description, time, date, errors, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
 
+    const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 1200);
+
+    const handleResize = () => {
+        setIsWideScreen(window.innerWidth > 1200);
+    };
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+
+        // Удаляем обработчик события при размонтировании компонента
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+
     const modalRef = useRef(null);
+
+    const [searchParams, setParams] = useSearchParams();
+    const id = searchParams.get('id'); // находим по параметру id значение и записываем в переменную id
+
+    const isValidId = () => {
+        return tasks.some(t => t.id.toString() === id); // проходим по массиву tasks который у нас хранится в глобальном сторе, сверяем id каждой задачи с id полученным из url и возвращаем true/false
+    };
+
+    const isShow = (() => {
+        if (mode === VALID_MODE.CREATE) { // возвращаем true если mode(полученный из url) = 'create'
+            return true;
+        }
+
+        if (VALID_MODES.some(m => m === mode) && isValidId()) { // возвращаем true если хоть один элемент массива validMode равен mode(полученный из url) и функция isValidId вернула true
+            return true;
+        }
+        return false; // иначе false
+    })();
 
     const validate = () => {
         let newErrors = {title: '', description: '', date: ''};
@@ -26,20 +63,26 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
         } else if (title.length > 50) {
             newErrors.title = 'Maximum of 50 characters';
             isValid = false;
-        } 
+        }
 
         // Валидация description
         if (!description) {
-            newErrors.description = 'Enter a description';
+            newErrors.description = 'Enter description';
             isValid = false;
         } else if (description.length > 200) {
             newErrors.description = 'Maximum of 200 characters';
             isValid = false;
         }
 
+        // Валидация time
+        if (!/^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/.test(time)) {
+            newErrors.time = 'Enter time';
+            isValid = false;
+        }
+
         // Валидация date
         if (!date) {
-            newErrors.date = 'Enter the date';
+            newErrors.date = 'Enter date';
             isValid = false;
         } else {
             const today = new Date();
@@ -62,38 +105,40 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
     };
 
     useEffect(() => {
-        if (mode === 'create' && isDirty === true) {
-            isValid = true;
+        if (mode === VALID_MODE.CREATE && isDirty === true) {
             validate();
         }
-    }, [title, description, date]);
+    }, [title, description, time, date]);
 
     const handleClickOutside = (event) => {
         if (modalRef.current && !modalRef.current.contains(event.target)) {
             onClose();
             setGlobalStore({
-            title: '',
-            description: '',
-            date: '',
-        })
+                title: '',
+                description: '',
+                time: '',
+                date: '',
+            })
         };
     }
 
-    const handleAction = () => {
-        if (mode === 'create' && validate()) {
-            onCreate({title, description, date});
+    const handleSubmit = () => {
+        if (mode === VALID_MODE.CREATE && validate()) {
+            onCreate({title, description, time, date});
             setGlobalStore({
                 title: '',
                 description: '',
+                time: '',
                 date: '',
             })
 
-        } else if (mode === 'edit' && validate()) {
-            onSave({...task, title, description, date});
+        } else if (mode === VALID_MODE.EDIT && validate()) {
+            onSave({...task, title, description, time, date});
             onClose();
             setGlobalStore({
                 title: '',
                 description: '',
+                time: '',
                 date: '',
             })
         }
@@ -105,6 +150,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
             setGlobalStore({
                 title: '',
                 description: '',
+                time: '',
                 date: '',
             })
         }
@@ -116,6 +162,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
         setGlobalStore({
             title: '',
             description: '',
+            time: '',
             date: '',
         });
     };
@@ -127,6 +174,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
         setGlobalStore({
             title: '',
             description: '',
+            time: '',
             date: '',
         })
     }
@@ -139,8 +187,8 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
     useEffect(() => {
         if (mode) {
             document.addEventListener('keydown', handleKeyDown);
-        } 
-        if (mode === 'view') {
+        }
+        if (mode === VALID_MODE.VIEW) {
             document.addEventListener('keydown', handleKeyDown);
             document.addEventListener('mousedown', handleClickOutside);
         } else {
@@ -154,7 +202,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
     }, [mode]);
 
     useEffect(() => {
-        if (mode === 'edit') {
+        if (mode === VALID_MODE.EDIT) {
             onSave;
         }
         return () => {
@@ -167,6 +215,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
             setGlobalStore({
                 title: task.title,
                 description: task.description,
+                time: task.time,
                 date: task.date,
             })
         }
@@ -186,166 +235,248 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
 
     const clearThirdFields = () => {
         setGlobalStore({
+            time: '',
+        })
+    }
+
+    const clearFourthFields = () => {
+        setGlobalStore({
             date: '',
         })
     }
 
 
-    if (!validMode.includes(mode)) 
-        {console.log('Некорректный режим работы или режим не выбран')
-            return null;
-        }
-        
+    if (!isShow) {
+        console.log('Некорректный режим')
+        return null;
+    }
 
     return (
-        <div className="modalOverlay">
-            <div className={mode === 'remove' ? "modalRemoveContent" : "modalContent"} ref={modalRef}>
-                {mode === 'remove' ? (
-                    <>
-                        <div className="modalHeader">
-                            <h2 className="modalHeaderName">Remove Task</h2>
-                            <img className="modalCloseButton" src={xButton} onClick={handleClose} />
-                        </div>
-                        <div className="modalModeText">
-                            <p className="modalRemoveParagraph">Are you sure you want to delete the task "<span className="modalBoldText">{task.title}</span>"?</p>
-                        </div>
-                        <div className="modalButtons">
-                            <button className="btn modalRemoveButton" onClick={handleRemoveTask}>Remove</button>
-                            <button className="btn modalCancelButton" onClick={handleClose}>Cancel</button>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <div className="modalHeader">
-                            <h2 className="modalHeaderName">{mode === 'view' ? task.title : mode === 'edit' ? 'Edit Task' : 'Create Task'}</h2>
-                            <img className="modalCloseButton" src={xButton} onClick={handleClose} />
-                        </div>
-                    </>)}
-                {mode === 'view' && (
-                    <>
-                        <div className="modalModeText">
-                            <p className="modalModeText__description">{task.description}</p>
-                            <p className="modalModeText__date">{task.date}</p>
-                        </div>
-                        <div className="modalButtons">
-                            <Link to={`edit?id=${task.id}`} className="btn modalEditfromViewButton" onClick={() => onEdit(task)}>Edit</Link>
-                            <button className="btn modalCloneButton" onClick={handleCloneTask}>Copy</button>
-                            <button className="btn modalCancelButton" onClick={handleClose}>Cancel</button>
-                        </div>
-                    </>
-                )}
-                {mode === 'edit' && (
-                    <>
-                        <label>Title
-                            <div className="inputContainer">
-                                <input
-                                    type="text"
-                                    name="title"
-                                    className="modalInput"
-                                    value={title}
-                                    onChange={(event) => setGlobalStore({title: event.target.value,})}
-                                    placeholder="Enter title"
-                                    style={{
-                                        borderColor: errors.title ? 'var(--danger)' : 'var(--light-grey)',
-                                    }}
-                                />
-                                <img className="inputClearButton" src={xButton} onClick={clearFirstFields} />
+        <div>
+            <div className="modalOverlay">
+                <div className={mode === VALID_MODE.REMOVE ? "modalRemoveContent" : "modalContent"} ref={modalRef}>
+                    {mode === VALID_MODE.REMOVE ? (
+                        <>
+                            <div className='modalRectangle'>
+                                <div className='rectangle'></div>
                             </div>
-                            {errors.title && <span style={{color: 'red'}}>{errors.title}</span>}
-                        </label>
-                        <label>Description
-                            <div className="inputContainer">
-                                <input
-                                    type="text"
-                                    name="description"
-                                    className="modalInput"
-                                    value={description}
-                                    onChange={(event) => setGlobalStore({description: event.target.value,})}
-                                    placeholder="Enter description"
-                                    style={{
-                                        borderColor: errors.description ? 'var(--danger)' : 'var(--light-grey)',
-                                    }}
-                                />
-                                <img className="inputClearButton" src={xButton} onClick={clearSecondFields} />
+                            <div className="modalHeader">
+                                <h2 className="modalHeaderName">Remove Task</h2>
+                                <img className="modalCloseButton" src={xButton} onClick={handleClose} />
                             </div>
-                            {errors.description && <span style={{color: 'red'}}>{errors.description}</span>}
-                        </label>
-                        <label>Date
-                            <div className="inputContainer">
-                                <input
-                                    type="text"
-                                    name="date"
-                                    className="modalInput"
-                                    value={date}
-                                    onChange={(event) => setGlobalStore({date: event.target.value,})}
-                                    placeholder="DD.MM.YYYY"
-                                    style={{
-                                        borderColor: errors.date ? 'var(--danger)' : 'var(--light-grey)',
-                                    }}
+                            {!isWideScreen && (
+                                <div className="modalModeText">
+                                    <p className="modalRemoveParagraph">Are you sure you want to delete the task "<span className="modalBoldText">{task.title}</span>"?</p>
+                                </div>
+                            )}
+
+                            <div className="modalButtons">
+                                <Button
+                                    type="remove"
+                                    onClick={handleRemoveTask}
+                                    name="Remove"
                                 />
-                                <img className="inputClearButton" src={xButton} onClick={clearThirdFields} />
-                            </div>
-                            {errors.date && <span style={{color: 'red'}}>{errors.date}</span>}
-                        </label>
-                        <div className="modalButtons">
-                            <button className="btn modalEditButton" onClick={handleAction}>Save</button>
-                            <button className="btn modalCancelButton" onClick={handleClose}>Cancel</button>
-                        </div>
-                    </>
-                )}
-                {mode === 'create' && (
-                    <>
-                        <label>Title
-                            <div className="inputContainer">
-                                <input
-                                    type="text"
-                                    className="modalInput"
-                                    value={title}
-                                    onChange={(event) => setGlobalStore({title: event.target.value,})}
-                                    placeholder="Enter title"
-                                    style={{
-                                        borderColor: errors.title ? 'var(--danger)' : 'var(--light-grey)',
-                                    }}
+                                <Button
+                                    type="cancel"
+                                    onClick={handleClose}
+                                    name="Cancel"
                                 />
                             </div>
-                            {errors.title && <span style={{color: 'red'}}>{errors.title}</span>}
-                        </label>
-                        <label>Description
-                            <div className="inputContainer">
-                                <input
-                                    className="modalInput"
-                                    value={description}
-                                    onChange={(event) => setGlobalStore({description: event.target.value,})}
-                                    placeholder="Enter description"
-                                    style={{
-                                        borderColor: errors.description ? 'var(--danger)' : 'var(--light-grey)',
-                                    }}
+                        </>
+                    ) : (
+                        <>
+                            <div className='modalRectangle'>
+                                <div className='rectangle'></div>
+                            </div>
+                            <div className="modalHeader">
+                                <h2 className="modalHeaderName">{mode === VALID_MODE.VIEW ? task.title : mode === VALID_MODE.EDIT ? 'Edit Task' : 'Create Task'}</h2>
+                                <img className="modalCloseButton" src={xButton} onClick={handleClose} />
+                            </div>
+                        </>)}
+                    {mode === VALID_MODE.VIEW && (
+                        <>
+                            <div className="modalModeText">
+                                <p className="modalModeText__description">{task.description}</p>
+                                <div className='modalModeDate'>
+                                    <p className="modalModeText__time">{task.time}</p>
+                                    <p className="modalModeText__date">{task.date}</p>
+                                </div>
+                            </div>
+                            <div className="modalButtons">
+                                <Link to={`edit?id=${task.id}`} className="btn Button_edit" onClick={() => onEdit(task)}>Edit</Link>
+                                <Button
+                                    type="clone"
+                                    onClick={handleCloneTask}
+                                    name="Clone"
+                                />
+                                <Button
+                                    type="cancel"
+                                    onClick={handleClose}
+                                    name="Cancel"
                                 />
                             </div>
-                            {errors.description && <span style={{color: 'red'}}>{errors.description}</span>}
-                        </label>
-                        <label>Date
-                            <div className="inputContainer">
-                                <input
-                                    type="text"
-                                    className="modalInput"
-                                    value={date}
-                                    onChange={(event) => setGlobalStore({date: event.target.value,})}
-                                    placeholder="DD.MM.YYYY"
-                                    style={{
-                                        borderColor: errors.date ? 'var(--danger)' : 'var(--light-grey)',
-                                    }}
+                        </>
+                    )}
+                    {mode === VALID_MODE.EDIT && (
+                        <>
+                            <label>Title
+                                <div className="inputContainer">
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        className="modalInput"
+                                        value={title}
+                                        onChange={(event) => setGlobalStore({title: event.target.value, })}
+                                        placeholder="Enter title"
+                                        style={{
+                                            borderColor: errors.title ? 'var(--danger)' : 'var(--light-grey)',
+                                        }}
+                                    />
+                                    <img className="inputClearButton" src={xButton} onClick={clearFirstFields} />
+                                </div>
+                                {errors.title && <span style={{color: 'red'}}>{errors.title}</span>}
+                            </label>
+                            <label>Description
+                                <div className="inputContainer">
+                                    <input
+                                        type="text"
+                                        name="description"
+                                        className="modalInput"
+                                        value={description}
+                                        onChange={(event) => setGlobalStore({description: event.target.value, })}
+                                        placeholder="Enter description"
+                                        style={{
+                                            borderColor: errors.description ? 'var(--danger)' : 'var(--light-grey)',
+                                        }}
+                                    />
+                                    <img className="inputClearButton" src={xButton} onClick={clearSecondFields} />
+                                </div>
+                                {errors.description && <span style={{color: 'red'}}>{errors.description}</span>}
+                            </label>
+                            <label>Time
+                                <div className="inputContainer">
+                                    <input
+                                        type="text"
+                                        name="time"
+                                        className="modalInput"
+                                        value={time}
+                                        onChange={(event) => setGlobalStore({time: event.target.value, })}
+                                        placeholder="00:00"
+                                        style={{
+                                            borderColor: errors.time ? 'var(--danger)' : 'var(--light-grey)',
+                                        }}
+                                    />
+                                    <img className="inputClearButton" src={xButton} onClick={clearThirdFields} />
+                                </div>
+                                {errors.date && <span style={{color: 'red'}}>{errors.date}</span>}
+                            </label>
+                            <label>Date
+                                <div className="inputContainer">
+                                    <input
+                                        type="text"
+                                        name="date"
+                                        className="modalInput"
+                                        value={date}
+                                        onChange={(event) => setGlobalStore({date: event.target.value, })}
+                                        placeholder="DD.MM.YYYY"
+                                        style={{
+                                            borderColor: errors.date ? 'var(--danger)' : 'var(--light-grey)',
+                                        }}
+                                    />
+                                    <img className="inputClearButton" src={xButton} onClick={clearFourthFields} />
+                                </div>
+                                {errors.date && <span style={{color: 'red'}}>{errors.date}</span>}
+                            </label>
+                            <div className="modalButtons">
+                                <Button
+                                    type="save"
+                                    onClick={handleSubmit}
+                                    name="Save"
+                                />
+                                <Button
+                                    type="cancel"
+                                    onClick={handleClose}
+                                    name="Cancel"
                                 />
                             </div>
-                            {errors.date && <span style={{color: 'red'}}>{errors.date}</span>}
-                        </label>
-                        <div className="modalButtons">
-                            <button className="btn modalCreateButton" onClick={handleAction}>Create</button>
-                            <button className="btn modalCancelButton" onClick={handleClose}>Cancel</button>
-                        </div>
-                    </>
-                )}
-            </div >
-        </div >
+                        </>
+                    )}
+                    {mode === VALID_MODE.CREATE && (
+                        <>
+                            <label>Title
+                                <div className="inputContainer">
+                                    <input
+                                        type="text"
+                                        className="modalInput"
+                                        value={title}
+                                        onChange={(event) => setGlobalStore({title: event.target.value, })}
+                                        placeholder="Enter title"
+                                        style={{
+                                            borderColor: errors.title ? 'var(--danger)' : 'var(--light-grey)',
+                                        }}
+                                    />
+                                </div>
+                                {errors.title && <span style={{color: 'red'}}>{errors.title}</span>}
+                            </label>
+                            <label>Description
+                                <div className="inputContainer">
+                                    <input
+                                        className="modalInput"
+                                        value={description}
+                                        onChange={(event) => setGlobalStore({description: event.target.value, })}
+                                        placeholder="Enter description"
+                                        style={{
+                                            borderColor: errors.description ? 'var(--danger)' : 'var(--light-grey)',
+                                        }}
+                                    />
+                                </div>
+                                {errors.description && <span style={{color: 'red'}}>{errors.description}</span>}
+                            </label>
+                            <label>Time
+                                <div className="inputContainer">
+                                    <input
+                                        className="modalInput"
+                                        value={time}
+                                        onChange={(event) => setGlobalStore({time: event.target.value, })}
+                                        placeholder="00:00"
+                                        style={{
+                                            borderColor: errors.time ? 'var(--danger)' : 'var(--light-grey)',
+                                        }}
+                                    />
+                                </div>
+                                {errors.time && <span style={{color: 'red'}}>{errors.time}</span>}
+                            </label>
+                            <label>Date
+                                <div className="inputContainer">
+                                    <input
+                                        type="text"
+                                        className="modalInput"
+                                        value={date}
+                                        onChange={(event) => setGlobalStore({date: event.target.value, })}
+                                        placeholder="DD.MM.YYYY"
+                                        style={{
+                                            borderColor: errors.date ? 'var(--danger)' : 'var(--light-grey)',
+                                        }}
+                                    />
+                                </div>
+                                {errors.date && <span style={{color: 'red'}}>{errors.date}</span>}
+                            </label>
+                            <div className="modalButtons">
+                                <Button
+                                    type="create"
+                                    onClick={handleSubmit}
+                                    name="Create"
+                                />
+                                <Button
+                                    type="cancel"
+                                    onClick={handleClose}
+                                    name="Cancel"
+                                />
+                            </div>
+                        </>
+                    )}
+                </div>
+            </div>
+        </div>
     );
 };

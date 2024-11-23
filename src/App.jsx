@@ -7,14 +7,12 @@ import {
 import {GlobalStoreController} from './GlobalStoreContext';
 
 import './config/App.css';
-import {ErrorPage} from "./ErrorPage";
 import {TaskBoard} from './TaskBoard';
 
 const router = createHashRouter([
     {
         path: "/:mode?",
         element: <TaskBoard />,
-        errorElement: <ErrorPage />,
     },
 ]);
 
