@@ -3,19 +3,13 @@ import {
     Link,
     useParams,
     useNavigate,
-    useSearchParams,
 } from "react-router-dom";
-
 import './config/App.css';
-
-
 import {Modal} from './Modal';
+import {TaskModal} from './TaskModal';
 import {Breakpoints} from './Breakpoints'
-
-
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
-
 import plus from './image/plus.svg';
 
 export const TaskBoard = () => {
@@ -23,12 +17,8 @@ export const TaskBoard = () => {
 
     const state = useGlobalStore();
     const {tasks} = state;
-
-    const taskStatus = ['to Do', 'in progress', 'Done'];
-
     const {mode} = useParams();
     const navigate = useNavigate();
-
     const [currentTaskId, setCurrentTaskId] = useState(null)
 
     const closeModal = () => {
@@ -112,16 +102,16 @@ export const TaskBoard = () => {
                 <div className="tasksContainer__scroller">
                     <Breakpoints
                         tasks={tasks}
-                        onView={() => openViewModal(tasks.find(t => {return t}))}
-                        onEdit={() => openEditModal(tasks.find(t => {return t}))}
+                        onView={() => openViewModal(tasks.map(t => {return t}))}
+                        onEdit={() => openEditModal(tasks.map(t => {return t}))}
                         onClone={cloneTask}
-                        onDelete={() => openRemoveModal(tasks.find(t => {return t}))}
+                        onDelete={() => openRemoveModal(tasks.map(t => {return t}))}
                         currentTaskId={currentTaskId}
                     />
                 </div>
             </div>
 
-            <Modal
+            <TaskModal
                 task={tasks.find(t => t.id === currentTaskId)}
                 mode={mode}
                 onCreate={handleCreateTask}

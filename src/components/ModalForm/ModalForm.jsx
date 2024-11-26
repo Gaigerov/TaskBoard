@@ -1,5 +1,8 @@
 import React from 'react';
+import { VALID_MODE } from '../../constant';
 
-export const ModalForm = ({ children }) => {
-    return <div className="modal-form">{children}</div>;
+export const ModalForm = ({ mode, children }) => {
+    return <div className={mode === VALID_MODE.REMOVE ? "modalRemoveContent" : "modalContent"}>
+        {children}
+        </div>;
 };

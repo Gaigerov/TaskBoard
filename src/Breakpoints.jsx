@@ -39,7 +39,8 @@ export const Breakpoints = ({tasks, onView, onEdit, onClone, onDelete, currentTa
 
     return (
         <>
-            {breakpoint === 'mobile' && <Mobile 
+            {breakpoint === 'mobile' && 
+            <Mobile 
             tasks={tasks}
             onView={onView}
             onEdit={onEdit}
@@ -47,11 +48,17 @@ export const Breakpoints = ({tasks, onView, onEdit, onClone, onDelete, currentTa
             onDelete={onDelete}
             currentTaskId={currentTaskId}
             />}
-            {breakpoint === 'tablet' && <Tablet 
+            {breakpoint === 'tablet' && 
+            <Tablet 
             tasks={tasks}
+            onView={onView}
+            onEdit={onEdit}
+            onClone={onClone}
+            onDelete={onDelete}
             currentTaskId={currentTaskId}
             />}
-            {breakpoint === 'desktop' && <Desktop 
+            {breakpoint === 'desktop' && 
+            <Desktop 
             tasks={tasks}
             onView={onView}
             onEdit={onEdit}

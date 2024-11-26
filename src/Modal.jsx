@@ -12,6 +12,7 @@ import {Button} from './components/Button';
 import xButton from './image/x.svg';
 
 
+
 export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, onClone}) => {
     const {title, description, time, date, errors, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();

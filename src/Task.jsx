@@ -32,13 +32,11 @@ export const Task = ({task, onEdit, onView, onDelete, onClone, currentTaskId}) =
             backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '', // Изменяем цвет фона
         }}>
         <div className="taskContent" onClick={() => navigate(`${VALID_MODE.VIEW}?${params}`)}>
-
             <div className='frameOfHeaderTask'>
                 <div className='textOfTask'>
                         <h3 className="taskName">{task.title}</h3>
                         <p className="taskDescription">{task.description}</p>
                 </div>
-
                 <span className="controls" onClick={(e) => e.stopPropagation()}>
                     <Link to={`${VALID_MODE.EDIT}?${params}`} onClick={onEdit} className='iconButton'>
                             <img className="icon" src={editButton} />
@@ -51,9 +49,7 @@ export const Task = ({task, onEdit, onView, onDelete, onClone, currentTaskId}) =
                     </Link>
                 </span>
             </div>
-
             <div className='frameOfFooterTask'>
-
                 <div className='statusButton'>
                     <div className="toDoButton" onClick={handleOpenPopup}>to Do
                     </div>
@@ -65,13 +61,11 @@ export const Task = ({task, onEdit, onView, onDelete, onClone, currentTaskId}) =
                         </div>
                     )}
                 </div>
-
                 <div className='frameOfTaskDate'>
                     <p className="taskTime">{task.time}</p>
                     <p className="taskDate">{task.date}</p>
                 </div>
             </div>
-
         </div>
     </div>
     );
