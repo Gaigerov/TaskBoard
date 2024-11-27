@@ -1,14 +1,11 @@
 import React from 'react';
 import {Button} from '../Button';
-import {useGlobalStore} from '../../GlobalStoreContext'
 import {useSetGlobalStore} from '../../GlobalStoreContext';
 import {VALID_MODE} from '../../constant';
 
 
-export const FormFooter = ({mode, onSubmit, onRemove, onClone, onClose}) => {
-    const {status} = useGlobalStore();
+export const FormFooter = ({task, mode, onSubmit, onRemove, onClone, onClose}) => {
     const setGlobalStore = useSetGlobalStore();
-
     const handleClose = (event) => {
         event.preventDefault();
         onClose();
@@ -20,9 +17,20 @@ export const FormFooter = ({mode, onSubmit, onRemove, onClone, onClose}) => {
         });
     };
 
+    const handleRemoveTask = (event) => {
+        event.preventDefault();
+        onRemove(task.id)
+        onClose();
+        setGlobalStore({
+            title: '',
+            description: '',
+            time: '',
+            date: '',
+        })
+    }
+
     return (
         <div className="modalButtons">
-            <div>{status}</div>
             {mode === VALID_MODE.CREATE && (
                 <>
                     <Button
@@ -74,7 +82,7 @@ export const FormFooter = ({mode, onSubmit, onRemove, onClone, onClose}) => {
                 <>
                     <Button
                         type="remove"
-                        onClick={onSubmit}
+                        onClick={handleRemoveTask}
                         name="Remove"
                     />
                     <Button

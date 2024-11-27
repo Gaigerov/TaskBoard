@@ -40,17 +40,7 @@ export const TaskModal = ({mode, onClose, onEdit, task, onCreate, onSave, onRemo
         }
     }
 
-    const handleRemoveTask = (event) => {
-        event.preventDefault();
-        onRemove(task.id)
-        onClose();
-        setGlobalStore({
-            title: '',
-            description: '',
-            time: '',
-            date: '',
-        })
-    }
+
 
     const handleCloneTask = () => {
         onClone(task.id);
@@ -106,19 +96,19 @@ export const TaskModal = ({mode, onClose, onEdit, task, onCreate, onSave, onRemo
         if (value.length > maxLength) return `Максимум ${maxLength} символов`;
         return '';
     };
-    
+
     const validateTime = (time) => {
         return /^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/.test(time) ? '' : 'Введите время';
     };
-    
+
     const validateDate = (date) => {
         const today = new Date();
         const inputDate = new Date(date.split('.').reverse().join('-'));
-        if (!/^d{2}.d{2}.d{4}$/.test(date)) return 'Введите корректную дату';
+        if (!/^\d{2}\.\d{2}\.\d{4}$/.test(date)) return 'Введите корректную дату';
         if (inputDate < today) return 'Введите дату, которая еще не прошла';
         return '';
     };
-    
+
     const validate = () => {
         const newErrors = {
             title: validateField(title, 'Введите название', 50),
@@ -126,9 +116,8 @@ export const TaskModal = ({mode, onClose, onEdit, task, onCreate, onSave, onRemo
             time: validateTime(time),
             date: date ? validateDate(date) : 'Введите дату'
         };
-    
         const isValid = Object.values(newErrors).every(error => !error);
-        setGlobalStore({ errors: newErrors });
+        setGlobalStore({errors: newErrors});
         return isValid;
     };
 
@@ -172,7 +161,8 @@ export const TaskModal = ({mode, onClose, onEdit, task, onCreate, onSave, onRemo
                 <FormHeader mode={mode} onClose={onClose} />
                 <FormBody mode={mode} />
                 <FormFooter
-                    // mode={mode}
+                    task={task}
+                    mode={mode}
                     onSubmit={handleSubmit}
                     onRemove={onRemove}
                     onClose={onClose}

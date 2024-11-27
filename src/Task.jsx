@@ -30,7 +30,8 @@ export const Task = ({task, onEdit, onView, onDelete, onClone, currentTaskId}) =
         <div className="taskContainer" onClick={onView}
         style={{
             backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '', // Изменяем цвет фона
-        }}>
+        }}
+        >
         <div className="taskContent" onClick={() => navigate(`${VALID_MODE.VIEW}?${params}`)}>
             <div className='frameOfHeaderTask'>
                 <div className='textOfTask'>
@@ -53,13 +54,13 @@ export const Task = ({task, onEdit, onView, onDelete, onClone, currentTaskId}) =
                 <div className='statusButton'>
                     <div className="toDoButton" onClick={handleOpenPopup}>to Do
                     </div>
-                    {isOpen && (
+                    {/* {isOpen && (
                         <div className="statusContainer">
                             <div className="toDoButton">to Do</div>
                             <div className="inProgressButton">in progress</div>
                             <div className="doneButton">Done</div>
                         </div>
-                    )}
+                    )} */}
                 </div>
                 <div className='frameOfTaskDate'>
                     <p className="taskTime">{task.time}</p>

@@ -8,8 +8,7 @@ import editButton from '../image/edit.svg'
 import deleteButton from '../image/delete.svg';
 import cloneButton from '../image/clone.svg';
 
-export const Table = ({tasks, onView, onEdit, onClone, onDelete, currentTaskId}) => {
-
+export const Table = ({tasks, onView, onEdit, onClone, onDelete}) => {
     const params = new URLSearchParams(window.location.search);
     params.set("id", tasks.map(task => {return task.id}));
     params.toString();
@@ -47,10 +46,9 @@ export const Table = ({tasks, onView, onEdit, onClone, onDelete, currentTaskId})
                         <tr
                             key={task.id}
                             onClick={onView}
-                            style={{
-                                backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '', // Изменяем цвет фона
-                            }}>
-                            <td>{task.status}</td>
+                            className='trContainer'
+                        >
+                            <td>{'task.status'}</td>
                             <td>{task.title}</td>
                             <td>{task.description}</td>
                             <td>{task.time}</td>

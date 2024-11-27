@@ -3,7 +3,7 @@ import React from 'react';
 import {Table} from '../components/Table';
 
 export const Desktop = ({tasks, onView, onEdit, onClone, onDelete, currentTaskId}) => {
-    
+    console.log(currentTaskId)
     return (
         <div className="taskContainer">
             {/* <div className="taskContent" 

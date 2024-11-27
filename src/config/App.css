@@ -58,11 +58,6 @@ label {
     height: 0;
 }
 
-.taskContainer:hover {
-    cursor: pointer;
-    background-color: var(--light-grey);
-}
-
 .controlsContainer {
     display: grid;
     justify-content: flex-end;
@@ -78,7 +73,8 @@ label {
     width: 100%;
     text-wrap: wrap;
     flex-direction: row;
-    margin: 0;
+
+    gap: 4px;
     align-items: center;
     border-radius: 8px;
 }
@@ -132,6 +128,11 @@ label {
         flex-direction: column;
         justify-content: center;
         position: relative;
+    }
+
+    .taskContainer:hover {
+        cursor: pointer;
+        background-color: var(--light-grey);
     }
 
     .tasksContainer::before {
@@ -379,7 +380,7 @@ label {
     }
 }
 
-@media screen and (max-width: 1199px) {
+@media screen and (min-width: 770px) and (max-width: 1199px) {
     .titlesContainer {
         display: none;
     }
@@ -388,6 +389,11 @@ label {
         flex-direction: column;
         justify-content: center;
         position: relative;
+    }
+
+    .taskContainer:hover {
+        cursor: pointer;
+        background-color: var(--light-grey);
     }
 
     .tasksContainer::before {
@@ -669,25 +675,25 @@ label {
         text-align: left;
     }
 
-    .titlesNameContainer:nth-child(1) {
+    th:nth-child(1),td:nth-child(1) {
         width: 100px;
     }
 
-    .titlesNameContainer:nth-child(2) {
+    th:nth-child(2),td:nth-child(2) {
         width: 200px;
     }
 
-    .titlesNameContainer:nth-child(3) {
+    th:nth-child(3) ,td:nth-child(3) {
         width: calc(50%);
         margin-left: auto;
     }
 
-    .titlesNameContainer:nth-child(4) {
+    th:nth-child(4),td:nth-child(4) {
         width: 120px;
         margin-left: auto;
     }
 
-    .titlesNameContainer:nth-child(5) {
+    th:nth-child(5),td:nth-child(5) {
         width: 140px;
         margin-left: auto;
     }
@@ -877,5 +883,12 @@ label {
     .tableContainer {
         display: flex;
         flex-direction: column;
+        width: 100%;
+        border-collapse: collapse; 
+    }
+
+    .trContainer:hover {
+        cursor: pointer;
+        background-color: var(--light-grey);
     }
 }
