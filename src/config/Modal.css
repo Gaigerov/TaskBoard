@@ -40,13 +40,16 @@
 
 .modalInput {
     display: flex;
+    width: 100%;
     flex-direction: column;
     text-wrap: wrap;
     border: 1px solid var(--light-grey);
     border-radius: 8px;
-    width: 100%;
-    height: 39px;
-    padding-left: 10px;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4;
+    padding: 8px 16px 8px 16px;
 }
 
 .modalHeader {

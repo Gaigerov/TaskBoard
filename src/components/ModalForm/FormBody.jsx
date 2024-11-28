@@ -70,13 +70,14 @@ export const FormBody = ({mode}) => {
                             <span style={{color: "red"}}>{errors.description}</span>
                         )}
                     </label>
-                    <label>Time
+                    <div className='taskDateAndTimeContainer'>
+                    <label className="modalContainer__time">Time
                     <div className="inputContainer">
                         <input
                             type="text"
                             value={time}
                             placeholder="00:00"
-                            className="modalInput"
+                            className="modalInput modalInput__time"
                             style={{
                                 borderColor: errors.date ? "var(--danger)" : "var(--light-grey)",
                             }}
@@ -85,7 +86,7 @@ export const FormBody = ({mode}) => {
                     </div>
                     {errors.time && <span style={{color: "red"}}>{errors.time}</span>}
                     </label>
-                    <label>Date
+                    <label className="modalContainer__date">Date
                     <div className="inputContainer">
                         <input
                             type="text"
@@ -100,6 +101,7 @@ export const FormBody = ({mode}) => {
                     </div>
                     {errors.date && <span style={{color: "red"}}>{errors.date}</span>}
                     </label>
+                    </div>
                 </>
             )}
             {mode === VALID_MODE.VIEW && (

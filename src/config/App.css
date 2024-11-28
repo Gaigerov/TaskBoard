@@ -73,10 +73,31 @@ label {
     width: 100%;
     text-wrap: wrap;
     flex-direction: row;
-
     gap: 4px;
     align-items: center;
     border-radius: 8px;
+}
+
+.taskDateAndTimeContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.modalContainer__time {
+    width: 30%;
+}
+
+.modalInput__time {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4px;
+}
+
+.modalContainer__date {
+    width: 70%;
 }
 
 .iconButton {
@@ -640,7 +661,7 @@ label {
         height: 600px;
     }
 
-    .titlesContainer {
+    /* .titlesContainer {
         display: flex;
         flex-direction: row;
         gap: 10px;
@@ -649,18 +670,18 @@ label {
         border-bottom: 1px solid var(--dark-grey);
         margin: 0px;
         box-sizing: border-box;
-    }
+    } */
 
-    .titlesNameContainer {
+    /* .titlesNameContainer {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
-        gap: 10px;
+
         padding: 0px 8px 0px 8px;
         margin: 5px 0 5px 0;
-    }
-
+    } */
+    /* 
     .titlesName {
         display: flex;
         flex-direction: row;
@@ -673,29 +694,40 @@ label {
         line-height: 24px;
         letter-spacing: 0%;
         text-align: left;
+    } */
+
+    thead {
+        display: flex;
+        flex-direction: row;
     }
 
-    th:nth-child(1),td:nth-child(1) {
+    tbody {
+        display: flex;
+        flex-direction: column;
+    }
+
+    th:nth-child(1), td:nth-child(1) {
         width: 100px;
     }
 
-    th:nth-child(2),td:nth-child(2) {
+
+    th:nth-child(2), td:nth-child(2) {
         width: 200px;
+        margin-right: auto;
     }
 
-    th:nth-child(3) ,td:nth-child(3) {
+
+    th:nth-child(3), td:nth-child(3) {
         width: calc(50%);
-        margin-left: auto;
+        margin-right: auto;
     }
 
-    th:nth-child(4),td:nth-child(4) {
+    th:nth-child(4) {
         width: 120px;
-        margin-left: auto;
     }
 
-    th:nth-child(5),td:nth-child(5) {
+    th:nth-child(5), td:nth-child(5) {
         width: 140px;
-        margin-left: auto;
     }
 
     .taskContent {
@@ -756,7 +788,6 @@ label {
         font-weight: 400;
         line-height: 19.5px;
         color: var(--grey);
-        padding: 0 8px 0 8px;
     }
 
     .taskDate {
@@ -769,7 +800,25 @@ label {
         font-weight: 400;
         line-height: 19.5px;
         color: var(--grey);
+    }
+
+    .taskDateContainer {
+        display: flex;
+        width: 120px;
+        gap: 10px;
         padding-left: 8px;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 15px;
+        letter-spacing: 0%;
+    }
+
+    .taskDateContainer_spanTime {
+        width: auto;
+    }
+
+    .taskDateContainer_spanDate {
+        width: auto;
     }
 
     .controls {
@@ -852,7 +901,6 @@ label {
         padding: 0 16px 0 16px;
         width: auto;
         height: auto;
-        border-bottom: 1px solid var(--light);
         background-color: var(--white);
         color: var(--dark-grey);
     }
@@ -884,7 +932,27 @@ label {
         display: flex;
         flex-direction: column;
         width: 100%;
-        border-collapse: collapse; 
+        border-collapse: collapse;
+    }
+
+    .trTitles {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 24px;
+        letter-spacing: 0%;
+        text-align: left;
+        border-bottom: 1px solid var(--dark-grey);
+    }
+
+    .trContainer {
+        border-bottom: 1px solid var(--light);
+        justify-content: space-between;
+        align-items: center;
+        display: flex;
     }
 
     .trContainer:hover {

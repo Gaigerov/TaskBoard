@@ -16,28 +16,20 @@ export const Table = ({tasks, onView, onEdit, onClone, onDelete}) => {
     return (
         <table className='tableContainer'>
             <thead>
-                <tr className='titlesContainer'>
-                    <th className='titlesNameContainer'>
-                        <p className='titlesName'>
-                            Status
-                        </p>
+                <tr className='trTitles'>
+                    <th>
+                        Status
                     </th>
-                    <th className='titlesNameContainer'>
-                        <p className='titlesName'>
-                            Title
-                        </p>
+                    <th>
+                        Title
                     </th>
-                    <th className='titlesNameContainer'>
-                        <p className='titlesName'>
-                            Description
-                        </p>
+                    <th>
+                        Description
                     </th>
-                    <th className='titlesNameContainer'>
-                        <p className='titlesName'>
-                            Date
-                        </p>
+                    <th>
+                        Date
                     </th>
-                    <th className='titlesNameContainer'></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -48,11 +40,13 @@ export const Table = ({tasks, onView, onEdit, onClone, onDelete}) => {
                             onClick={onView}
                             className='trContainer'
                         >
-                            <td>{'task.status'}</td>
+                            <td>{'status'}</td>
                             <td>{task.title}</td>
                             <td>{task.description}</td>
-                            <td>{task.time}</td>
-                            <td>{task.date}</td>
+                            <td className='taskDateContainer'>
+                                <span className='taskDateContainer_spanTime'>{task.time}</span>
+                                <span className='taskDateContainer_spanDate'>{task.date}</span>
+                            </td>
                             <td>
                                 <span className="controls" onClick={(e) => e.stopPropagation()}>
                                     <Link to={`${VALID_MODE.EDIT}?${params}`} onClick={onEdit} className='iconButton'>
