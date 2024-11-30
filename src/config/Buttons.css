@@ -2,7 +2,6 @@
     transition: 0.5s all;
     text-decoration: none;
     width: auto;
-    padding: 0 8px 0 8px;
 }
 
 .btn:active {
@@ -43,9 +42,9 @@
     filter: invert(31%) sepia(24%) saturate(5892%) hue-rotate(333deg) brightness(83%) contrast(94%);
 }
 
-.createButtonContainer {
+.headerContainer {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin: 0;
     padding: 0;
     position: relative;
@@ -57,8 +56,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px;
-    padding-right: 10px;
+    padding: 0 12px;
     background-color: var(--primary);
     border-radius: 10px;
     border-style: none;

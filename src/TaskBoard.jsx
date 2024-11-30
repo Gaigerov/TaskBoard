@@ -5,7 +5,6 @@ import {
     useNavigate,
 } from "react-router-dom";
 import './config/App.css';
-import {Modal} from './Modal';
 import {TaskModal} from './TaskModal';
 import {Breakpoints} from './Breakpoints'
 import {useGlobalStore} from './GlobalStoreContext';
@@ -20,6 +19,13 @@ export const TaskBoard = () => {
     const {mode} = useParams();
     const navigate = useNavigate();
     const [currentTaskId, setCurrentTaskId] = useState(null)
+    const [searchValue, setSearchValue] = useState("");
+
+
+    const handleChange = (event) => {
+        setSearchValue(event.target.value);
+    }
+
 
     const closeModal = () => {
         setCurrentTaskId(null);
@@ -92,7 +98,16 @@ export const TaskBoard = () => {
 
     return (
         <div className="taskBoard">
-            <div className="createButtonContainer">
+            <div className="headerContainer">
+                <div className='taskFinderContainer'>
+                    <input
+                        type="text"
+                        value={searchValue}
+                        placeholder="Search"
+                        className="headerFinderInput"
+                        onChange={handleChange}
+                    />
+                </div>
                 <Link className="btn createButton" to="/create" onClick={openCreateModal}>
                     <img className="plusButton" src={plus} />
                     Create
