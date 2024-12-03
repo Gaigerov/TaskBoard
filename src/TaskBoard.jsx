@@ -24,7 +24,6 @@ export const TaskBoard = () => {
     const [currentTaskId, setCurrentTaskId] = useState(null)
     const [searchValue, setSearchValue] = useState("");
     const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
-    // const [filteredTasks, setFilteredTasks] = useState([]);
 
     const handleChange = (event) => {
         setSearchValue(event.target.value);
@@ -81,19 +80,14 @@ export const TaskBoard = () => {
         closeModal();
     };
 
-    // const searchTasks = (inputText) => {
-    //     const lowerCaseInput = inputText.toLowerCase();
-
-    //     setFilteredTasks(tasks.filter(task => {
-    //         const titleMatch = task.title.toLowerCase().includes(lowerCaseInput);
-    //         const descriptionMatch = task.description.toLowerCase().includes(lowerCaseInput);
-    //         return titleMatch || descriptionMatch;
-    //     }));
-    // }
-
     const openCreateModal = () => {
         setCurrentTaskId(null);
         navigate('create');
+    };
+
+    const openFilterModal = () => {
+        setCurrentTaskId(null);
+        navigate('filter');
     };
 
     const openEditModal = (task) => {
@@ -123,7 +117,9 @@ export const TaskBoard = () => {
                                 <img className='searchButton' onClick={handleOpenSearchInput} src={search} />
                             </div>
                             <div className='filterButtonContainer'>
-                                <img className='filterButton' src={filter} />
+                                <Link to="/filter" onClick={openFilterModal}>
+                                    <img className='filterButton' src={filter} />
+                                </Link>
                             </div>
                         </div>
                     )}

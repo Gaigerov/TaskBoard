@@ -97,6 +97,25 @@ export const FormFooter = ({task, mode, onSubmit, onRemove, onClone, onClose}) =
                     />
                 </>
             )}
+            {mode === VALID_MODE.FILTER && (
+                <>
+                    <Button
+                        type="save"
+                        onClick={onSubmit}
+                        name="Filter"
+                    />
+                    <Button
+                        type="remove"
+                        onClick={handleClose}
+                        name="Reset"
+                    />
+                    <Button
+                        type="cancel"
+                        onClick={handleClose}
+                        name="Cancel"
+                    />
+                </>
+            )}
         </div>
     );
 };

@@ -46,6 +46,14 @@ export const FormHeader = ({task, mode, onClose}) => {
                         "?</p>
                 </div>
             )}
+            {mode === VALID_MODE.FILTER && (
+                <div className="modalHeader">
+                    <h2 className="modalHeaderName">
+                        Filter Task
+                    </h2>
+                    <div onClick={onClose}><img className="modalCloseButton" src={xButton} alt="Закрыть" /></div>
+                </div>
+            )}
         </>
     );
 };

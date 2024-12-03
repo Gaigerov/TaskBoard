@@ -8,10 +8,6 @@ export const FormBody = ({mode}) => {
     const {title, description, time, date, errors, isDirty, status} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
 
-
-    const mainContainer = document.getElementById('mainContainer');
-    const selector = document.getElementById('selector');
-
     const clearField = (field) => {
         setGlobalStore({[field]: ""});
     };
@@ -108,7 +104,7 @@ export const FormBody = ({mode}) => {
                     </div>
                 </>
             )}
-            {mode === VALID_MODE.VIEW && (
+            {mode === VALID_MODE.VIEW || mode === VALID_MODE.FILTER && (
                 <div>{status}
                 </div>
             )}
