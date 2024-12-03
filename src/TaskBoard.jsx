@@ -10,6 +10,9 @@ import {Breakpoints} from './Breakpoints'
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 import plus from './image/plus.svg';
+import search from './image/search.svg';
+import filter from './image/filter.svg';
+
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
@@ -20,12 +23,12 @@ export const TaskBoard = () => {
     const navigate = useNavigate();
     const [currentTaskId, setCurrentTaskId] = useState(null)
     const [searchValue, setSearchValue] = useState("");
-
+    const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
+    // const [filteredTasks, setFilteredTasks] = useState([]);
 
     const handleChange = (event) => {
         setSearchValue(event.target.value);
     }
-
 
     const closeModal = () => {
         setCurrentTaskId(null);
@@ -78,6 +81,16 @@ export const TaskBoard = () => {
         closeModal();
     };
 
+    // const searchTasks = (inputText) => {
+    //     const lowerCaseInput = inputText.toLowerCase();
+
+    //     setFilteredTasks(tasks.filter(task => {
+    //         const titleMatch = task.title.toLowerCase().includes(lowerCaseInput);
+    //         const descriptionMatch = task.description.toLowerCase().includes(lowerCaseInput);
+    //         return titleMatch || descriptionMatch;
+    //     }));
+    // }
+
     const openCreateModal = () => {
         setCurrentTaskId(null);
         navigate('create');
@@ -96,17 +109,34 @@ export const TaskBoard = () => {
         navigate(`remove/${task.id}`);
     };
 
+    const handleOpenSearchInput = () => {
+        setIsOpenSearchInput(true);
+    }
+
     return (
         <div className="taskBoard">
             <div className="headerContainer">
                 <div className='taskFinderContainer'>
-                    <input
-                        type="text"
-                        value={searchValue}
-                        placeholder="Search"
-                        className="headerFinderInput"
-                        onChange={handleChange}
-                    />
+                    {!isOpenSearchInput && (
+                        <div className='headerButtonsContainer'>
+                            <div className='searchButtonContainer'>
+                                <img className='searchButton' onClick={handleOpenSearchInput} src={search} />
+                            </div>
+                            <div className='filterButtonContainer'>
+                                <img className='filterButton' src={filter} />
+                            </div>
+                        </div>
+                    )}
+                    {isOpenSearchInput && (
+                        <input
+                            id="searchInput"
+                            type="text"
+                            value={searchValue}
+                            placeholder="Search"
+                            className="headerFinderInput"
+                            onChange={handleChange}
+                        />
+                    )}
                 </div>
                 <Link className="btn createButton" to="/create" onClick={openCreateModal}>
                     <img className="plusButton" src={plus} />
@@ -115,19 +145,23 @@ export const TaskBoard = () => {
             </div>
             <div className="tasksContainer">
                 <div className="tasksContainer__scroller">
-                    <Breakpoints
-                        tasks={tasks}
-                        onView={() => openViewModal(tasks.map(t => {return t}))}
-                        onEdit={() => openEditModal(tasks.map(t => {return t}))}
-                        onClone={cloneTask}
-                        onDelete={() => openRemoveModal(tasks.map(t => {return t}))}
-                        currentTaskId={currentTaskId}
-                    />
+                    {tasks.map((task) => (
+                        <Breakpoints
+                            key={task.id}
+                            task={task.id}
+                            tasks={tasks}
+                            onView={() => openViewModal(task)}
+                            onEdit={() => openEditModal(task)}
+                            onClone={cloneTask}
+                            onDelete={() => openRemoveModal(task)}
+                            currentTaskId={currentTaskId}
+                        />
+                    ))}
                 </div>
             </div>
-
             <TaskModal
                 task={tasks.find(t => t.id === currentTaskId)}
+                tasks={tasks}
                 mode={mode}
                 onCreate={handleCreateTask}
                 onSave={handleEditTask}

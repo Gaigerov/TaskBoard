@@ -29,6 +29,11 @@ export const FormFooter = ({task, mode, onSubmit, onRemove, onClone, onClose}) =
         })
     }
 
+    const handleCloneTask = () => {
+        onClone(task.id);
+        onClose();
+    }
+
     return (
         <div className="modalButtons">
             {mode === VALID_MODE.CREATE && (
@@ -68,7 +73,7 @@ export const FormFooter = ({task, mode, onSubmit, onRemove, onClone, onClose}) =
                     />
                     <Button
                         type="clone"
-                        onClick={onClone}
+                        onClick={handleCloneTask}
                         name="Copy"
                     />
                     <Button

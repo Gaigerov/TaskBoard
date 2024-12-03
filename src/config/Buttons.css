@@ -9,6 +9,42 @@
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
 
+.searchButtonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+}
+
+.filterButtonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+}
+
+.filterButton {
+    display: flex;
+    width: 15px;
+    height: 15px;
+}
+
+.filterButton:hover {
+    cursor: pointer;
+}
+
+.searchButton {
+    display: flex;
+    width: 15px;
+    height: 15px;
+}
+
+.searchButton {
+    cursor: pointer;
+}
+
 .editButton {
     display: grid;
     width: 20px;

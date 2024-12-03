@@ -40,13 +40,6 @@ export const TaskModal = ({mode, onClose, onEdit, task, onCreate, onSave, onRemo
         }
     }
 
-
-
-    const handleCloneTask = () => {
-        onClone(task.id);
-        onClose();
-    }
-
     useEffect(() => {
         if (mode) {
             document.addEventListener('keydown', handleKeyDown);
@@ -157,8 +150,8 @@ export const TaskModal = ({mode, onClose, onEdit, task, onCreate, onSave, onRemo
 
     return (
         <div className="modalOverlay">
-            <ModalForm mode={mode}>
-                <FormHeader mode={mode} onClose={onClose} />
+            <ModalForm>
+                <FormHeader task={task} mode={mode} onClose={onClose} />
                 <FormBody mode={mode} />
                 <FormFooter
                     task={task}

@@ -40,13 +40,13 @@ export const Task = ({task, onEdit, onView, onDelete, onClone, currentTaskId}) =
                 </div>
                 <span className="controls" onClick={(e) => e.stopPropagation()}>
                     <Link to={`${VALID_MODE.EDIT}?${params}`} onClick={onEdit} className='iconButton'>
-                            <img className="icon" src={editButton} />
+                            <img className="icon editButton" src={editButton} />
                     </Link>
                     <Link onClick={() => {onClone(task.id)}} className='iconButton'>
-                            <img className="icon" src={cloneButton} />
+                            <img className="icon cloneButton" src={cloneButton} />
                     </Link>
                     <Link to={`${VALID_MODE.REMOVE}?${params}`} onClick={() => {onDelete(task.id)}} className='iconButton'>
-                            <img className="icon" src={deleteButton} />
+                            <img className="icon deleteButton" src={deleteButton} />
                     </Link>
                 </span>
             </div>

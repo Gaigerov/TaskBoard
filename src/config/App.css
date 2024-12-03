@@ -128,12 +128,20 @@ label {
 
 .taskFinderContainer {
     display: flex;
+    position: relative;
     width: 100%;
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-end;
     gap: 4px;
-    padding: 0 16px 0 16px;
+    padding: 0 16px 0 0;
+}
+
+.headerButtonsContainer {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    left: 5px;
 }
 
 .headerContainer {
@@ -265,12 +273,14 @@ label {
 
     .textOfTask {
         display: flex;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
         gap: 4px;
         padding: 0px;
-        width: 50%;
     }
 
     .taskName {
@@ -281,7 +291,7 @@ label {
         line-height: 29.26px;
         text-align: left;
         margin: 0 0 10px 0;
-        white-space: nowrap;
+        color: var(--dark-grey);
         overflow: hidden;
         text-overflow: ellipsis;
         width: 100%;
@@ -403,19 +413,6 @@ label {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    .modalRemoveContent {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: auto;
-        background: white;
-        padding: 20px;
-        padding-top: 4px;
-        border-radius: 16px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
     .controls {
         display: flex;
         flex-direction: row;
@@ -496,12 +493,14 @@ label {
 
     .textOfTask {
         display: flex;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
         gap: 4px;
         padding: 0px;
-        width: 50%;
     }
 
     .taskName {
@@ -512,7 +511,7 @@ label {
         line-height: 29.26px;
         text-align: left;
         margin: 0 0 10px 0;
-        white-space: nowrap;
+        color: var(--dark-grey);
         overflow: hidden;
         text-overflow: ellipsis;
         width: 100%;
@@ -705,7 +704,7 @@ label {
         justify-content: flex-start;
         align-items: center;
         gap: 10;
-        padding: 0px 8px 0px 8px;
+        padding: 11px 8px 11px 8px;
     }
 
     td {
@@ -718,7 +717,7 @@ label {
     }
 
     th:nth-child(1), td:nth-child(1) {
-        width: 84px !important; 
+        width: 84px; 
     }
 
 
@@ -925,17 +924,6 @@ label {
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         border-radius: 0;
-    }
-
-    .modalRemoveContent {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 260px;
-        height: 100vh;
-        background: white;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .tableContainer {

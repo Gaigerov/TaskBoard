@@ -8,6 +8,10 @@ export const FormBody = ({mode}) => {
     const {title, description, time, date, errors, isDirty, status} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
 
+
+    const mainContainer = document.getElementById('mainContainer');
+    const selector = document.getElementById('selector');
+
     const clearField = (field) => {
         setGlobalStore({[field]: ""});
     };
@@ -24,7 +28,7 @@ export const FormBody = ({mode}) => {
 
     return (
         <div>
-            {mode !== VALID_MODE.REMOVE && (
+            {mode === VALID_MODE.CREATE || mode === VALID_MODE.EDIT && (
                 <>
                     <label>Title
                         <div className="inputContainer">
@@ -71,41 +75,42 @@ export const FormBody = ({mode}) => {
                         )}
                     </label>
                     <div className='taskDateAndTimeContainer'>
-                    <label className="modalContainer__time">Time
-                    <div className="inputContainer">
-                        <input
-                            type="text"
-                            value={time}
-                            placeholder="00:00"
-                            className="modalInput modalInput__time"
-                            style={{
-                                borderColor: errors.date ? "var(--danger)" : "var(--light-grey)",
-                            }}
-                            onChange={(event) => setGlobalStore({time: event.target.value, })}
-                        />
-                    </div>
-                    {errors.time && <span style={{color: "red"}}>{errors.time}</span>}
-                    </label>
-                    <label className="modalContainer__date">Date
-                    <div className="inputContainer">
-                        <input
-                            type="text"
-                            value={date}
-                            placeholder="DD.MM.YYYY"
-                            className="modalInput"
-                            style={{
-                                borderColor: errors.date ? "var(--danger)" : "var(--light-grey)",
-                            }}
-                            onChange={(event) => setGlobalStore({date: event.target.value, })}
-                        />
-                    </div>
-                    {errors.date && <span style={{color: "red"}}>{errors.date}</span>}
-                    </label>
+                        <label className="modalContainer__time">Time
+                            <div className="inputContainer">
+                                <input
+                                    type="text"
+                                    value={time}
+                                    placeholder="00:00"
+                                    className="modalInput modalInput__time"
+                                    style={{
+                                        borderColor: errors.date ? "var(--danger)" : "var(--light-grey)",
+                                    }}
+                                    onChange={(event) => setGlobalStore({time: event.target.value, })}
+                                />
+                            </div>
+                            {errors.time && <span style={{color: "red"}}>{errors.time}</span>}
+                        </label>
+                        <label className="modalContainer__date">Date
+                            <div className="inputContainer">
+                                <input
+                                    type="text"
+                                    value={date}
+                                    placeholder="DD.MM.YYYY"
+                                    className="modalInput"
+                                    style={{
+                                        borderColor: errors.date ? "var(--danger)" : "var(--light-grey)",
+                                    }}
+                                    onChange={(event) => setGlobalStore({date: event.target.value, })}
+                                />
+                            </div>
+                            {errors.date && <span style={{color: "red"}}>{errors.date}</span>}
+                        </label>
                     </div>
                 </>
             )}
             {mode === VALID_MODE.VIEW && (
-                <div>{status}</div>
+                <div>{status}
+                </div>
             )}
         </div>
     );
