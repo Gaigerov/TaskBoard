@@ -105,8 +105,32 @@ export const FormBody = ({mode}) => {
                 </>
             )}
             {mode === VALID_MODE.VIEW || mode === VALID_MODE.FILTER && (
-                <div>{status}
-                </div>
+                <>
+                    <label>Status
+                        <select className='statusSelector'>
+                            <option value="" disabled selected className='statusSelector__selectStatus'>Select status</option>
+                            <option className='statusSelector__toDo'>To Do</option>
+                            <option className='statusSelector__inProgress'>In progress</option>
+                            <option className='statusSelector__done'>Done</option>
+                        </select>
+                    </label>
+
+                    <label>Date
+                        <div className="inputContainer">
+                            <input
+                                type="text"
+                                value={date}
+                                placeholder="DD.MM.YYYY"
+                                className="modalInput"
+                                style={{
+                                    borderColor: errors.date ? "var(--danger)" : "var(--light-grey)",
+                                }}
+                                onChange={(event) => setGlobalStore({date: event.target.value, })}
+                            />
+                        </div>
+                        {errors.date && <span style={{color: "red"}}>{errors.date}</span>}
+                    </label>
+                </>
             )}
         </div>
     );

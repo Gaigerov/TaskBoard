@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useSearchParams} from "react-router-dom";
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
@@ -13,7 +13,7 @@ export const TaskModal = ({mode, onClose, onEdit, task, onCreate, onSave, onRemo
     const setGlobalStore = useSetGlobalStore();
 
     const modalRef = useRef(null);
-    const [searchParams] = useSearchParams();
+    const [searchParams, setParams] = useSearchParams();
     const id = searchParams.get('id');
 
     const handleClickOutside = (event) => {
@@ -149,7 +149,7 @@ export const TaskModal = ({mode, onClose, onEdit, task, onCreate, onSave, onRemo
     }
 
     return (
-        <div className="modalOverlay">
+        <div className="modalOverlay" ref={modalRef}>
             <ModalForm>
                 <FormHeader task={task} mode={mode} onClose={onClose} />
                 <FormBody mode={mode} />

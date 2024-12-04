@@ -3,7 +3,7 @@ import React from 'react';
 import {Task} from '../Task';
 
 export const Tablet = ({tasks, onView, onEdit, onClone, onDelete, currentTaskId}) => {
-console.log(currentTaskId)
+
     return (
         tasks.map((task) => (
             <Task

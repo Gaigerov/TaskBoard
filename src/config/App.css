@@ -100,12 +100,46 @@ label {
     width: 30%;
 }
 
+.statusSelector {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px 8px 16px;
+    box-sizing: border-box;
+    border: 1px solid var(--light-grey);
+    border-radius: 8px;
+}
+
+.statusSelector__selectStatus {
+    display: none;
+    color: var(--light)
+}
+
+.statusSelector__toDo {
+    background-color: var(--primary);
+}
+
+.statusSelector__inProgress {
+    background-color: var(--success);
+}
+
+.statusSelector__done {
+    background-color: var(--warning);
+}
+
 .modalInput__time {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
     gap: 4px;
+}
+
+.modalContainer__status {
+    width: 100%;
 }
 
 .modalContainer__date {
@@ -567,7 +601,7 @@ label {
         gap: 10px;
         padding: 0px;
         margin: 0px;
-        color: var(--light-gray);
+        color: var(--light-grey);
     }
 
     .controls {
@@ -686,8 +720,6 @@ label {
         height: 600px;
     }
 
-
-
     thead {
         display: flex;
         flex-direction: row;
@@ -716,18 +748,19 @@ label {
         padding: 0px 8px 0px 8px;
     }
 
-    th:nth-child(1), td:nth-child(1) {
-        width: 84px; 
+    th:nth-child(1),
+    td:nth-child(1) {
+        width: 84px;
     }
 
-
-    th:nth-child(2), td:nth-child(2) {
+    th:nth-child(2),
+    td:nth-child(2) {
         width: 184px;
         margin-right: auto;
     }
 
-
-    th:nth-child(3), td:nth-child(3) {
+    th:nth-child(3),
+    td:nth-child(3) {
         width: calc(50%);
         margin-right: auto;
     }
@@ -736,7 +769,8 @@ label {
         width: 104px;
     }
 
-    th:nth-child(5), td:nth-child(5) {
+    th:nth-child(5),
+    td:nth-child(5) {
         width: 124px;
     }
 
