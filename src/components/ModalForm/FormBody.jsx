@@ -107,11 +107,11 @@ export const FormBody = ({mode}) => {
             {mode === VALID_MODE.VIEW || mode === VALID_MODE.FILTER && (
                 <>
                     <label>Status
-                        <select className='statusSelector'>
-                            <option value="" disabled selected className='statusSelector__selectStatus'>Select status</option>
-                            <option className='statusSelector__toDo'>To Do</option>
-                            <option className='statusSelector__inProgress'>In progress</option>
-                            <option className='statusSelector__done'>Done</option>
+                        <select defaultValue={'DEFAULT'} className='taskStatusSelector'>
+                            <option value="DEFAULT" disabled selected className='statusSelector__selectStatus'>Select status</option>
+                            <option value="To Do" className='statusSelector__toDo'>To Do</option>
+                            <option value="In progress" className='statusSelector__inProgress'>In progress</option>
+                            <option value="Done" className='statusSelector__done'>Done</option>
                         </select>
                     </label>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     Link,
+    useNavigate,
 } from "react-router-dom";
 
 import {VALID_MODE} from '../constant';
@@ -8,9 +9,10 @@ import editButton from '../image/edit.svg'
 import deleteButton from '../image/delete.svg';
 import cloneButton from '../image/clone.svg';
 
-export const Table = ({tasks, onView, onEdit, onClone, onDelete}) => {
+export const Table = ({task, tasks, onView, onEdit, onClone, onDelete, currentTaskId}) => {
+    const navigate = useNavigate();
     const params = new URLSearchParams(window.location.search);
-    params.set("id", tasks.map(task => {return task.id}));
+    params.set("id", task.id);
     params.toString();
 
     return (
@@ -39,8 +41,18 @@ export const Table = ({tasks, onView, onEdit, onClone, onDelete}) => {
                             key={task.id}
                             onClick={onView}
                             className='trContainer'
+                            style={{
+                                backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '', // Изменяем цвет фона
+                            }}
                         >
-                            <td>{'status'}</td>
+                            <td>
+                                <select defaultValue={'DEFAULT'} className='statusSelector'>
+                                    <option value="DEFAULT" disabled selected className='statusSelector__selectStatus'>Select status</option>
+                                    <option value="To Do" className='statusSelector__toDo'>To Do</option>
+                                    <option value="In progress" className='statusSelector__inProgress'>In progress</option>
+                                    <option value="Done" className='statusSelector__done'>Done</option>
+                                </select>
+                            </td>
                             <td>{task.title}</td>
                             <td>{task.description}</td>
                             <td className='taskDateContainer'>

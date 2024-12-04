@@ -15,9 +15,8 @@ export const Desktop = ({task, tasks, onView, onEdit, onClone, onDelete, current
     return (
         <div className="taskContainer">
             <div className="taskContent"
-                onClick={() => navigate(`${VALID_MODE.VIEW}?${params}`)}
             >
-                {/* {tasks.map((task) => ( */}
+                {tasks.map((task) => (
                     <Table
                         task={task}
                         tasks={tasks}
@@ -27,7 +26,7 @@ export const Desktop = ({task, tasks, onView, onEdit, onClone, onDelete, current
                         onDelete={onDelete}
                         currentTaskId={currentTaskId}
                     />
-                {/* ))} */}
+            ))}
             </div>
         </div>
     );

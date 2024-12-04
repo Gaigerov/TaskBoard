@@ -100,6 +100,23 @@ label {
     width: 30%;
 }
 
+.taskStatusSelector {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px 8px 16px;
+    box-sizing: border-box;
+    border: 1px solid var(--light-grey);
+    border-radius: 8px;
+    background-color: var(--primary);
+    /* position: absolute; */
+    /* top: 0;
+    left: 0; */
+}
+
 .statusSelector {
     display: flex;
     width: 100%;
@@ -402,12 +419,13 @@ label {
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        gap: 10;
+        gap: 10px;
         padding: 2px 6px 2px 6px;
         background: var(--grey);
         color: white;
         border-radius: 6px;
         text-wrap: nowrap;
+        position: relative;
     }
 
     .inProgressButton {
