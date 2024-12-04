@@ -146,10 +146,10 @@ export const TaskBoard = () => {
                             key={task.id}
                             task={task.id}
                             tasks={tasks}
-                            onView={() => openViewModal(task.id)}
-                            onEdit={() => openEditModal(task.id)}
+                            onView={() => openViewModal(task)}
+                            onEdit={() => openEditModal(task)}
                             onClone={cloneTask}
-                            onDelete={() => openRemoveModal(task.id)}
+                            onDelete={() => openRemoveModal(task)}
                             currentTaskId={currentTaskId}
                         />
                     ))}

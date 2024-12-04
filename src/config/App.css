@@ -112,9 +112,6 @@ label {
     border: 1px solid var(--light-grey);
     border-radius: 8px;
     background-color: var(--primary);
-    /* position: absolute; */
-    /* top: 0;
-    left: 0; */
 }
 
 .statusSelector {
