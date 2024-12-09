@@ -100,7 +100,6 @@ export const TaskBoard = () => {
 
     const openRemoveModal = (task) => {
         setCurrentTaskId(task.id);
-        navigate(`remove/${task.id}`);
     };
 
     const handleOpenSearchInput = () => {
@@ -141,23 +140,17 @@ export const TaskBoard = () => {
             </div>
             <div className="tasksContainer">
                 <div className="tasksContainer__scroller">
-                    {tasks.map((task) => (
                         <Breakpoints
-                            key={task.id}
-                            task={task.id}
-                            tasks={tasks}
-                            onView={() => openViewModal(task)}
-                            onEdit={() => openEditModal(task)}
+                            onView={openViewModal}
+                            onEdit={openEditModal}
                             onClone={cloneTask}
-                            onDelete={() => openRemoveModal(task)}
+                            onDelete={openRemoveModal}
                             currentTaskId={currentTaskId}
                         />
-                    ))}
                 </div>
             </div>
             <TaskModal
-                task={tasks.find(t => t.id === currentTaskId)}
-                tasks={tasks}
+                task={tasks.find(task => {return task.id})}
                 mode={mode}
                 onCreate={handleCreateTask}
                 onSave={handleEditTask}

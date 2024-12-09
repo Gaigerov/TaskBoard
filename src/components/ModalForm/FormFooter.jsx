@@ -4,8 +4,9 @@ import {useSetGlobalStore} from '../../GlobalStoreContext';
 import {VALID_MODE} from '../../constant';
 
 
-export const FormFooter = ({task, mode, onSubmit, onRemove, onClone, onClose}) => {
+export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onClose}) => {
     const setGlobalStore = useSetGlobalStore();
+
     const handleClose = (event) => {
         event.preventDefault();
         onClose();
@@ -17,8 +18,7 @@ export const FormFooter = ({task, mode, onSubmit, onRemove, onClone, onClose}) =
         });
     };
 
-    const handleRemoveTask = (event) => {
-        event.preventDefault();
+    const handleRemoveTask = () => {
         onRemove(task.id)
         onClose();
         setGlobalStore({
@@ -68,7 +68,7 @@ export const FormFooter = ({task, mode, onSubmit, onRemove, onClone, onClose}) =
                 <>
                     <Button
                         type="edit"
-                        onClick={onSubmit}
+                        onClick={onEdit}
                         name="Edit"
                     />
                     <Button

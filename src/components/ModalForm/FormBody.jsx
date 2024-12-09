@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useGlobalStore} from "../../GlobalStoreContext";
 import {useSetGlobalStore} from "../../GlobalStoreContext";
 import xButton from "../../image/x.svg";
@@ -21,10 +21,13 @@ export const FormBody = ({mode}) => {
             validate();
         }
     }, [title, description, time, date]);
-
+   
+    
     return (
         <div>
-            {mode === VALID_MODE.CREATE || mode === VALID_MODE.EDIT && (
+            {(mode === VALID_MODE.CREATE ||
+             mode === VALID_MODE.EDIT) 
+             && (
                 <>
                     <label>Title
                         <div className="inputContainer">
@@ -104,11 +107,11 @@ export const FormBody = ({mode}) => {
                     </div>
                 </>
             )}
-            {mode === VALID_MODE.VIEW || mode === VALID_MODE.FILTER && (
+            {(mode === VALID_MODE.VIEW || mode === VALID_MODE.FILTER) && (
                 <>
                     <label>Status
-                        <select defaultValue={'DEFAULT'} className='taskStatusSelector'>
-                            <option value="DEFAULT" disabled selected className='statusSelector__selectStatus'>Select status</option>
+                        <select className='taskStatusSelector'>
+                            <option value="" disabled className='statusSelector__selectStatus'>Select status</option>
                             <option value="To Do" className='statusSelector__toDo'>To Do</option>
                             <option value="In progress" className='statusSelector__inProgress'>In progress</option>
                             <option value="Done" className='statusSelector__done'>Done</option>

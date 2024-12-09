@@ -34,15 +34,13 @@ function useBreakpoint() {
   return breakpoint;
 }
 
-export const Breakpoints = ({task, tasks, onView, onEdit, onClone, onDelete, currentTaskId}) => {
+export const Breakpoints = ({onView, onEdit, onClone, onDelete, currentTaskId}) => {
     const breakpoint = useBreakpoint();
 
     return (
         <>
             {breakpoint === 'mobile' && 
             <Mobile
-            task={task} 
-            tasks={tasks}
             onView={onView}
             onEdit={onEdit}
             onClone={onClone}
@@ -51,8 +49,6 @@ export const Breakpoints = ({task, tasks, onView, onEdit, onClone, onDelete, cur
             />}
             {breakpoint === 'tablet' && 
             <Tablet 
-            task={task} 
-            tasks={tasks}
             onView={onView}
             onEdit={onEdit}
             onClone={onClone}
@@ -61,8 +57,6 @@ export const Breakpoints = ({task, tasks, onView, onEdit, onClone, onDelete, cur
             />}
             {breakpoint === 'desktop' && 
             <Desktop 
-            task={task} 
-            tasks={tasks}
             onView={onView}
             onEdit={onEdit}
             onClone={onClone}

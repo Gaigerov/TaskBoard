@@ -8,7 +8,7 @@ import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
 import {FormFooter} from './components/ModalForm/FormFooter';
 
-export const TaskModal = ({mode, onClose, onEdit, task, onCreate, onSave, onRemove, onClone}) => {
+export const TaskModal = ({task, mode, onClose, onEdit, onCreate, onSave, onRemove, onClone}) => {
     const {title, description, time, date, errors, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
 
@@ -85,7 +85,7 @@ export const TaskModal = ({mode, onClose, onEdit, task, onCreate, onSave, onRemo
     })();
 
     const validateField = (value, fieldName, maxLength) => {
-        if (!value) return `Введите ${fieldName}`;
+        if (!value) return `${fieldName}`;
         if (value.length > maxLength) return `Максимум ${maxLength} символов`;
         return '';
     };
@@ -137,10 +137,6 @@ export const TaskModal = ({mode, onClose, onEdit, task, onCreate, onSave, onRemo
             })
         } 
 
-        if (mode === VALID_MODE.VIEW && validate()) {
-            onEdit({...task, title, description, time, date});
-        } 
-
         else if (mode === VALID_MODE.EDIT && validate()) {
             onSave({...task, title, description, time, date});
             onClose();
@@ -155,14 +151,14 @@ export const TaskModal = ({mode, onClose, onEdit, task, onCreate, onSave, onRemo
 
     return (
         <div className="modalOverlay" ref={modalRef}>
-            <ModalForm>
+                <ModalForm>
                 <FormHeader task={task} mode={mode} onClose={onClose} />
                 <FormBody mode={mode} />
                 <FormFooter
                     task={task}
                     mode={mode}
                     onSubmit={handleSubmit}
-                    // onEdit={handleSubmit}
+                    onEdit={onEdit}
                     onRemove={onRemove}
                     onClose={onClose}
                     onClone={onClone}
