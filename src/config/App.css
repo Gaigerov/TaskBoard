@@ -2,6 +2,7 @@
 @import url('../config/variables.css');
 @import url('../config/Modal.css');
 @import url('../config/Buttons.css');
+@import url('../components/Popover/Popover.css');
 
 ::-webkit-input-placeholder {
     /* WebKit browsers */

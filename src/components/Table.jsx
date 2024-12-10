@@ -3,6 +3,7 @@ import {
     Link,
     useNavigate,
 } from "react-router-dom";
+import {Popover} from './Popover/Popover';
 import {useGlobalStore} from '../GlobalStoreContext';
 import {VALID_MODE} from '../constant';
 import editButton from '../image/edit.svg'
@@ -23,7 +24,12 @@ export const Table = ({onView, onEdit, onClone, onDelete, currentTaskId}) => {
 
     const handleNavigateToDelete = (task) => {
         navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
-        onDelete(task);
+        onDelete(task.id);
+    }
+
+    const handleNavigateToView = (task) => {
+        navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
+        onView(task);
     }
 
     return (
@@ -46,23 +52,20 @@ export const Table = ({onView, onEdit, onClone, onDelete, currentTaskId}) => {
                 </tr>
             </thead>
             <tbody>
-            {tasks.map(task => {
-                    return ( 
+                {tasks.map(task => {
+                    return (
                         <tr
                             key={task.id}
-                            onClick={() => onView(task)}
+                            onClick={() => handleNavigateToView(task)}
                             className='trContainer'
                             style={{
                                 backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '', // Изменяем цвет фона
                             }}
                         >
                             <td>
-                                <select className='statusSelector'>
-                                    <option value="" disabled className='statusSelector__selectStatus'>Select status</option>
-                                    <option value="To Do" className='statusSelector__toDo'>To Do</option>
-                                    <option value="In progress" className='statusSelector__inProgress'>In progress</option>
-                                    <option value="Done" className='statusSelector__done'>Done</option>
-                                </select>
+                                    <Popover content="Это поповер!">
+                                        <button>{task.status || 'no status'}</button>
+                                    </Popover>
                             </td>
                             <td>{task.title}</td>
                             <td>{task.description}</td>
@@ -78,7 +81,7 @@ export const Table = ({onView, onEdit, onClone, onDelete, currentTaskId}) => {
                                     <div onClick={() => onClone(task.id)} className='iconButton'>
                                         <img className="icon cloneButton" src={cloneButton} />
                                     </div>
-                                    <div onClick={() => handleNavigateToDelete(task.id)} className='iconButton'>
+                                    <div onClick={() => handleNavigateToDelete(task)} className='iconButton'>
                                         <img className="icon deleteButton" src={deleteButton} />
                                     </div>
                                 </span>

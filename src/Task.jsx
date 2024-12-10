@@ -14,7 +14,7 @@ export const Task = ({onEdit, onView, onDelete, onClone, currentTaskId}) => {
     // const params = new URLSearchParams(window.location.search);
     // params.set("id", task.id);
     // params.toString();
-    // console.log(task)
+
 
     const [isOpen, setIsOpen] = useState(false);
 
