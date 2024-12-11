@@ -1,14 +1,15 @@
 import React from 'react';
 
 import {Task} from '../Task';
-export const Mobile = ({onView, onEdit, onClone, onDelete, currentTaskId}) => {
+export const Mobile = ({searchedTasks, onView, onEdit, onClone, onDelete, currentTaskId}) => {
     return (
-            <Task
-                onView={onView}
-                onEdit={onEdit}
-                onClone={onClone}
-                onDelete={onDelete}
-                currentTaskId={currentTaskId}
-            />
+        <Task
+            searchedTasks={searchedTasks}
+            onView={onView}
+            onEdit={onEdit}
+            onClone={onClone}
+            onDelete={onDelete}
+            currentTaskId={currentTaskId}
+        />
     );
 }

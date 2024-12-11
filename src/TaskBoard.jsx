@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Link,
     useParams,
@@ -10,7 +10,7 @@ import {Breakpoints} from './Breakpoints'
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 import plus from './image/plus.svg';
-import search from './image/search.svg';
+import loop from './image/search.svg';
 import filter from './image/filter.svg';
 
 
@@ -22,12 +22,26 @@ export const TaskBoard = () => {
     const {mode} = useParams();
     const navigate = useNavigate();
     const [currentTaskId, setCurrentTaskId] = useState(null)
-    const [searchValue, setSearchValue] = useState("");
+    // const [isVisible, setIsVisible] = useState(false);
+
     const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
 
-    const handleChange = (event) => {
-        setSearchValue(event.target.value);
-    }
+    // const togglePopover = () => {
+    //     setIsVisible(!isVisible);
+    // };
+
+    // const handleClickOutside = (event) => {
+    //     if (event.target.closest('.searchButtonContainer') === null) {
+    //         setIsVisible(false);
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     document.addEventListener('click', handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener('click', handleClickOutside);
+    //     };
+    // }, []);
 
     const closeModal = () => {
         setCurrentTaskId(null);
@@ -106,14 +120,35 @@ export const TaskBoard = () => {
         setIsOpenSearchInput(true);
     }
 
+    const [search, setSearch] = useState('');
+    const [filterDate, setFilterDate] = useState();
+
+    const filteredTasks = filterDate ? tasks.filter(task => task.date === filterDate) : tasks;
+    const searchedTasks = filteredTasks.filter(task => task.title.toLowerCase().includes(search.toLowerCase()));
+
+    const handleChange = event => {
+        setSearch(event.currentTarget.value);
+    };
+
+    const handleSetMaleFilter = () => {
+        setFilterDate('male');
+    };
+
+    const handleSetFemaleFilter = () => {
+        setFilterDate('female');
+    };
+
+    const handleDropDateFilter = () => {
+        setFilterDate(undefined);
+    };
     return (
         <div className="taskBoard">
             <div className="headerContainer">
                 <div className='taskFinderContainer'>
                     {!isOpenSearchInput && (
                         <div className='headerButtonsContainer'>
-                            <div className='searchButtonContainer'>
-                                <img className='searchButton' onClick={handleOpenSearchInput} src={search} />
+                            <div className='searchButtonContainer' onClick={(e) => e.stopPropagation()}>
+                                <img className='searchButton' onClick={handleOpenSearchInput} src={loop} />
                             </div>
                             <div className='filterButtonContainer'>
                                 <Link to="/filter" onClick={openFilterModal}>
@@ -126,10 +161,10 @@ export const TaskBoard = () => {
                         <input
                             id="searchInput"
                             type="text"
-                            value={searchValue}
                             placeholder="Search"
                             className="headerFinderInput"
                             onChange={handleChange}
+                            value={search} 
                         />
                     )}
                 </div>
@@ -141,6 +176,7 @@ export const TaskBoard = () => {
             <div className="tasksContainer">
                 <div className="tasksContainer__scroller">
                         <Breakpoints
+                            searchedTasks={searchedTasks}
                             onView={openViewModal}
                             onEdit={openEditModal}
                             onClone={cloneTask}

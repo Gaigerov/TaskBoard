@@ -80,7 +80,7 @@ export const TaskModal = ({task, mode, onClose, onEdit, onCreate, onSave, onRemo
     const isValidId = () => tasks.some(t => t.id.toString() === id);
 
     const isShow = (() => {
-        if (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER) return true;
+        if ((mode === VALID_MODE.CREATE) || (mode === VALID_MODE.FILTER)) return true;
         return VALID_MODES.some(m => m === mode) && isValidId();
     })();
 

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-export const Popover = ({content, children}) => {
+export const Popover = ({children}) => {
     const [isVisible, setIsVisible] = useState(false);
 
     const togglePopover = () => {
@@ -8,7 +8,7 @@ export const Popover = ({content, children}) => {
     };
 
     const handleClickOutside = (event) => {
-        if (event.target.closest('.popover-container') === null) {
+        if (event.target.closest('.popover') === null) {
             setIsVisible(false);
         }
     };

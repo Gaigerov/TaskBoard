@@ -1,12 +1,13 @@
 import React from 'react';
 import {Table} from '../components/Table';
 
-export const Desktop = ({onView, onEdit, onClone, onDelete, currentTaskId}) => {
+export const Desktop = ({searchedTasks, onView, onEdit, onClone, onDelete, currentTaskId}) => {
 
     return (
         <div className="taskContainer">
             <div className="taskContent">
                 <Table
+                    searchedTasks={searchedTasks}
                     onView={onView}
                     onEdit={onEdit}
                     onClone={onClone}

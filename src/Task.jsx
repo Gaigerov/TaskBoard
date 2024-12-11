@@ -8,7 +8,7 @@ import deleteButton from './image/delete.svg';
 import cloneButton from './image/clone.svg';
 import {VALID_MODE} from './constant';
 
-export const Task = ({onEdit, onView, onDelete, onClone, currentTaskId}) => {
+export const Task = ({searchedTasks, onEdit, onView, onDelete, onClone, currentTaskId}) => {
     const {tasks} = useGlobalStore();
     const navigate = useNavigate();
     // const params = new URLSearchParams(window.location.search);
@@ -43,7 +43,7 @@ export const Task = ({onEdit, onView, onDelete, onClone, currentTaskId}) => {
 
     return (
         <>
-                {tasks.map(task => 
+                {searchedTasks.map(task => 
                  <div key={task.id} className="taskContainer" onClick={() => handleNavigateToView(task)}
                  style={{
                      backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '', // Изменяем цвет фона

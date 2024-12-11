@@ -10,8 +10,9 @@ import editButton from '../image/edit.svg'
 import deleteButton from '../image/delete.svg';
 import cloneButton from '../image/clone.svg';
 
-export const Table = ({onView, onEdit, onClone, onDelete, currentTaskId}) => {
+export const Table = ({searchedTasks, onView, onEdit, onClone, onDelete, currentTaskId}) => {
     const {tasks} = useGlobalStore();
+
     const navigate = useNavigate();
     // const params = new URLSearchParams(window.location.search);
     // params.set("id", tasks.map(task => {return task.id}));
@@ -31,6 +32,7 @@ export const Table = ({onView, onEdit, onClone, onDelete, currentTaskId}) => {
         navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
         onView(task);
     }
+
 
     return (
         <table className='tableContainer'>
@@ -52,7 +54,7 @@ export const Table = ({onView, onEdit, onClone, onDelete, currentTaskId}) => {
                 </tr>
             </thead>
             <tbody>
-                {tasks.map(task => {
+                {searchedTasks.map(task => {
                     return (
                         <tr
                             key={task.id}
@@ -64,7 +66,7 @@ export const Table = ({onView, onEdit, onClone, onDelete, currentTaskId}) => {
                         >
                             <td>
                                     <Popover content="Это поповер!">
-                                        <button>{task.status || 'no status'}</button>
+                                        <div>{task.status || 'To Do'}</div>
                                     </Popover>
                             </td>
                             <td>{task.title}</td>
