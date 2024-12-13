@@ -75,7 +75,6 @@ export const Task = ({searchedTasks, onEdit, onView, onDelete, onClone, currentT
                              )}
                              {isOpen && (
                                  <select className='statusSelector'>
-                                     <option value="" disabled className='statusSelector__selectStatus'>Select status</option>
                                      <option value="To Do" className='statusSelector__toDo'>To Do</option>
                                      <option value="In progress" className='statusSelector__inProgress'>In progress</option>
                                      <option value="Done" className='statusSelector__done'>Done</option>

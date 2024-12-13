@@ -1,10 +1,10 @@
 import React from 'react';
-import {Button} from '../Button';
+import {Button} from '../Button/Button';
 import {useSetGlobalStore} from '../../GlobalStoreContext';
 import {VALID_MODE} from '../../constant';
 
 
-export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onClose}) => {
+export const FormFooter = ({filteredTasks, task, mode, onSubmit, onFilter, onEdit, onRemove, onClone, onClose}) => {
     const setGlobalStore = useSetGlobalStore();
 
     const handleClose = (event) => {
@@ -31,6 +31,11 @@ export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onC
 
     const handleCloneTask = () => {
         onClone(task.id);
+        onClose();
+    }
+
+    const handleFilterTasks = () => {
+        onFilter(filteredTasks);
         onClose();
     }
 
@@ -106,7 +111,7 @@ export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onC
                     />
                     <Button
                         type="remove"
-                        onClick={handleClose}
+                        onClick={handleFilterTasks}
                         name="Reset"
                     />
                     <Button

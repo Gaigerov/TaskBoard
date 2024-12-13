@@ -8,7 +8,7 @@ import {
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 import {VALID_MODE, VALID_MODES} from './constant';
-import {Button} from './components/Button';
+import {Button} from './components/Button/Button';
 import xButton from './image/x.svg';
 
 

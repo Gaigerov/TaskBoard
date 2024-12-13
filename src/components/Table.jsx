@@ -4,15 +4,12 @@ import {
     useNavigate,
 } from "react-router-dom";
 import {Popover} from './Popover/Popover';
-import {useGlobalStore} from '../GlobalStoreContext';
 import {VALID_MODE} from '../constant';
 import editButton from '../image/edit.svg'
 import deleteButton from '../image/delete.svg';
 import cloneButton from '../image/clone.svg';
 
 export const Table = ({searchedTasks, onView, onEdit, onClone, onDelete, currentTaskId}) => {
-    const {tasks} = useGlobalStore();
-
     const navigate = useNavigate();
     // const params = new URLSearchParams(window.location.search);
     // params.set("id", tasks.map(task => {return task.id}));

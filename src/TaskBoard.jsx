@@ -1,18 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import {
-    Link,
     useParams,
     useNavigate,
 } from "react-router-dom";
 import './config/App.css';
+import { Button } from './components/Button/Button';
 import {TaskModal} from './TaskModal';
 import {Breakpoints} from './Breakpoints'
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
-import plus from './image/plus.svg';
 import loop from './image/search.svg';
 import filter from './image/filter.svg';
-
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
@@ -22,26 +20,26 @@ export const TaskBoard = () => {
     const {mode} = useParams();
     const navigate = useNavigate();
     const [currentTaskId, setCurrentTaskId] = useState(null)
-    // const [isVisible, setIsVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
     const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
 
-    // const togglePopover = () => {
-    //     setIsVisible(!isVisible);
-    // };
+    const togglePopover = () => {
+        setIsVisible(!isVisible);
+    };
 
-    // const handleClickOutside = (event) => {
-    //     if (event.target.closest('.searchButtonContainer') === null) {
-    //         setIsVisible(false);
-    //     }
-    // };
+    const handleClickOutside = (event) => {
+        if (event.target.closest('.headerButtonsContainer') === null) {
+            setIsOpenSearchInput(false);
+        }
+    };
 
-    // useEffect(() => {
-    //     document.addEventListener('click', handleClickOutside);
-    //     return () => {
-    //         document.removeEventListener('click', handleClickOutside);
-    //     };
-    // }, []);
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
 
     const closeModal = () => {
         setCurrentTaskId(null);
@@ -130,30 +128,31 @@ export const TaskBoard = () => {
         setSearch(event.currentTarget.value);
     };
 
-    const handleSetMaleFilter = () => {
-        setFilterDate('male');
+    const handleSetDateFilter = () => {
+        setFilterDate();
     };
 
-    const handleSetFemaleFilter = () => {
-        setFilterDate('female');
-    };
+    // const handleSetFemaleFilter = () => {
+    //     setFilterDate('female');
+    // };
 
-    const handleDropDateFilter = () => {
-        setFilterDate(undefined);
-    };
+    // const handleDropDateFilter = () => {
+    //     setFilterDate(undefined);
+    // };
+
     return (
         <div className="taskBoard">
             <div className="headerContainer">
                 <div className='taskFinderContainer'>
                     {!isOpenSearchInput && (
-                        <div className='headerButtonsContainer'>
-                            <div className='searchButtonContainer' onClick={(e) => e.stopPropagation()}>
-                                <img className='searchButton' onClick={handleOpenSearchInput} src={loop} />
+                        <div className='headerButtonsContainer' onClick={(e) => e.stopPropagation()}>
+                            <div className='searchButtonContainer' onClick={handleOpenSearchInput}>
+                                <img className='searchButton' src={loop} />
                             </div>
                             <div className='filterButtonContainer'>
-                                <Link to="/filter" onClick={openFilterModal}>
+                                <div onClick={openFilterModal}>
                                     <img className='filterButton' src={filter} />
-                                </Link>
+                                </div>
                             </div>
                         </div>
                     )}
@@ -168,10 +167,11 @@ export const TaskBoard = () => {
                         />
                     )}
                 </div>
-                <Link className="btn createButton" to="/create" onClick={openCreateModal}>
-                    <img className="plusButton" src={plus} />
-                    Create
-                </Link>
+                <Button
+                        type="createButton"
+                        onClick={openCreateModal}
+                        name="Create"
+                    />
             </div>
             <div className="tasksContainer">
                 <div className="tasksContainer__scroller">
@@ -192,6 +192,7 @@ export const TaskBoard = () => {
                 onSave={handleEditTask}
                 onEdit={openEditModal}
                 onRemove={handleDeleteTask}
+                onFilter={handleSetDateFilter}
                 onClose={closeModal}
                 onClone={cloneTask}
             />

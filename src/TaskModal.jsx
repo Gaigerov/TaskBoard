@@ -8,7 +8,7 @@ import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
 import {FormFooter} from './components/ModalForm/FormFooter';
 
-export const TaskModal = ({task, mode, onClose, onEdit, onCreate, onSave, onRemove, onClone}) => {
+export const TaskModal = ({filteredTasks, task, mode, onFilter, onClose, onEdit, onCreate, onSave, onRemove, onClone}) => {
     const {title, description, time, date, errors, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
 
@@ -162,6 +162,8 @@ export const TaskModal = ({task, mode, onClose, onEdit, onCreate, onSave, onRemo
                     onRemove={onRemove}
                     onClose={onClose}
                     onClone={onClone}
+                    onFilter={onFilter}
+                    filteredTasks={filteredTasks}
                 />
             </ModalForm>
         </div>

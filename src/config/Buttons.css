@@ -88,26 +88,6 @@
     overflow:hidden;
 }
 
-.createButton {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 12px;
-    background-color: var(--primary);
-    border-radius: 10px;
-    border-style: none;
-    height: 40px;
-    color: var(--light);
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 19.36px;
-}
-
-.createButton:hover {
-    cursor: pointer;
-    background-color: var(--primary-light);
-}
-
 .plusButton {
     width: 24px;
     height: 24px;
