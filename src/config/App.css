@@ -114,34 +114,74 @@ label {
     border-radius: 8px;
 }
 
-.statusSelector {
-    display: flex;
+.selectedStatus {
     width: 100%;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 4px;
+    border-radius: 6px;
+    background-color: var(--white);
     padding: 8px 16px 8px 16px;
-    box-sizing: border-box;
     border: 1px solid var(--light-grey);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0%;
+}
+
+.statuses {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px;
+    position: absolute;
+    width: auto;
+    top: 0;
+    left: 0;
+    background-color: var(--white);
+    border: 1px solid var(--light-grey);
+    border-radius: 8px;
+    z-index: 1;
+}
+
+.statusesFilter {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: var(--white);
+    border: 1px solid var(--light-grey);
+    border-radius: 8px;
+    z-index: 1;
+}
+
+.customSelect {
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    width: auto;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0%;
+}
+
+.customStatus {
+    gap: 8px;
+    padding: 8px 16px 8px 16px;
+    color: var(--grey);
     border-radius: 8px;
 }
 
-.statusSelector__selectStatus {
-    display: none;
-    color: var(--light)
-}
-
-.statusSelector__toDo {
-    background-color: var(--grey);
-}
-
-.statusSelector__inProgress {
-    background-color: var(--primary);
-}
-
-.statusSelector__done {
-    background-color: var(--success);
+.customStatus:hover {
+    background-color: var(--light-grey);
+    color: var(--light);
 }
 
 .modalInput__time {
@@ -194,6 +234,48 @@ label {
 
 .headerContainer {
     display: flex;
+}
+
+.toDoButton {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 6px 2px 6px;
+    background-color: var(--grey);
+    color: white;
+    border-radius: 6px;
+    text-wrap: nowrap;
+}
+
+.inProgressButton {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 6px 2px 6px;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 6px;
+    text-wrap: nowrap;
+}
+
+.doneButton {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 6px 2px 6px;
+    background-color: var(--success);
+    color: white;
+    border-radius: 6px;
+    text-wrap: nowrap;
 }
 
 @media screen and (max-width: 769px) {
@@ -411,44 +493,6 @@ label {
         padding: 4px;
     }
 
-    .toDoButton {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        padding: 2px 6px 2px 6px;
-        background-color: var(--grey);
-        color: white;
-        border-radius: 6px;
-        text-wrap: nowrap;
-        position: relative;
-    }
-
-    .inProgressButton {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 10;
-        padding: 2px 6px 2px 6px;
-        background-color: var(--primary);
-        color: white;
-        border-radius: 6px;
-    }
-
-    .doneButton {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 10;
-        padding: 2px 6px 2px 6px;
-        background-color: var(--success);
-        color: white;
-        border-radius: 6px;
-    }
-
     .modalContent {
         position: absolute;
         left: 0;
@@ -657,42 +701,6 @@ label {
         line-height: 15px;
         letter-spacing: 0%;
         text-align: left;
-    }
-    .toDoButton {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 10;
-        padding: 2px 6px 2px 6px;
-        background: var(--grey);
-        color: white;
-        border-radius: 6px;
-        text-wrap: nowrap;
-    }
-
-    .inProgressButton {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 10;
-        padding: 2px 6px 2px 6px;
-        background: var(--grey);
-        color: white;
-        border-radius: 6px;
-    }
-
-    .doneButton {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 10;
-        padding: 2px 6px 2px 6px;
-        background: var(--grey);
-        color: white;
-        border-radius: 6px;
     }
 }
 
@@ -912,45 +920,6 @@ label {
         z-index: 1000;
         margin-bottom: 5px;
         gap: 10px;
-    }
-
-    .toDoButton {
-        display: flex;
-        justify-self: center;
-        padding: 2px 6px 2px 6px;
-        color: var(--white);
-        background-color: var(--secondary);
-        border-radius: 6px;
-        width: max-content;
-        height: max-content;
-        margin: 0;
-        cursor: pointer;
-    }
-
-    .inProgressButton {
-        display: flex;
-        justify-self: center;
-        padding: 2px 6px 2px 6px;
-        color: var(--white);
-        background-color: var(--primary);
-        border-radius: 6px;
-        width: max-content;
-        height: max-content;
-        margin: 0;
-        cursor: pointer;
-    }
-
-    .doneButton {
-        display: flex;
-        justify-self: center;
-        padding: 2px 6px 2px 6px;
-        color: var(--white);
-        background-color: var(--success);
-        border-radius: 6px;
-        width: max-content;
-        height: max-content;
-        margin: 0;
-        cursor: pointer;
     }
 
     .taskContainer {

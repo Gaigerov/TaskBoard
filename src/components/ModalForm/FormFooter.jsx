@@ -1,11 +1,15 @@
 import React from 'react';
+import {
+    useNavigate,
+} from "react-router-dom";
 import {Button} from '../Button/Button';
 import {useSetGlobalStore} from '../../GlobalStoreContext';
 import {VALID_MODE} from '../../constant';
 
 
-export const FormFooter = ({filteredTasks, task, mode, onSubmit, onFilter, onEdit, onRemove, onClone, onClose}) => {
+export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onClose}) => {
     const setGlobalStore = useSetGlobalStore();
+    const navigate = useNavigate();
 
     const handleClose = (event) => {
         event.preventDefault();
@@ -34,10 +38,16 @@ export const FormFooter = ({filteredTasks, task, mode, onSubmit, onFilter, onEdi
         onClose();
     }
 
-    const handleFilterTasks = () => {
-        onFilter(filteredTasks);
-        onClose();
+    const handleNavigateToEdit = (task) => {
+        navigate('/');
+        navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
+        onEdit(task);
     }
+
+    // const handleFilterTasks = () => {
+    //     onFilter(filteredTasks);
+    //     onClose();
+    // }
 
     return (
         <div className="modalButtons">
@@ -73,7 +83,7 @@ export const FormFooter = ({filteredTasks, task, mode, onSubmit, onFilter, onEdi
                 <>
                     <Button
                         type="edit"
-                        onClick={onEdit}
+                        onClick={() => handleNavigateToEdit(task)}
                         name="Edit"
                     />
                     <Button
@@ -111,7 +121,7 @@ export const FormFooter = ({filteredTasks, task, mode, onSubmit, onFilter, onEdi
                     />
                     <Button
                         type="remove"
-                        onClick={handleFilterTasks}
+                        onClick={handleClose}
                         name="Reset"
                     />
                     <Button

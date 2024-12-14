@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    Link,
     useNavigate,
 } from "react-router-dom";
 import {Popover} from './Popover/Popover';
@@ -62,7 +61,7 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onDelete, current
                             }}
                         >
                             <td>
-                                    <Popover content="Это поповер!">
+                                    <Popover content="Popover">
                                         <div>{task.status || 'To Do'}</div>
                                     </Popover>
                             </td>

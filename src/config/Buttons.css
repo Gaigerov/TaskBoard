@@ -109,4 +109,8 @@
     color: var(--secondary-light);
 }
 
-
+.downButton {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}

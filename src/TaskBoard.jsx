@@ -20,24 +20,18 @@ export const TaskBoard = () => {
     const {mode} = useParams();
     const navigate = useNavigate();
     const [currentTaskId, setCurrentTaskId] = useState(null)
-    const [isVisible, setIsVisible] = useState(false);
-
     const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
 
-    const togglePopover = () => {
-        setIsVisible(!isVisible);
-    };
-
     const handleClickOutside = (event) => {
-        if (event.target.closest('.headerButtonsContainer') === null) {
-            setIsOpenSearchInput(false);
+        if (!event.target.closest('.headerFinderInput')) {
+            setIsOpenSearchInput(false); 
         }
     };
 
     useEffect(() => {
-        document.addEventListener('click', handleClickOutside);
+        document.addEventListener('mousedown', handleClickOutside);
         return () => {
-            document.removeEventListener('click', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
 
@@ -132,20 +126,11 @@ export const TaskBoard = () => {
         setFilterDate();
     };
 
-    // const handleSetFemaleFilter = () => {
-    //     setFilterDate('female');
-    // };
-
-    // const handleDropDateFilter = () => {
-    //     setFilterDate(undefined);
-    // };
-
     return (
         <div className="taskBoard">
             <div className="headerContainer">
                 <div className='taskFinderContainer'>
-                    {!isOpenSearchInput && (
-                        <div className='headerButtonsContainer' onClick={(e) => e.stopPropagation()}>
+                        <div className='headerButtonsContainer' style={{ display: isOpenSearchInput ? 'none' : 'flex' }}>
                             <div className='searchButtonContainer' onClick={handleOpenSearchInput}>
                                 <img className='searchButton' src={loop} />
                             </div>
@@ -155,7 +140,6 @@ export const TaskBoard = () => {
                                 </div>
                             </div>
                         </div>
-                    )}
                     {isOpenSearchInput && (
                         <input
                             id="searchInput"
@@ -192,7 +176,6 @@ export const TaskBoard = () => {
                 onSave={handleEditTask}
                 onEdit={openEditModal}
                 onRemove={handleDeleteTask}
-                onFilter={handleSetDateFilter}
                 onClose={closeModal}
                 onClone={cloneTask}
             />

@@ -8,8 +8,8 @@ import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
 import {FormFooter} from './components/ModalForm/FormFooter';
 
-export const TaskModal = ({filteredTasks, task, mode, onFilter, onClose, onEdit, onCreate, onSave, onRemove, onClone}) => {
-    const {title, description, time, date, errors, isDirty, tasks} = useGlobalStore();
+export const TaskModal = ({task, mode, onClose, onEdit, onCreate, onSave, onRemove, onClone}) => {
+    const {title, description, time, date, status, errors, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
 
     const modalRef = useRef(null);
@@ -73,16 +73,12 @@ export const TaskModal = ({filteredTasks, task, mode, onFilter, onClose, onEdit,
                 description: task.description,
                 time: task.time,
                 date: task.date,
+                status: task.status,
             })
         }
     }, [task]);
 
-    const isValidId = () => tasks.some(t => t.id.toString() === id);
-
-    const isShow = (() => {
-        if ((mode === VALID_MODE.CREATE) || (mode === VALID_MODE.FILTER)) return true;
-        return VALID_MODES.some(m => m === mode) && isValidId();
-    })();
+    const isValidId = () => tasks.some(t => t.id.toString() === id || console.log('Некорректный id'));
 
     const validateField = (value, fieldName, maxLength) => {
         if (!value) return `${fieldName}`;
@@ -120,12 +116,6 @@ export const TaskModal = ({filteredTasks, task, mode, onFilter, onClose, onEdit,
         }
     }, [title, description, time, date]);
 
-
-    if (!isShow) {
-        console.log('Некорректный режим')
-        return null;
-    }
-
     const handleSubmit = () => {
         if (mode === VALID_MODE.CREATE && validate()) {
             onCreate({title, description, time, date});
@@ -148,6 +138,15 @@ export const TaskModal = ({filteredTasks, task, mode, onFilter, onClose, onEdit,
             })
         }
     }
+    const isShow = (() => {
+        if ((mode === VALID_MODE.CREATE) || (mode === VALID_MODE.FILTER)) return true;
+        return VALID_MODES.some(m => m === mode) && isValidId();
+    })();
+    
+    if (!isShow) {
+        console.log('Некорректный режим')
+        return null;
+    }
 
     return (
         <div className="modalOverlay" ref={modalRef}>
@@ -162,8 +161,6 @@ export const TaskModal = ({filteredTasks, task, mode, onFilter, onClose, onEdit,
                     onRemove={onRemove}
                     onClose={onClose}
                     onClone={onClone}
-                    onFilter={onFilter}
-                    filteredTasks={filteredTasks}
                 />
             </ModalForm>
         </div>
