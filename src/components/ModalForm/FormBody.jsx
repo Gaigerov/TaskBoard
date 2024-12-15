@@ -5,10 +5,11 @@ import xButton from "../../image/x.svg";
 import chevronDown from "../../image/ChevronDown.svg";
 import {VALID_MODE} from "../../constant";
 import InputMask from 'react-input-mask';
-import { TASK_STATUS, TASK_STATUSES } from '../../constant';
+import {TASK_STATUS, TASK_STATUSES} from '../../constant';
+import {Popover} from '../Popover/Popover';
 
 
-export const FormBody = ({mode}) => {
+export const FormBody = ({mode, task}) => {
     const {title, description, time, date, errors, isDirty} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
     const inputRef = useRef(null);
@@ -62,7 +63,7 @@ export const FormBody = ({mode}) => {
                             />
                         </div>
                         {errors.description && (
-                            <span style={{color: "red"}}>{errors.title}</span>
+                            <span className="errorText" style={{color: "red"}}>{errors.title}</span>
                         )}
                         <label>Description</label>
                         <div className="inputContainer">
@@ -83,49 +84,49 @@ export const FormBody = ({mode}) => {
                             />
                         </div>
                         {errors.description && (
-                            <span style={{color: "red"}}>{errors.description}</span>
+                            <span className="errorText" style={{color: "red"}}>{errors.description}</span>
                         )}
                         <div className='taskDateAndTimeContainer'>
                             <label htmlFor="time" className="modalContainer__time">Time
-                            <div className="inputContainer">
-                                <InputMask
-                                    ref={inputRef}
-                                    id='time'
-                                    type="text"
-                                    value={time}
-                                    mask="99:99"
-                                    placeholder="00:00"
-                                    className="modalInput modalInput__time"
-                                    style={{
-                                        borderColor: errors.date ? "var(--danger)" : "var(--light-grey)",
-                                    }}
-                                    onChange={(event) => setGlobalStore({time: event.target.value, })}
-                                />
-                            </div>
-                            {errors.time && <span style={{color: "red"}}>{errors.time}</span>}
+                                <div className="inputContainer">
+                                    <InputMask
+                                        ref={inputRef}
+                                        id='time'
+                                        type="text"
+                                        value={time}
+                                        mask="99:99"
+                                        placeholder="00:00"
+                                        className="modalInput modalInput__time"
+                                        style={{
+                                            borderColor: errors.date ? "var(--danger)" : "var(--light-grey)",
+                                        }}
+                                        onChange={(event) => setGlobalStore({time: event.target.value, })}
+                                    />
+                                </div>
+                                {errors.time && <span className="errorText" style={{color: "red"}}>{errors.time}</span>}
                             </label>
                             <label htmlFor="date" className="modalContainer__date">Date
-                            <div className="inputContainer">
-                                <InputMask
-                                    ref={inputRef}
-                                    id='date'
-                                    type="text"
-                                    value={date}
-                                    mask="99.99.9999"
-                                    placeholder="DD.MM.YYYY"
-                                    className="modalInput"
-                                    style={{
-                                        borderColor: errors.date ? "var(--danger)" : "var(--light-grey)",
-                                    }}
-                                    onChange={(event) => setGlobalStore({date: event.target.value, })}
-                                />
-                            </div>
-                            {errors.date && <span style={{color: "red"}}>{errors.date}</span>}
+                                <div className="inputContainer">
+                                    <InputMask
+                                        ref={inputRef}
+                                        id='date'
+                                        type="text"
+                                        value={date}
+                                        mask="99.99.9999"
+                                        placeholder="DD.MM.YYYY"
+                                        className="modalInput"
+                                        style={{
+                                            borderColor: errors.date ? "var(--danger)" : "var(--light-grey)",
+                                        }}
+                                        onChange={(event) => setGlobalStore({date: event.target.value, })}
+                                    />
+                                </div>
+                                {errors.date && <span className="errorText" style={{color: "red"}}>{errors.date}</span>}
                             </label>
                         </div>
                     </>
                 )}
-            {(mode === VALID_MODE.VIEW || mode === VALID_MODE.FILTER) && (
+            {mode === VALID_MODE.FILTER && (
                 <>
                     <label>Status</label>
                     <div className="customSelect">
@@ -161,7 +162,17 @@ export const FormBody = ({mode}) => {
                             onChange={(event) => setGlobalStore({date: event.target.value, })}
                         />
                     </div>
-                    {errors.date && <span style={{color: "red"}}>{errors.date}</span>}
+                    {errors.date && <span className="errorText" style={{color: "red"}}>{errors.date}</span>}
+                </>
+            )}
+
+            {mode === VALID_MODE.VIEW && (
+                <>
+                    <Popover />
+                    <div className='frameOfTaskDate'>
+                        <p className="taskTime">{task.time}</p>
+                        <p className="taskDate">{task.date}</p>
+                    </div>
                 </>
             )}
         </div>

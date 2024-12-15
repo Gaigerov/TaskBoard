@@ -7,7 +7,7 @@ import {useSetGlobalStore} from '../../GlobalStoreContext';
 import {VALID_MODE} from '../../constant';
 
 
-export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onClose}) => {
+export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onClose, onFilter, onReset}) => {
     const setGlobalStore = useSetGlobalStore();
     const navigate = useNavigate();
 
@@ -43,11 +43,6 @@ export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onC
         navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
         onEdit(task);
     }
-
-    // const handleFilterTasks = () => {
-    //     onFilter(filteredTasks);
-    //     onClose();
-    // }
 
     return (
         <div className="modalButtons">
@@ -116,12 +111,12 @@ export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onC
                 <>
                     <Button
                         type="save"
-                        onClick={onSubmit}
+                        onClick={() => onFilter()}
                         name="Filter"
                     />
                     <Button
                         type="remove"
-                        onClick={handleClose}
+                        onClick={onReset}
                         name="Reset"
                     />
                     <Button

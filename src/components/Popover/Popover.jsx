@@ -1,13 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import { TASK_STATUS, TASK_STATUSES } from '../../constant';
+import {TASK_STATUS, TASK_STATUSES} from '../../constant';
+import {useGlobalStore} from "../../GlobalStoreContext";
+import {useSetGlobalStore} from "../../GlobalStoreContext";
 
 export const Popover = () => {
+    const setGlobalStore = useSetGlobalStore();
+    const {status} = useGlobalStore();
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedStatus, setSelectedStatus] = useState(TASK_STATUS.TO_DO);
+    const [selectedStatus, setSelectedStatus] = useState(status);
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
-
     const handleClickOutside = (event) => {
         if (event.target.closest('.customSelect') === null) {
             setIsOpen(false);
@@ -21,7 +24,14 @@ export const Popover = () => {
         };
     }, []);
 
+    const makeStatus = (status) => {
+        setGlobalStore({
+            status: status,
+        });
+    }
+
     const handleStatusClick = (status) => {
+        makeStatus(status);
         setSelectedStatus(status);
         setIsOpen(false);
     };

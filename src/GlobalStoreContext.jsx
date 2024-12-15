@@ -1,4 +1,5 @@
 import React, {createContext, useContext, useState} from 'react';
+import {TASK_STATUS} from './constant';
 
 export const GlobalStoreContext = createContext();
 
@@ -14,7 +15,7 @@ export const GlobalStoreController = ({children}) => {
         description: '',
         time: '',
         date: '',
-        status: 'To Do',
+        status: TASK_STATUS.TO_DO,
 
         isDirty: false,
        

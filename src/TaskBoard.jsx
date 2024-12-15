@@ -11,6 +11,7 @@ import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 import loop from './image/search.svg';
 import filter from './image/filter.svg';
+import {FilterModal} from './components/FilterModal';
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
@@ -88,6 +89,12 @@ export const TaskBoard = () => {
 
     const openCreateModal = () => {
         setCurrentTaskId(null);
+        setGlobalStore({
+            title: '',
+            description: '',
+            time: '',
+            date: '',
+        })
         navigate('create');
     };
 
@@ -114,6 +121,7 @@ export const TaskBoard = () => {
 
     const [search, setSearch] = useState('');
     const [filterDate, setFilterDate] = useState();
+    const [filterStatus, setFilterStatus] = useState();
 
     const filteredTasks = filterDate ? tasks.filter(task => task.date === filterDate) : tasks;
     const searchedTasks = filteredTasks.filter(task => task.title.toLowerCase().includes(search.toLowerCase()));
@@ -122,8 +130,11 @@ export const TaskBoard = () => {
         setSearch(event.currentTarget.value);
     };
 
-    const handleSetDateFilter = () => {
-        setFilterDate();
+    const handleSetDateFilter = (task) => {
+        setFilterDate(task.date);
+    };
+    const handleSetStatusFilter = (task) => {
+        setFilterStatus(task.status);
     };
 
     return (
@@ -170,7 +181,6 @@ export const TaskBoard = () => {
                 </div>
             </div>
             <TaskModal
-                task={tasks.find(task => {return task.id})}
                 mode={mode}
                 onCreate={handleCreateTask}
                 onSave={handleEditTask}
@@ -178,7 +188,14 @@ export const TaskBoard = () => {
                 onRemove={handleDeleteTask}
                 onClose={closeModal}
                 onClone={cloneTask}
+                onFilter={handleSetDateFilter}
             />
+
+            {/* <FilterModal 
+            mode={mode}
+            onClose={closeModal}
+            onFilter={handleSetDateFilter}
+            /> */}
         </div>
     );
 };
