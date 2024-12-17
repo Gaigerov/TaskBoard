@@ -3,6 +3,60 @@
     margin: 0;
 }
 
+.taskDescriptionViewMode {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0px;
+    margin: 0 0 8px 0;
+    color: var(--dark-grey);
+    text-wrap: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.frameOfTaskDateViewMode {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding: 0px;
+    margin: 0px;
+    color: var(--light-gray);
+}
+
+.taskTimeViewMode {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin: 0px;
+    color: var(--dark-grey);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+
+.taskDateViewMode {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin: 0px;
+    color: var(--dark-grey);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0%;
+    text-align: left;
+}
 .modalOverlay {
     position: absolute;
     top: 0;
@@ -41,6 +95,7 @@
 .modalInput {
     display: flex;
     width: 100%;
+    min-height: max-content;
     flex-direction: column;
     text-wrap: wrap;
     border: 1px solid var(--light-grey);
@@ -48,7 +103,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    gap: 4;
+    gap: 4px;
     padding: 8px 16px 8px 16px;
 }
 
@@ -57,7 +112,14 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 20px;
+    word-break: break-all;
+}
+
+.modalHeaderViewMode {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
     word-break: break-all;
 }
 
@@ -74,7 +136,9 @@
 .modalButtons {
     display: flex;
     flex-direction: row;
+    align-content: flex-end;
     margin: 20px 0 0 0;
+    gap: 8px;
 }
 
 .modalCloseButton {
@@ -135,11 +199,8 @@
     align-items: center;
     background-color: var(--success);
     border-radius: 8px;
-    width: 83px;
-    height: 36px;
     color: var(--light);
     border: none;
-    margin-right: 5px;
     font-size: 16px;
     font-weight: 400;
     line-height: 19.5px;
@@ -158,7 +219,6 @@
     background-color: var(--primary);
     border-radius: 10px;
     border-style: none;
-    height: 40px;
     color: var(--light);
     font-size: 16px;
     font-weight: normal;
@@ -176,8 +236,6 @@
     align-items: center;
     background-color: var(--secondary);
     border-radius: 8px;
-    width: 83px;
-    height: 36px;
     color: var(--light);
     border: none;
     font-size: 16px;
@@ -197,11 +255,8 @@
     align-items: center;
     background-color: var(--warning);
     border-radius: 8px;
-    width: 83px;
-    height: 36px;
     color: var(--dark-grey);
     border: none;
-    margin-right: 5px;
     font-size: 16px;
     font-weight: 400;
     line-height: 19.5px;
@@ -213,11 +268,8 @@
     align-items: center;
     background-color: var(--warning);
     border-radius: 8px;
-    width: 83px;
-    height: 36px;
     color: var(--dark-grey);
     border: none;
-    margin-right: 5px;
     font-size: 16px;
     font-weight: 400;
     line-height: 19.5px;
@@ -240,11 +292,8 @@
     align-items: center;
     background-color: var(--info);
     border-radius: 8px;
-    width: 83px;
-    height: 36px;
     color: var(--dark-grey);
     border: none;
-    margin-right: 5px;
     font-size: 16px;
     font-weight: 400;
     line-height: 19.5px;
@@ -261,11 +310,8 @@
     align-items: center;
     background-color: var(--danger);
     border-radius: 8px;
-    width: 96px;
-    height: 36px;
     color: var(--light);
     border: none;
-    margin-right: 5px;
     font-size: 16px;
     font-weight: 400;
     line-height: 19.5px;
@@ -274,4 +320,10 @@
 .Button_remove:hover {
     cursor: pointer;
     background-color: var(--danger-light);
+}
+
+.popoverRemove {
+    position: absolute;
+    top: 30px;
+    right: 0;
 }

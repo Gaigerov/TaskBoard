@@ -29,7 +29,7 @@ export const FormHeader = ({task, mode, onClose}) => {
                 </div>
             )}
             {mode === VALID_MODE.VIEW && (
-                <div className="modalHeader">
+                <div className="modalHeaderViewMode">
                     <h2 className="modalHeaderName">
                         {task.title}
                     </h2>
@@ -38,8 +38,12 @@ export const FormHeader = ({task, mode, onClose}) => {
             )}
             {mode === VALID_MODE.REMOVE && (
                 <div className="modalModeText">
+                    <div className="modalHeader">
+                        <h2 className="modalHeaderName">Remove Task</h2>
+                        <div onClick={onClose}><img className="modalCloseButton" src={xButton} alt="Закрыть" /></div>
+                    </div>
                     <p className="modalRemoveParagraph">Are you sure you want to delete the task "
-                    <span className="modalBoldText">{task.title}</span>"?
+                        <span className="modalBoldText">{task.title}</span>"?
                     </p>
                 </div>
             )}

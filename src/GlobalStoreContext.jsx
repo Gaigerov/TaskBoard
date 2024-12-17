@@ -8,7 +8,6 @@ const tasks = storedTasks ? JSON.parse(storedTasks) : [];
 
 export const GlobalStoreController = ({children}) => {
 
-
     const [state, setState] = useState({
         tasks: tasks,
         title: '',
@@ -26,6 +25,12 @@ export const GlobalStoreController = ({children}) => {
             date: '',
         },
     });
+
+    if (!tasks) {
+        console.error('Локальное хранилище пусто. Очищаем хранилище.');
+        localStorage.removeItem(storedTasks);
+        return;
+    }
 
     return (
         <GlobalStoreContext.Provider

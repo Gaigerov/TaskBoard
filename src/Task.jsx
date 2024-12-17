@@ -6,9 +6,9 @@ import { Popover } from './components/Popover/Popover';
 import editButton from './image/edit.svg';
 import deleteButton from './image/delete.svg';
 import cloneButton from './image/clone.svg';
-import {TASK_STATUS, VALID_MODE} from './constant';
+import {VALID_MODE} from './constant';
 
-export const Task = ({searchedTasks, onEdit, onView, onDelete, onClone, currentTaskId}) => {
+export const Task = ({searchedTasks, onEdit, onView, onRemove, onClone, currentTaskId}) => {
     const navigate = useNavigate();
 
     const handleNavigateToEdit = (task) => {
@@ -18,7 +18,7 @@ export const Task = ({searchedTasks, onEdit, onView, onDelete, onClone, currentT
 
     const handleNavigateToDelete = (task) => {
         navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
-        onDelete(task.id);
+        onRemove(task.id);
     }
 
     const handleNavigateToView = (task) => {

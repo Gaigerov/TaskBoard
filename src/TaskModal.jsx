@@ -2,14 +2,14 @@ import React, {useEffect, useRef} from 'react';
 import {useSearchParams} from "react-router-dom";
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
-import {TASK_STATUS, VALID_MODE, VALID_MODES} from './constant';
+import {VALID_MODE, VALID_MODES} from './constant';
 import {ModalForm} from './components/ModalForm/ModalForm';
 import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
 import {FormFooter} from './components/ModalForm/FormFooter';
 
 export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter}) => {
-    const {title, description, time, date, status, errors, isDirty, tasks} = useGlobalStore();
+    const {title, description, time, date, status, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
 
     const modalRef = useRef(null);
@@ -113,18 +113,19 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
                 description: '',
                 time: '',
                 date: '',
-                status: TASK_STATUS.TO_DO,
+                status: status,
             })
         }
 
         else if (mode === VALID_MODE.EDIT && validate()) {
-            onSave({...task, title, description, time, date});
+            onSave({...task, title, description, time, date, status});
             onClose();
             setGlobalStore({
                 title: '',
                 description: '',
                 time: '',
                 date: '',
+                status: status,
             })
         }
     }

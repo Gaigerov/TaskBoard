@@ -67,7 +67,7 @@ export const FormBody = ({mode, task}) => {
                         )}
                         <label>Description</label>
                         <div className="inputContainer">
-                            <input
+                            <textarea
                                 type="text"
                                 value={description ?? ""}
                                 placeholder="Enter description"
@@ -169,9 +169,10 @@ export const FormBody = ({mode, task}) => {
             {mode === VALID_MODE.VIEW && (
                 <>
                     <Popover />
-                    <div className='frameOfTaskDate'>
-                        <p className="taskTime">{task.time}</p>
-                        <p className="taskDate">{task.date}</p>
+                    <p className="taskDescriptionViewMode">{task.description}</p>
+                    <div className='frameOfTaskDateViewMode'>
+                        <p className="taskTimeViewMode">{task.time}</p>
+                        <p className="taskDateViewMode">{task.date}</p>
                     </div>
                 </>
             )}

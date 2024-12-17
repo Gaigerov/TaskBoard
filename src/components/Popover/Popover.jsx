@@ -36,6 +36,19 @@ export const Popover = () => {
         setIsOpen(false);
     };
 
+    const getButtonClassName = (status) => {
+        switch (status) {
+            case TASK_STATUS.TO_DO:
+                return 'toDoButton';
+            case TASK_STATUS.INPROGRESS:
+                return 'inProgressButton';
+            case TASK_STATUS.DONE:
+                return 'doneButton';
+            default:
+                return 'toDoButton';
+        }
+    }
+
     const getStatusClassName = (status) => {
         switch (status) {
             case TASK_STATUS.TO_DO:
@@ -51,7 +64,7 @@ export const Popover = () => {
 
     return (
         <div className="customSelect" onClick={(e) => e.stopPropagation()}>
-            <div onClick={toggleDropdown} className='toDoButton'>
+            <div onClick={toggleDropdown} className={getButtonClassName(status)}>
                 {selectedStatus}
             </div>
             {isOpen && (

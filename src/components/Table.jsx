@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     useNavigate,
 } from "react-router-dom";
@@ -7,12 +7,22 @@ import {VALID_MODE} from '../constant';
 import editButton from '../image/edit.svg'
 import deleteButton from '../image/delete.svg';
 import cloneButton from '../image/clone.svg';
+import {PopoverRemove} from './PopoverRemove/PopoverRemove';
 
-export const Table = ({searchedTasks, onView, onEdit, onClone, onDelete, currentTaskId}) => {
+export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, currentTaskId}) => {
     const navigate = useNavigate();
-    // const params = new URLSearchParams(window.location.search);
-    // params.set("id", tasks.map(task => {return task.id}));
-    // params.toString();
+    // const [isPopoverVisible, setPopoverVisible] = useState(false);
+
+    // const handleNavigateToDelete = (task) => {
+    //     setPopoverVisible(true);
+    //     navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
+    //     onRemove(task.id);
+    // };
+
+    // const closePopover = () => {
+    //     setPopoverVisible(false);
+    // };
+
 
     const handleNavigateToEdit = (task) => {
         navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
@@ -21,7 +31,7 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onDelete, current
 
     const handleNavigateToDelete = (task) => {
         navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
-        onDelete(task.id);
+        onRemove(task.id);
     }
 
     const handleNavigateToView = (task) => {
@@ -61,9 +71,9 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onDelete, current
                             }}
                         >
                             <td>
-                                    <Popover content="Popover">
-                                        <div>{task.status || 'To Do'}</div>
-                                    </Popover>
+                                <Popover content="Popover">
+                                    <div>{task.status || 'To Do'}</div>
+                                </Popover>
                             </td>
                             <td>{task.title}</td>
                             <td>{task.description}</td>
@@ -81,6 +91,12 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onDelete, current
                                     </div>
                                     <div onClick={() => handleNavigateToDelete(task)} className='iconButton'>
                                         <img className="icon deleteButton" src={deleteButton} />
+                                        {/* {isPopoverVisible && (
+                                            <PopoverRemove
+                                                onClose={closePopover}
+                                                onRemove={onRemove}
+                                            />
+                                        )} */}
                                     </div>
                                 </span>
                             </td>
