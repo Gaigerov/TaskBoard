@@ -39,11 +39,11 @@ export const FormBody = ({mode, task}) => {
     }, [title, description, time, date]);
 
     return (
-        <div>
+        <div className='modalTaskContent'>
             {(mode === VALID_MODE.CREATE ||
                 mode === VALID_MODE.EDIT)
                 && (
-                    <>
+                    <div>
                         <label>Title</label>
                         <div className="inputContainer">
                             <input
@@ -124,7 +124,7 @@ export const FormBody = ({mode, task}) => {
                                 {errors.date && <span className="errorText" style={{color: "red"}}>{errors.date}</span>}
                             </label>
                         </div>
-                    </>
+                    </div>
                 )}
             {mode === VALID_MODE.FILTER && (
                 <>
@@ -167,14 +167,14 @@ export const FormBody = ({mode, task}) => {
             )}
 
             {mode === VALID_MODE.VIEW && (
-                <>
+                <div>
                     <Popover />
                     <p className="taskDescriptionViewMode">{task.description}</p>
                     <div className='frameOfTaskDateViewMode'>
                         <p className="taskTimeViewMode">{task.time}</p>
                         <p className="taskDateViewMode">{task.date}</p>
                     </div>
-                </>
+                </div>
             )}
         </div>
     );

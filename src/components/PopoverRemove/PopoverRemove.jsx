@@ -9,19 +9,19 @@ export const PopoverRemove = ({onClose, onRemove}) => {
     const [searchParams, setParams] = useSearchParams();
     const id = searchParams.get('id');
 
-    const currentTask = tasks.find(task => task.id === Number(id));
+    // const currentTask = tasks.find(task => task.id === Number(id));
 
     const setGlobalStore = useSetGlobalStore();
-    const handleRemoveTask = () => {
-        onRemove(task.id)
-        onClose();
-        setGlobalStore({
-            title: '',
-            description: '',
-            time: '',
-            date: '',
-        })
-    }
+    // const handleRemoveTask = () => {
+    //     onRemove(task.id)
+    //     onClose();
+    //     setGlobalStore({
+    //         title: '',
+    //         description: '',
+    //         time: '',
+    //         date: '',
+    //     })
+    // }
 
     const handleClickOutside = (event) => {
         if (event.target.closest('.popoverRemove') === null) {
@@ -40,7 +40,7 @@ export const PopoverRemove = ({onClose, onRemove}) => {
         <div className="popoverRemove" onClick={(e) => e.stopPropagation()}>
             <div className="modalModeText">
                 <p className="modalRemoveParagraph">Are you sure you want to delete the task "
-                    <span className="modalBoldText">{currentTask.title}</span>"?
+                    {/* <span className="modalBoldText">{currentTask.title}</span>"? */}
                 </p>
             </div>
             <Button

@@ -103,6 +103,8 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, current
                         </tr>
                     )
                 })}
+                <div className="gradient-top"></div>
+                <div className="gradient-bottom"></div>
             </tbody>
         </table>
     )

@@ -6,6 +6,7 @@ import {useSetGlobalStore} from "../../GlobalStoreContext";
 export const Popover = () => {
     const setGlobalStore = useSetGlobalStore();
     const {status} = useGlobalStore();
+    console.log(status)
     const [isOpen, setIsOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(status);
     const toggleDropdown = () => {

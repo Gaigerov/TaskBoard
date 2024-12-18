@@ -24,7 +24,7 @@
     align-items: center;
     gap: 10px;
     padding: 0px;
-    margin: 0px;
+    margin: 0 0 12px 0;
     color: var(--light-gray);
 }
 
@@ -58,6 +58,7 @@
     text-align: left;
 }
 .modalOverlay {
+    display: flex;
     position: absolute;
     top: 0;
     left: 0;
@@ -66,7 +67,7 @@
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     justify-content: center;
     align-items: center;
     z-index: 1;
@@ -113,6 +114,13 @@
     justify-content: space-between;
     align-items: flex-start;
     word-break: break-all;
+    width: 100%;
+    align-self: start;
+}
+.modalTaskContent {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
 }
 
 .modalHeaderViewMode {
@@ -121,6 +129,7 @@
     justify-content: space-between;
     align-items: flex-start;
     word-break: break-all;
+    width: 100%;
 }
 
 .modalHeaderName {
@@ -136,8 +145,6 @@
 .modalButtons {
     display: flex;
     flex-direction: row;
-    align-content: flex-end;
-    margin: 20px 0 0 0;
     gap: 8px;
 }
 
