@@ -26,12 +26,6 @@ export const GlobalStoreController = ({children}) => {
         },
     });
 
-    if (!tasks) {
-        console.error('Локальное хранилище пусто. Очищаем хранилище.');
-        localStorage.removeItem(storedTasks);
-        return;
-    }
-
     return (
         <GlobalStoreContext.Provider
             value={{

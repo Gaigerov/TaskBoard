@@ -111,7 +111,7 @@ export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onC
                 <>
                     <Button
                         type="save"
-                        onClick={() => onFilter()}
+                        onClick={onFilter}
                         name="Filter"
                     />
                     <Button

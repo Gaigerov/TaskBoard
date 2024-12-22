@@ -12,7 +12,6 @@ import {useSetGlobalStore} from './GlobalStoreContext';
 import loop from './image/search.svg';
 import filter from './image/filter.svg';
 import {FilterModal} from './components/FilterModal';
-import {VALID_MODE} from './constant';
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
@@ -124,18 +123,23 @@ export const TaskBoard = () => {
     const [filterDate, setFilterDate] = useState();
     const [filterStatus, setFilterStatus] = useState();
 
-    const filteredTasks = filterDate ? tasks.filter(task => task.date === filterDate) : tasks;
+    const filteredTasks = 
+    filterDate ? tasks.filter(task => {
+        task.date === filterDate;
+        task.status === filterStatus;
+    }) : tasks;
+
     const searchedTasks = filteredTasks.filter(task => task.title.toLowerCase().includes(search.toLowerCase()));
 
     const handleChange = event => {
         setSearch(event.currentTarget.value);
     };
 
-    const handleSetDateFilter = (task) => {
-        setFilterDate(task.date);
+    const handleSetDateFilter = (date) => {
+        setFilterDate(date);
     };
-    const handleSetStatusFilter = (task) => {
-        setFilterStatus(task.status);
+    const handleSetStatusFilter = (status) => {
+        setFilterStatus(status);
     };
 
     return (
@@ -181,16 +185,16 @@ export const TaskBoard = () => {
                     />
                 </div>
             </div>
-                        <TaskModal
-                        mode={mode}
-                        onCreate={handleCreateTask}
-                        onSave={handleEditTask}
-                        onEdit={openEditModal}
-                        onRemove={handleDeleteTask}
-                        onClose={closeModal}
-                        onClone={cloneTask}
-                        onFilter={handleSetDateFilter}
-                    /> 
+            <TaskModal
+                mode={mode}
+                onCreate={handleCreateTask}
+                onSave={handleEditTask}
+                onEdit={openEditModal}
+                onRemove={handleDeleteTask}
+                onClose={closeModal}
+                onClone={cloneTask}
+                onFilter={handleSetDateFilter}
+            />
             {/* <FilterModal 
             mode={mode}
             onClose={closeModal}
