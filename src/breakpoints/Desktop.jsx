@@ -1,7 +1,7 @@
 import React from 'react';
 import {Table} from '../components/Table';
 
-export const Desktop = ({searchedTasks, onView, onEdit, onClone, onRemove, currentTaskId}) => {
+export const Desktop = ({searchedTasks, onView, onEdit, onClone, onRemove, currentTaskId, deleteMode}) => {
 
     return (
         <div className="taskContainer">
@@ -13,6 +13,7 @@ export const Desktop = ({searchedTasks, onView, onEdit, onClone, onRemove, curre
                     onClone={onClone}
                     onRemove={onRemove}
                     currentTaskId={currentTaskId}
+                    deleteMode={deleteMode}
                 />
             </div>
         </div>

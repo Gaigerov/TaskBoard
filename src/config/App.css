@@ -147,7 +147,7 @@ textarea {
     background-color: var(--light);
     border: 1px solid var(--light-grey);
     border-radius: 8px;
-    z-index: 1;
+    z-index: 11;
 }
 
 .statusesFilter {
@@ -957,12 +957,12 @@ textarea {
         position: absolute;
         left: 0;
         right: 0;
-        height: 40px;
+        height: 25px;
     }
 
     .gradient-top {
-        top: 45px;
-        background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 80%);
+        top: 46px;
+        background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 95%);
     }
 
     .gradient-bottom {
@@ -984,7 +984,7 @@ textarea {
     }
 
     .trContainer:first-child {
-        margin-top: 15px;
+        margin-top: 25px;
     }
 
     .trContainer:last-of-type {
@@ -1001,5 +1001,22 @@ textarea {
     .trContainer:hover {
         cursor: pointer;
         background-color: var(--light-grey);
+    }
+
+    .popper {
+        position: absolute;
+        right: 0px;
+        top: calc(100% + 4px);
+        background-color: var(--light);
+        z-index: 3;
+        padding: 8px;
+        border-radius: 10px;
+    }
+
+    .buttonContainer {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        margin-top: 8px;
     }
 }

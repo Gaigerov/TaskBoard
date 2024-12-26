@@ -182,6 +182,7 @@ export const TaskBoard = () => {
                         onClone={cloneTask}
                         onRemove={openRemoveModal}
                         currentTaskId={currentTaskId}
+                        deleteMode={handleDeleteTask}
                     />
                 </div>
             </div>
@@ -195,11 +196,6 @@ export const TaskBoard = () => {
                 onClone={cloneTask}
                 onFilter={handleSetDateFilter}
             />
-            {/* <FilterModal 
-            mode={mode}
-            onClose={closeModal}
-            onFilter={handleSetDateFilter}
-            /> */}
         </div>
     );
 };

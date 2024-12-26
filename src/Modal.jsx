@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
-    Link,
+    useNavigate,
     useSearchParams,
 } from "react-router-dom";
 
@@ -16,7 +16,7 @@ import xButton from './image/x.svg';
 export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, onClone}) => {
     const {title, description, time, date, errors, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
-
+    const navigate = useNavigate();
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 1200);
 
     const handleResize = () => {
@@ -26,7 +26,6 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
     useEffect(() => {
         window.addEventListener('resize', handleResize);
 
-        // Удаляем обработчик события при размонтировании компонента
         return () => {
             window.removeEventListener('resize', handleResize);
         };
@@ -168,6 +167,11 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
         });
     };
 
+    const handleNavigateToEdit = (task) => {
+        navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
+        onEdit(task);
+    }
+
     const handleRemoveTask = (event) => {
         event.preventDefault();
         onRemove(task.id)
@@ -254,8 +258,8 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
 
     return (
         <div>
-            <div className="modalOverlay">
-                <div className={mode === VALID_MODE.REMOVE ? "modalRemoveContent" : "modalContent"} ref={modalRef}>
+            <div className={"modalOverlay"}>
+                <div className={mode === VALID_MODE.REMOVE && "modalContent"} ref={modalRef}>
                     {mode === VALID_MODE.REMOVE ? (
                         <>
                             <div className='modalRectangle'>
@@ -304,7 +308,7 @@ export const Modal = ({onClose, onEdit, task, mode, onCreate, onSave, onRemove, 
                                 </div>
                             </div>
                             <div className="modalButtons">
-                                <Link to={`edit?id=${task.id}`} className="btn Button_edit" onClick={() => onEdit(task)}>Edit</Link>
+                                <div className="btn Button_edit" onClick={() => handleNavigateToEdit(task)}>Edit</div>
                                 <Button
                                     type="clone"
                                     onClick={handleCloneTask}

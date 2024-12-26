@@ -1,31 +1,29 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Button} from '../Button/Button';
 import {useSetGlobalStore} from '../../GlobalStoreContext';
-import {useSearchParams} from "react-router-dom";
-import { useGlobalStore } from '../../GlobalStoreContext';
 
-export const PopoverRemove = ({onClose, onRemove}) => {
-    const {tasks} = useGlobalStore();
-    const [searchParams, setParams] = useSearchParams();
-    const id = searchParams.get('id');
-
-    // const currentTask = tasks.find(task => task.id === Number(id));
+export const PopoverRemove = ({children, task, onRemove}) => {
+    const [isShow, setIsShow] = useState(false);
+    
+    const tooglePopup = () => {
+        setIsShow(!isShow);
+    };
 
     const setGlobalStore = useSetGlobalStore();
-    // const handleRemoveTask = () => {
-    //     onRemove(task.id)
-    //     onClose();
-    //     setGlobalStore({
-    //         title: '',
-    //         description: '',
-    //         time: '',
-    //         date: '',
-    //     })
-    // }
+    const handleRemoveTask = (task) => {
+        onRemove(task);
+        setGlobalStore({
+            title: '',
+            description: '',
+            time: '',
+            date: '',
+        })
+        setIsShow(false);
+    }
 
     const handleClickOutside = (event) => {
         if (event.target.closest('.popoverRemove') === null) {
-            setIsOpen(false);
+            setIsShow(false);
         }
     };
 
@@ -37,23 +35,25 @@ export const PopoverRemove = ({onClose, onRemove}) => {
     }, []);
 
     return (
-        <div className="popoverRemove" onClick={(e) => e.stopPropagation()}>
-            <div className="modalModeText">
-                <p className="modalRemoveParagraph">Are you sure you want to delete the task "
-                    {/* <span className="modalBoldText">{currentTask.title}</span>"? */}
-                </p>
-            </div>
-            <Button
-                type="remove"
-                onClick={handleRemoveTask}
-                name="Remove"
-            />
-            <Button
-                type="cancel"
-                onClick={onClose}
-                name="Cancel"
-            />
-
-        </div>
+        <span className="Container__remove" onClick={tooglePopup}>
+            {children}
+            {isShow && (
+                <div className="popper">
+                    <h2 className="modalRemoveParagraph">Remove the task?</h2>
+                    <div className='buttonContainer'>
+                        <Button
+                            type="remove"
+                            onClick={() => handleRemoveTask(task)}
+                            name="Remove"
+                        />
+                        <Button
+                            type="cancel"
+                            onClick={tooglePopup}
+                            name="Cancel"
+                        />
+                    </div>
+                </div>
+            )}
+        </span>
     );
 };

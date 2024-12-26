@@ -9,19 +9,14 @@ import deleteButton from '../image/delete.svg';
 import cloneButton from '../image/clone.svg';
 import {PopoverRemove} from './PopoverRemove/PopoverRemove';
 
-export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, currentTaskId}) => {
+export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, currentTaskId, deleteMode}) => {
     const navigate = useNavigate();
-    // const [isPopoverVisible, setPopoverVisible] = useState(false);
 
-    // const handleNavigateToDelete = (task) => {
-    //     setPopoverVisible(true);
-    //     navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
-    //     onRemove(task.id);
-    // };
-
-    // const closePopover = () => {
-    //     setPopoverVisible(false);
-    // };
+    const handleDelete = () => {
+        onRemove();
+        console.log('Удаление выполнено');
+        handleClosePopup();
+    };
 
 
     const handleNavigateToEdit = (task) => {
@@ -89,15 +84,11 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, current
                                     <div onClick={() => onClone(task.id)} className='iconButton'>
                                         <img className="icon cloneButton" src={cloneButton} />
                                     </div>
-                                    <div onClick={() => handleNavigateToDelete(task)} className='iconButton'>
-                                        <img className="icon deleteButton" src={deleteButton} />
-                                        {/* {isPopoverVisible && (
-                                            <PopoverRemove
-                                                onClose={closePopover}
-                                                onRemove={onRemove}
-                                            />
-                                        )} */}
-                                    </div>
+                                    <PopoverRemove task={task.id} onRemove={deleteMode}>
+                                        <div className='iconButton'>
+                                            <img className="icon deleteButton" src={deleteButton} />
+                                        </div>
+                                    </PopoverRemove>
                                 </span>
                             </td>
                         </tr>

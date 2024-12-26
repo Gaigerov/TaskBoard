@@ -329,8 +329,6 @@
     background-color: var(--danger-light);
 }
 
-.popoverRemove {
-    position: absolute;
-    top: 30px;
-    right: 0;
+.Container__remove {
+    position: relative;
 }
