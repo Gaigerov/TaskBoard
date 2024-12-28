@@ -112,3 +112,13 @@
     top: 8px;
     right: 16px;
 }
+
+.downButtonInDate {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}
+
+.downButtonInDate:hover {
+    cursor: pointer;
+}

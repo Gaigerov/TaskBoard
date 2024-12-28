@@ -7,6 +7,7 @@ import {VALID_MODE} from "../../constant";
 import InputMask from 'react-input-mask';
 import {TASK_STATUS, TASK_STATUSES} from '../../constant';
 import {Popover} from '../Popover/Popover';
+import {Datepicker} from '../Datepicker/Datepicker';
 
 
 export const FormBody = ({mode, task}) => {
@@ -14,9 +15,14 @@ export const FormBody = ({mode, task}) => {
     const setGlobalStore = useSetGlobalStore();
     const inputRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [isDatepicker, setIsDatepicker] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(TASK_STATUS.TO_DO);
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
+    };
+
+    const toggleDatepicker = () => {
+        setIsDatepicker(!isDatepicker);
     };
 
     const handleStatusClick = (status) => {
@@ -120,6 +126,12 @@ export const FormBody = ({mode, task}) => {
                                         }}
                                         onChange={(event) => setGlobalStore({date: event.target.value, })}
                                     />
+                                    <div className='datepickerContainer'>
+                                        <img className="downButtonInDate" src={chevronDown} onClick={toggleDatepicker}></img>
+                                    </div>
+                                    {isDatepicker && (
+                                        <Datepicker />
+                                    )}
                                 </div>
                                 {errors.date && <span className="errorText" style={{color: "red"}}>{errors.date}</span>}
                             </label>
@@ -161,6 +173,12 @@ export const FormBody = ({mode, task}) => {
                             }}
                             onChange={(event) => setGlobalStore({date: event.target.value, })}
                         />
+                        <div className='datepickerContainer'>
+                            <img className="downButtonInDate" src={chevronDown} onClick={toggleDatepicker}></img>
+                        </div>
+                        {isDatepicker && (
+                            <Datepicker />
+                        )}
                     </div>
                     {errors.date && <span className="errorText" style={{color: "red"}}>{errors.date}</span>}
                 </>
