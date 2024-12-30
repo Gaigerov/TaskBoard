@@ -21,7 +21,6 @@ export const FilterModal = ({mode, onClose, onFilter}) => {
                 <FormHeader mode={mode} onClose={onClose} />
                 <FormBody mode={mode} />
                 <FormFooter
-
                     mode={mode}
                     onReset={handleReset}
                     onClose={onClose}

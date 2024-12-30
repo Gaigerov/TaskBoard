@@ -15,9 +15,8 @@ import {FilterModal} from './components/FilterModal';
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
-
     const state = useGlobalStore();
-    const {tasks} = state;
+    const {tasks, date} = state;
     const {mode} = useParams();
     const navigate = useNavigate();
     const [currentTaskId, setCurrentTaskId] = useState(null)
@@ -26,7 +25,7 @@ export const TaskBoard = () => {
     const handleClickOutside = (event) => {
         if (!event.target.closest('.headerFinderInput')) {
             setIsOpenSearchInput(false);
-        }
+           }
     };
 
     useEffect(() => {
@@ -118,22 +117,39 @@ export const TaskBoard = () => {
     const handleOpenSearchInput = () => {
         setIsOpenSearchInput(true);
     }
-
     const [search, setSearch] = useState('');
     const [filterDate, setFilterDate] = useState();
     const [filterStatus, setFilterStatus] = useState();
 
-    const filteredTasks = 
-    filterDate ? tasks.filter(task => {
-        task.date === filterDate;
-        task.status === filterStatus;
-    }) : tasks;
+    const filteredTasks =
+        filterDate ? tasks.filter(task => {
+            task.date === filterDate;
+        }) : tasks;
 
     const searchedTasks = filteredTasks.filter(task => task.title.toLowerCase().includes(search.toLowerCase()));
 
     const handleChange = event => {
+        // const newSearchValue = event.currentTarget.value;
+        // setGlobalStore({filterTo: {...state.filterTo, search: newSearchValue}});
+
         setSearch(event.currentTarget.value);
     };
+
+const countChangedFields = () => {
+    const initialFilterTo = {
+        filterDate: 0,
+    };
+    let count = 0;
+    // Сравниваем текущее состояние с начальными значениями
+    for (const key in initialFilterTo) {
+        if (initialFilterTo.hasOwnProperty(key) && date[key] !== initialFilterTo[key]) {
+            count++;
+        }
+    }
+    return count;
+};
+
+    const changedFieldsCount = countChangedFields();
 
     const handleSetDateFilter = (date) => {
         setFilterDate(date);
@@ -149,10 +165,16 @@ export const TaskBoard = () => {
                     <div className='headerButtonsContainer' style={{display: isOpenSearchInput ? 'none' : 'flex'}}>
                         <div className='searchButtonContainer' onClick={handleOpenSearchInput}>
                             <img className='searchButton' src={loop} />
+                            {search !== '' && (
+                                <div className='searchStatus'></div>
+                            )}
                         </div>
                         <div className='filterButtonContainer'>
                             <div onClick={openFilterModal}>
                                 <img className='filterButton' src={filter} />
+                                {filterDate !== undefined && (
+                                <div className='filterStatus'><span className='filterCounter'>{changedFieldsCount}</span></div>
+                            )}
                             </div>
                         </div>
                     </div>
@@ -194,7 +216,7 @@ export const TaskBoard = () => {
                 onRemove={handleDeleteTask}
                 onClose={closeModal}
                 onClone={cloneTask}
-                onFilter={handleSetDateFilter}
+                onFilter={() => handleSetDateFilter(date)}
             />
         </div>
     );

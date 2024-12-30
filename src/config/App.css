@@ -301,6 +301,47 @@ textarea {
     padding: 0;
 }
 
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    top:0;
+    overflow:hidden;
+}
+
+.searchStatus {
+    display: flex;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 10px;
+    height: 10px;
+    background-color: var(--danger);
+    border-radius: 50%;
+}
+
+.filterStatus {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 15px;
+    height: 15px;
+    background-color: var(--danger);
+    border-radius: 50%;
+}
+
+.filterCounter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+    font-size: 12px;
+}
+
 @media screen and (max-width: 769px) {
     .inputContainer {
         display: flex;

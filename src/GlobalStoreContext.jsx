@@ -18,6 +18,12 @@ export const GlobalStoreController = ({children}) => {
 
         isDirty: false,
        
+        filterTo: {
+            search: '',
+            date: '',
+            status: undefined,
+        },
+
         errors: {
             title: '',
             description: '',

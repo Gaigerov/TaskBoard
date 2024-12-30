@@ -16,6 +16,7 @@
     align-items: center;
     width: 36px;
     height: 36px;
+    position: relative;
 }
 
 .filterButtonContainer {
@@ -28,8 +29,8 @@
 
 .filterButton {
     display: flex;
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
 }
 
 .filterButton:hover {
@@ -38,8 +39,8 @@
 
 .searchButton {
     display: flex;
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
 }
 
 .searchButton {
@@ -48,14 +49,10 @@
 
 .editButton {
     display: grid;
-    width: 20px;
-    height: 20px;
 }
 
 .cloneButton {
     display: grid;
-    width: 20px;
-    height: 20px;
 }
 
 .cloneButton:hover {
@@ -65,8 +62,6 @@
 
 .deleteButton {
     display: grid;
-    width: 20px;
-    height: 20px;
 }
 
 .editButton:hover {
@@ -79,16 +74,6 @@
     filter: invert(31%) sepia(24%) saturate(5892%) hue-rotate(333deg) brightness(83%) contrast(94%);
 }
 
-.headerContainer {
-    display: flex;
-    justify-content: space-between;
-    margin: 0;
-    padding: 0;
-    position: relative;
-    top:0;
-    overflow:hidden;
-}
-
 .inputClearButton {
     display: flex;
     position: absolute;
@@ -96,7 +81,6 @@
     right: 0;
     margin: 8px 0 0 -30px;
     justify-content: center;
-    /* align-items: flex-start; */
     padding: 2px 8px 2px 2px;
     width: 16px;
     height: 16px;

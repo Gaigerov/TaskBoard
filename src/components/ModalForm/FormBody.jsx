@@ -11,7 +11,8 @@ import {Datepicker} from '../Datepicker/Datepicker';
 
 
 export const FormBody = ({mode, task}) => {
-    const {title, description, time, date, errors, isDirty} = useGlobalStore();
+    const state = useGlobalStore();
+    const {title, description, time, date, errors, isDirty, filterTo} = state;
     const setGlobalStore = useSetGlobalStore();
     const inputRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -164,14 +165,14 @@ export const FormBody = ({mode, task}) => {
                             ref={inputRef}
                             id='date'
                             type="text"
-                            value={date}
+                            value={filterTo.date}
                             mask="99.99.9999"
                             placeholder="DD.MM.YYYY"
                             className="date modalInput"
                             style={{
                                 borderColor: errors.date ? "var(--danger)" : "var(--light-grey)",
                             }}
-                            onChange={(event) => setGlobalStore({date: event.target.value, })}
+                            onChange={(event) => setGlobalStore({...filterTo, date: event.target.value, })}
                         />
                         <div className='datepickerContainer'>
                             <img className="downButtonInDate" src={chevronDown} onClick={toggleDatepicker}></img>

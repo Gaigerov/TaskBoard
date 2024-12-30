@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import chevronRight from "../../image/ChevronRight.svg"
 import chevronLeft from "../../image/ChevronLeft.svg"
+import {useSetGlobalStore} from "../../GlobalStoreContext";
 
 export const Datepicker = () => {
+    const setGlobalStore = useSetGlobalStore();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [displayDate, setDisplayDate] = useState(new Date());
     const [isTodaySelected, setIsTodaySelected] = useState(true);
@@ -21,6 +23,7 @@ export const Datepicker = () => {
         setSelectedDate(newDate);
         setIsTodaySelected(false);
         document.getElementById('date').value = newDate.toLocaleDateString();
+        setGlobalStore({date: newDate.toLocaleDateString(), });
     };
     const resetToToday = () => {
         const today = new Date();
@@ -28,6 +31,7 @@ export const Datepicker = () => {
         setSelectedDate(today);
         setIsTodaySelected(true);
         document.getElementById('date').value = today.toLocaleDateString();
+        setGlobalStore({date: today.toLocaleDateString(), });
     };
     const renderDays = () => {
         const daysInMonth = getDaysInMonth(displayDate);
