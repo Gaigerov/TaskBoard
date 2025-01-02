@@ -25,7 +25,7 @@ export const TaskBoard = () => {
     const handleClickOutside = (event) => {
         if (!event.target.closest('.headerFinderInput')) {
             setIsOpenSearchInput(false);
-           }
+        }
     };
 
     useEffect(() => {
@@ -118,45 +118,53 @@ export const TaskBoard = () => {
         setIsOpenSearchInput(true);
     }
     const [search, setSearch] = useState('');
-    const [filterDate, setFilterDate] = useState();
+    // const [filterDate, setFilterDate] = useState('');
     const [filterStatus, setFilterStatus] = useState();
 
-    const filteredTasks =
-        filterDate ? tasks.filter(task => {
-            task.date === filterDate;
+    const filteredTasksOfStatus =
+        state.filterTo.filterStatus ? tasks.filter(task => {
+            task.status === state.filterTo.filterStatus;
         }) : tasks;
 
-    const searchedTasks = filteredTasks.filter(task => task.title.toLowerCase().includes(search.toLowerCase()));
+    const filteredTasksOfDate =
+        state.filterTo.filterDate ? tasks.filter(task => {
+            task.date === state.filterTo.filterDate;
+        }) : tasks;
+
+    const searchedTasks = filteredTasksOfDate.filter(task => task.title.toLowerCase().includes(search.toLowerCase()));
+    // const filter2 = filteredTasks.filter(task => task.date.includes(state.filterTo.search));
 
     const handleChange = event => {
         // const newSearchValue = event.currentTarget.value;
-        // setGlobalStore({filterTo: {...state.filterTo, search: newSearchValue}});
+        // useSetGlobalStore({ filterTo: { ...state.filterTo, filterDate: newSearchValue } });
 
         setSearch(event.currentTarget.value);
     };
 
-const countChangedFields = () => {
-    const initialFilterTo = {
-        filterDate: 0,
+    const handleSetDateFilter = (date) => {
+        setGlobalStore({filterTo: {...state.filterTo, filterDate: date}});
     };
-    let count = 0;
-    // Сравниваем текущее состояние с начальными значениями
-    for (const key in initialFilterTo) {
-        if (initialFilterTo.hasOwnProperty(key) && date[key] !== initialFilterTo[key]) {
-            count++;
+
+    const handleSetStatusFilter = (status) => {
+        setGlobalStore({filterTo: {...state.filterTo, filterStatus: status}});
+    };
+
+    const countChangedFields = () => {
+        const initialFilterTo = {
+            // filterStatus: 0,
+            filterDate: 0,
+        };
+        let count = 0;
+        // Сравниваем текущее состояние с начальными значениями
+        for (const key in initialFilterTo) {
+            if (initialFilterTo.hasOwnProperty(key) && date[key] !== initialFilterTo[key]) {
+                count++;
+            }
         }
-    }
-    return count;
-};
+        return count;
+    };
 
     const changedFieldsCount = countChangedFields();
-
-    const handleSetDateFilter = (date) => {
-        setFilterDate(date);
-    };
-    const handleSetStatusFilter = (status) => {
-        setFilterStatus(status);
-    };
 
     return (
         <div className="taskBoard">
@@ -172,9 +180,9 @@ const countChangedFields = () => {
                         <div className='filterButtonContainer'>
                             <div onClick={openFilterModal}>
                                 <img className='filterButton' src={filter} />
-                                {filterDate !== undefined && (
-                                <div className='filterStatus'><span className='filterCounter'>{changedFieldsCount}</span></div>
-                            )}
+                                {state.filterTo.filterDate !== undefined && (
+                                    <div className='filterStatus'><span className='filterCounter'>{changedFieldsCount}</span></div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -216,7 +224,7 @@ const countChangedFields = () => {
                 onRemove={handleDeleteTask}
                 onClose={closeModal}
                 onClone={cloneTask}
-                onFilter={() => handleSetDateFilter(date)}
+                onFilter={handleSetDateFilter}
             />
         </div>
     );

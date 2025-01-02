@@ -20,8 +20,8 @@ export const GlobalStoreController = ({children}) => {
        
         filterTo: {
             search: '',
-            date: '',
-            status: undefined,
+            filterDate: undefined,
+            filterStatus: undefined,
         },
 
         errors: {

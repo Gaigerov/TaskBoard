@@ -12,21 +12,9 @@ import {PopoverRemove} from './PopoverRemove/PopoverRemove';
 export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, currentTaskId, deleteMode}) => {
     const navigate = useNavigate();
 
-    const handleDelete = () => {
-        onRemove();
-        console.log('Удаление выполнено');
-        handleClosePopup();
-    };
-
-
     const handleNavigateToEdit = (task) => {
         navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
         onEdit(task);
-    }
-
-    const handleNavigateToDelete = (task) => {
-        navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
-        onRemove(task.id);
     }
 
     const handleNavigateToView = (task) => {
@@ -66,9 +54,7 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, current
                             }}
                         >
                             <td>
-                                <Popover content="Popover">
-                                    <div>{task.status || 'To Do'}</div>
-                                </Popover>
+                                <Popover newtask={task.id} />
                             </td>
                             <td>{task.title}</td>
                             <td>{task.description}</td>

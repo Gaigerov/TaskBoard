@@ -12,7 +12,7 @@ import {Datepicker} from '../Datepicker/Datepicker';
 
 export const FormBody = ({mode, task}) => {
     const state = useGlobalStore();
-    const {title, description, time, date, errors, isDirty, filterTo} = state;
+    const {title, description, time, date, errors, isDirty} = state;
     const setGlobalStore = useSetGlobalStore();
     const inputRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +27,7 @@ export const FormBody = ({mode, task}) => {
     };
 
     const handleStatusClick = (status) => {
-        setSelectedStatus(status);
+        setGlobalStore({status: status});
         setIsOpen(false);
     };
 
@@ -151,7 +151,7 @@ export const FormBody = ({mode, task}) => {
                                     <div
                                         key={status}
                                         className="customStatus"
-                                        onClick={() => handleStatusClick(status)}
+                                        onClick={task => handleStatusClick(task.status)}
                                     >
                                         {status}
                                     </div>
@@ -165,14 +165,14 @@ export const FormBody = ({mode, task}) => {
                             ref={inputRef}
                             id='date'
                             type="text"
-                            value={filterTo.date}
+                            value={date}
                             mask="99.99.9999"
                             placeholder="DD.MM.YYYY"
                             className="date modalInput"
                             style={{
                                 borderColor: errors.date ? "var(--danger)" : "var(--light-grey)",
                             }}
-                            onChange={(event) => setGlobalStore({...filterTo, date: event.target.value, })}
+                            onChange={(event) => setGlobalStore({...task, date: event.target.value, })}
                         />
                         <div className='datepickerContainer'>
                             <img className="downButtonInDate" src={chevronDown} onClick={toggleDatepicker}></img>

@@ -106,3 +106,20 @@
 .downButtonInDate:hover {
     cursor: pointer;
 }
+
+@media screen and (max-width: 769px) {
+    .downButtonInDate {
+        position: absolute;
+        bottom: 8px;
+        right: 16px;
+    }
+}
+
+@media screen and (min-width: 770px) {
+    .downButtonInDate {
+        position: absolute;
+        top: 8px;
+        right: 16px;
+    }
+}
+

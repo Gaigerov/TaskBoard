@@ -1,17 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import {TASK_STATUS, TASK_STATUSES} from '../../constant';
+import {useSearchParams} from "react-router-dom";
 import {useGlobalStore} from "../../GlobalStoreContext";
-import {useSetGlobalStore} from "../../GlobalStoreContext";
 
-export const Popover = () => {
-    const setGlobalStore = useSetGlobalStore();
-    const {status} = useGlobalStore();
+export const Popover = ({newtask}) => {
+    const {tasks} = useGlobalStore();
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get('id');
+    const task = tasks.find(task => task.id === Number(newtask || id));
 
+    const initialStatus = task ? task.status : TASK_STATUS.TO_DO;
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedStatus, setSelectedStatus] = useState(status);
+    const [selectedStatus, setSelectedStatus] = useState(initialStatus);
+
     const toggleDropdown = () => {
-        setIsOpen(!isOpen);
+        setIsOpen(prev => !prev);
     };
+
     const handleClickOutside = (event) => {
         if (event.target.closest('.customSelect') === null) {
             setIsOpen(false);
@@ -25,15 +30,21 @@ export const Popover = () => {
         };
     }, []);
 
-    const makeStatus = (status) => {
-        setGlobalStore({
-            status: status,
-        });
+    function updateTaskStatus(taskId, newStatus) {
+        // Находим задачу по id и обновляем её статус
+        const taskToUpdate = tasks.find(task => task.id === taskId);
+        if (taskToUpdate) {
+            taskToUpdate.status = newStatus;
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            console.log(`Статус задачи с ID ${taskId} обновлён на '${newStatus}'`);
+        } else {
+            console.log(`Задача с ID ${taskId} не найдена`);
+        }
     }
 
     const handleStatusClick = (status) => {
-        makeStatus(status);
         setSelectedStatus(status);
+        updateTaskStatus(Number(newtask || id), status); // Обновляем статус задачи
         setIsOpen(false);
     };
 
@@ -63,9 +74,12 @@ export const Popover = () => {
         }
     };
 
+
+
+
     return (
         <div className="customSelect" onClick={(e) => e.stopPropagation()}>
-            <div onClick={toggleDropdown} className={getButtonClassName(status)}>
+            <div onClick={toggleDropdown} className={getButtonClassName(selectedStatus)}>
                 {selectedStatus}
             </div>
             {isOpen && (

@@ -3,12 +3,15 @@ import {
     useNavigate,
 } from "react-router-dom";
 import {Button} from '../Button/Button';
+import {useGlobalStore} from '../../GlobalStoreContext';
 import {useSetGlobalStore} from '../../GlobalStoreContext';
 import {VALID_MODE} from '../../constant';
 
 
-export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onClose, onFilter, onReset}) => {
+export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onClose, onFilter}) => {
+    const state = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
+    const {filterTo} = state;
     const navigate = useNavigate();
 
     const handleClose = (event) => {
@@ -42,6 +45,15 @@ export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onC
         navigate('/');
         navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
         onEdit(task);
+    }
+
+    const handleDropFilter = () => {
+        setGlobalStore({
+            ...filterTo,
+            search: '',
+            filterDate: undefined,
+            filterStatus: undefined,
+        })
     }
 
     return (
@@ -116,7 +128,7 @@ export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onC
                     />
                     <Button
                         type="remove"
-                        onClick={onReset}
+                        onClick={handleDropFilter}
                         name="Reset"
                     />
                     <Button

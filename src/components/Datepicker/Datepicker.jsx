@@ -35,9 +35,9 @@ export const Datepicker = () => {
     };
     const renderDays = () => {
         const daysInMonth = getDaysInMonth(displayDate);
-        const startDay = new Date(displayDate.getFullYear(), displayDate.getMonth(), 1).getDay();
+        const startDay = (new Date(displayDate.getFullYear(), displayDate.getMonth(), 1).getDay()) - 1;
         // Приводим startDay к понедельнику
-        const adjustedStartDay = (startDay === 0) ? 5 : startDay - 1;
+        const adjustedStartDay = (startDay === 0) ? 6 : startDay - 1; // 0 (воскресенье) становится 6 (суббота)
         const days = [];
         const prevMonthDays = new Date(displayDate.getFullYear(), displayDate.getMonth(), 0).getDate();
         // Добавляем дни предыдущего месяца

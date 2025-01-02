@@ -26,7 +26,7 @@ function useBreakpoint() {
     }
     const handleResizeThrottle = throttle(handleResize, 300);
 
-    window.addEventListener('resize', handleResizeThrottle); // Использование lodash для предотвращения слишком частых вызовов
+    window.addEventListener('resize', handleResizeThrottle); 
 
     return () => window.removeEventListener('resize', handleResizeThrottle);
   }, []);
