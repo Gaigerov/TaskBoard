@@ -54,7 +54,7 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, current
                             }}
                         >
                             <td>
-                                <Popover newtask={task.id} />
+                                <Popover tableTask={task} />
                             </td>
                             <td>{task.title}</td>
                             <td>{task.description}</td>

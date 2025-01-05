@@ -117,28 +117,27 @@ export const TaskBoard = () => {
     const handleOpenSearchInput = () => {
         setIsOpenSearchInput(true);
     }
-    const [search, setSearch] = useState('');
+    // const [search, setSearch] = useState('');
     // const [filterDate, setFilterDate] = useState('');
     const [filterStatus, setFilterStatus] = useState();
 
-    const filteredTasksOfStatus =
-        state.filterTo.filterStatus ? tasks.filter(task => {
-            task.status === state.filterTo.filterStatus;
-        }) : tasks;
+    // const filteredTasksOfStatus =
+    //     state.filterTo.filterStatus ? tasks.filter(task => {
+    //         task.status === state.filterTo.filterStatus;
+    //     }) : tasks;
 
     const filteredTasksOfDate =
         state.filterTo.filterDate ? tasks.filter(task => {
-            task.date === state.filterTo.filterDate;
-        }) : tasks;
+            return task.date === state.filterTo.filterDate; 
+        }
+        ) : tasks;
 
-    const searchedTasks = filteredTasksOfDate.filter(task => task.title.toLowerCase().includes(search.toLowerCase()));
-    // const filter2 = filteredTasks.filter(task => task.date.includes(state.filterTo.search));
+    const searchedTasks = filteredTasksOfDate.filter(task => task.title.toLowerCase().includes(state.filterTo.search.toLowerCase()));
+    // const searchedTasks2 = filteredTasksOfStatus.filter(task => task.date.includes(state.filterTo.search));
 
     const handleChange = event => {
-        // const newSearchValue = event.currentTarget.value;
-        // useSetGlobalStore({ filterTo: { ...state.filterTo, filterDate: newSearchValue } });
-
-        setSearch(event.currentTarget.value);
+        const newSearchValue = event.currentTarget.value;
+        setGlobalStore({filterTo: {...state.filterTo, search: newSearchValue}});
     };
 
     const handleSetDateFilter = (date) => {
@@ -173,7 +172,7 @@ export const TaskBoard = () => {
                     <div className='headerButtonsContainer' style={{display: isOpenSearchInput ? 'none' : 'flex'}}>
                         <div className='searchButtonContainer' onClick={handleOpenSearchInput}>
                             <img className='searchButton' src={loop} />
-                            {search !== '' && (
+                            {state.filterTo.search !== '' && (
                                 <div className='searchStatus'></div>
                             )}
                         </div>
@@ -193,7 +192,7 @@ export const TaskBoard = () => {
                             placeholder="Search"
                             className="headerFinderInput"
                             onChange={handleChange}
-                            value={search}
+                            value={state.filterTo.search}
                         />
                     )}
                 </div>

@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import {TASK_STATUS, TASK_STATUSES} from '../../constant';
 import {useSearchParams} from "react-router-dom";
-import {useGlobalStore} from "../../GlobalStoreContext";
+import {useGlobalStore, useSetGlobalStoreTasks} from "../../GlobalStoreContext";
 
-export const Popover = ({newtask}) => {
+export const Popover = ({tableTask}) => {
     const {tasks} = useGlobalStore();
+    const handleSetNewTasks = useSetGlobalStoreTasks();
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
-    const task = tasks.find(task => task.id === Number(newtask || id));
-
-    const initialStatus = task ? task.status : TASK_STATUS.TO_DO;
+    const currentTask = tasks.find(task => task.id === Number(tableTask?.id || id));
+    const initialStatus = currentTask ? currentTask.status : TASK_STATUS.TO_DO;
     const [isOpen, setIsOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(initialStatus);
 
@@ -24,6 +24,10 @@ export const Popover = ({newtask}) => {
     };
 
     useEffect(() => {
+        setSelectedStatus(initialStatus);
+    }, [initialStatus]);
+
+    useEffect(() => {
         document.addEventListener('click', handleClickOutside);
         return () => {
             document.removeEventListener('click', handleClickOutside);
@@ -35,7 +39,7 @@ export const Popover = ({newtask}) => {
         const taskToUpdate = tasks.find(task => task.id === taskId);
         if (taskToUpdate) {
             taskToUpdate.status = newStatus;
-            localStorage.setItem('tasks', JSON.stringify(tasks));
+            handleSetNewTasks(tasks);
             console.log(`Статус задачи с ID ${taskId} обновлён на '${newStatus}'`);
         } else {
             console.log(`Задача с ID ${taskId} не найдена`);
@@ -44,8 +48,9 @@ export const Popover = ({newtask}) => {
 
     const handleStatusClick = (status) => {
         setSelectedStatus(status);
-        updateTaskStatus(Number(newtask || id), status); // Обновляем статус задачи
+        updateTaskStatus(Number(tableTask?.id || id), status); // Обновляем статус задачи
         setIsOpen(false);
+
     };
 
     const getButtonClassName = (status) => {

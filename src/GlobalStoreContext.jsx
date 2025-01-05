@@ -17,7 +17,7 @@ export const GlobalStoreController = ({children}) => {
         status: TASK_STATUS.TO_DO,
 
         isDirty: false,
-       
+
         filterTo: {
             search: '',
             filterDate: undefined,
@@ -48,6 +48,20 @@ export const useGlobalStore = () => {
     const {state} = useContext(GlobalStoreContext);
     return state;
 };
+
+export const useSetGlobalStoreTasks = () => {
+    const {setState} = useContext(GlobalStoreContext);
+    const handleSetNewTasks = (newTasks) => {
+        localStorage.setItem('tasks', JSON.stringify(newTasks));
+        setState(state => {
+            return {
+                ...state,
+                tasks: newTasks,
+            }
+        })
+    }
+    return handleSetNewTasks;
+}
 
 export const useSetGlobalStore = () => {
     const {setState} = useContext(GlobalStoreContext);

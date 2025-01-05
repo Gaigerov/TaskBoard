@@ -11,7 +11,7 @@ import {VALID_MODE} from '../../constant';
 export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onClose, onFilter}) => {
     const state = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
-    const {filterTo} = state;
+    const {date, filterTo} = state;
     const navigate = useNavigate();
 
     const handleClose = (event) => {
@@ -123,7 +123,7 @@ export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onC
                 <>
                     <Button
                         type="save"
-                        onClick={onFilter}
+                        onClick={() => onFilter(date)}
                         name="Filter"
                     />
                     <Button
