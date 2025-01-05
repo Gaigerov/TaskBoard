@@ -11,7 +11,7 @@ import {VALID_MODE} from '../../constant';
 export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onClose, onFilter}) => {
     const state = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
-    const {date, filterTo} = state;
+    const {date, status} = state;
     const navigate = useNavigate();
 
     const handleClose = (event) => {
@@ -49,10 +49,12 @@ export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onC
 
     const handleDropFilter = () => {
         setGlobalStore({
-            ...filterTo,
+            ...state,
+            filterTo: {
             search: '',
             filterDate: undefined,
             filterStatus: undefined,
+            }
         })
     }
 
@@ -123,7 +125,7 @@ export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onC
                 <>
                     <Button
                         type="save"
-                        onClick={() => onFilter(date)}
+                        onClick={() => onFilter(date, status)}
                         name="Filter"
                     />
                     <Button

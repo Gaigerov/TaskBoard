@@ -11,7 +11,6 @@ import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 import loop from './image/search.svg';
 import filter from './image/filter.svg';
-import {FilterModal} from './components/FilterModal';
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
@@ -117,22 +116,27 @@ export const TaskBoard = () => {
     const handleOpenSearchInput = () => {
         setIsOpenSearchInput(true);
     }
-    // const [search, setSearch] = useState('');
-    // const [filterDate, setFilterDate] = useState('');
-    const [filterStatus, setFilterStatus] = useState();
 
+    
     // const filteredTasksOfStatus =
     //     state.filterTo.filterStatus ? tasks.filter(task => {
-    //         task.status === state.filterTo.filterStatus;
+    //         return task.status === state.filterTo.filterStatus;
     //     }) : tasks;
 
-    const filteredTasksOfDate =
-        state.filterTo.filterDate ? tasks.filter(task => {
-            return task.date === state.filterTo.filterDate; 
-        }
-        ) : tasks;
+    // const filteredTasksOfDate =
+    //     state.filterTo.filterDate ? tasks.filter(task => {
+    //         return task.date === state.filterTo.filterDate; 
+    //     }
+    //     ) : tasks;
 
-    const searchedTasks = filteredTasksOfDate.filter(task => task.title.toLowerCase().includes(state.filterTo.search.toLowerCase()));
+        const filteredTasks = tasks.filter(task => {
+            const filterStatus = state.filterTo.filterStatus ? task.status === state.filterTo.filterStatus : true;
+            const filterDate = state.filterTo.filterDate ? task.date === state.filterTo.filterDate : true;
+            return filterStatus && filterDate;
+        });
+
+        
+    const searchedTasks = filteredTasks.filter(task => task.title.toLowerCase().includes(state.filterTo.search.toLowerCase()));
     // const searchedTasks2 = filteredTasksOfStatus.filter(task => task.date.includes(state.filterTo.search));
 
     const handleChange = event => {
@@ -140,17 +144,26 @@ export const TaskBoard = () => {
         setGlobalStore({filterTo: {...state.filterTo, search: newSearchValue}});
     };
 
-    const handleSetDateFilter = (date) => {
-        setGlobalStore({filterTo: {...state.filterTo, filterDate: date}});
-    };
+    // const handleSetDateFilter = (date) => {
+    //     setGlobalStore({filterTo: {...state.filterTo, filterDate: date}});
+    // };
 
-    const handleSetStatusFilter = (status) => {
-        setGlobalStore({filterTo: {...state.filterTo, filterStatus: status}});
-    };
+    // const handleSetStatusFilter = (status) => {
+    //     setGlobalStore({filterTo: {...state.filterTo, filterStatus: status}});
+    // };
 
+    const handleSetFilter = (date, status) => {
+        setGlobalStore({
+            filterTo: {
+                ...state.filterTo,
+                filterDate: date !== undefined ? date : state.filterTo.filterDate,
+                filterStatus: status !== undefined ? status : state.filterTo.filterStatus
+            }
+        });
+    };
     const countChangedFields = () => {
         const initialFilterTo = {
-            // filterStatus: 0,
+            filterStatus: 0,
             filterDate: 0,
         };
         let count = 0;
@@ -179,7 +192,7 @@ export const TaskBoard = () => {
                         <div className='filterButtonContainer'>
                             <div onClick={openFilterModal}>
                                 <img className='filterButton' src={filter} />
-                                {state.filterTo.filterDate !== undefined && (
+                                {(state.filterTo.filterDate !== undefined) || (state.filterTo.filterStatus !== undefined) && (
                                     <div className='filterStatus'><span className='filterCounter'>{changedFieldsCount}</span></div>
                                 )}
                             </div>
@@ -223,7 +236,7 @@ export const TaskBoard = () => {
                 onRemove={handleDeleteTask}
                 onClose={closeModal}
                 onClone={cloneTask}
-                onFilter={handleSetDateFilter}
+                onFilter={handleSetFilter}
             />
         </div>
     );

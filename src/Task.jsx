@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {
     useNavigate,
 } from "react-router-dom";
-import { Popover } from './components/Popover/Popover';
+import {Popover} from './components/Popover/Popover';
 import editButton from './image/edit.svg';
 import deleteButton from './image/delete.svg';
 import cloneButton from './image/clone.svg';
@@ -29,7 +29,9 @@ export const Task = ({searchedTasks, onEdit, onView, onRemove, onClone, currentT
     return (
         <>
             {searchedTasks.map(task =>
-                <div key={task.id} className="taskContainer" onClick={() => handleNavigateToView(task)}
+                <div key={task.id}
+                    className="taskContainer"
+                    onClick={() => handleNavigateToView(task)}
                     style={{
                         backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '',
                     }}
@@ -53,7 +55,7 @@ export const Task = ({searchedTasks, onEdit, onView, onRemove, onClone, currentT
                             </span>
                         </div>
                         <div className='frameOfFooterTask'>
-                            <Popover />
+                            <Popover tableTask={task} />
                             <div className='frameOfTaskDate'>
                                 <p className="taskTime">{task.time}</p>
                                 <p className="taskDate">{task.date}</p>

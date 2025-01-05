@@ -27,7 +27,7 @@ export const FormBody = ({mode, task}) => {
     };
 
     const handleStatusClick = (status) => {
-        setGlobalStore({status: status});
+        setSelectedStatus(status);
         setIsOpen(false);
     };
 
@@ -151,7 +151,7 @@ export const FormBody = ({mode, task}) => {
                                     <div
                                         key={status}
                                         className="customStatus"
-                                        onClick={task => handleStatusClick(task.status)}
+                                        onClick={() => handleStatusClick(status)}
                                     >
                                         {status}
                                     </div>
