@@ -83,7 +83,7 @@ export const Popover = ({tableTask}) => {
 
 
     return (
-        <div className="customSelect" onClick={(e) => e.stopPropagation()}>
+        <div className="customSelector" onClick={(e) => e.stopPropagation()}>
             <div onClick={toggleDropdown} className={getButtonClassName(selectedStatus)}>
                 {selectedStatus}
             </div>

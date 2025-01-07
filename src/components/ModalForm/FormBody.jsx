@@ -27,6 +27,10 @@ export const FormBody = ({mode, task}) => {
     };
 
     const handleStatusClick = (status) => {
+        // setGlobalStore({
+        //     filterTo: {
+        //         filterStatus: status,},
+        // })
         setSelectedStatus(status);
         setIsOpen(false);
     };
@@ -142,7 +146,7 @@ export const FormBody = ({mode, task}) => {
             {mode === VALID_MODE.FILTER && (
                 <>
                     <label>Status</label>
-                    <div className="customSelect">
+                    <div className="customSelector">
                         <div className="selectedStatus">{selectedStatus}</div>
                         <img className="downButton" src={chevronDown} onClick={toggleDropdown}></img>
                         {isOpen && (

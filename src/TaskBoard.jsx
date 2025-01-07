@@ -117,25 +117,13 @@ export const TaskBoard = () => {
         setIsOpenSearchInput(true);
     }
 
-    
-    // const filteredTasksOfStatus =
-    //     state.filterTo.filterStatus ? tasks.filter(task => {
-    //         return task.status === state.filterTo.filterStatus;
-    //     }) : tasks;
+    const filteredTasks = tasks.filter(task => {
+        const filterStatus = state.filterTo.filterStatus ? task.status === state.filterTo.filterStatus : true;
+        const filterDate = state.filterTo.filterDate ? task.date === state.filterTo.filterDate : true;
+        return filterStatus && filterDate;
+    });
 
-    // const filteredTasksOfDate =
-    //     state.filterTo.filterDate ? tasks.filter(task => {
-    //         return task.date === state.filterTo.filterDate; 
-    //     }
-    //     ) : tasks;
 
-        const filteredTasks = tasks.filter(task => {
-            const filterStatus = state.filterTo.filterStatus ? task.status === state.filterTo.filterStatus : true;
-            const filterDate = state.filterTo.filterDate ? task.date === state.filterTo.filterDate : true;
-            return filterStatus && filterDate;
-        });
-
-        
     const searchedTasks = filteredTasks.filter(task => task.title.toLowerCase().includes(state.filterTo.search.toLowerCase()));
     // const searchedTasks2 = filteredTasksOfStatus.filter(task => task.date.includes(state.filterTo.search));
 
@@ -143,14 +131,6 @@ export const TaskBoard = () => {
         const newSearchValue = event.currentTarget.value;
         setGlobalStore({filterTo: {...state.filterTo, search: newSearchValue}});
     };
-
-    // const handleSetDateFilter = (date) => {
-    //     setGlobalStore({filterTo: {...state.filterTo, filterDate: date}});
-    // };
-
-    // const handleSetStatusFilter = (status) => {
-    //     setGlobalStore({filterTo: {...state.filterTo, filterStatus: status}});
-    // };
 
     const handleSetFilter = (date, status) => {
         setGlobalStore({

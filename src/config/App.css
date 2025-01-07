@@ -3,6 +3,8 @@
 @import url('../config/Modal.css');
 @import url('../config/Buttons.css');
 @import url('../components/Datepicker/Datepicker.css');
+@import url('../components/Table.css');
+@import url('../components/CustomSelect/CustomSelect.css');
 
 ::-webkit-input-placeholder {
     /* WebKit browsers */
@@ -167,7 +169,7 @@ textarea {
     z-index: 1;
 }
 
-.customSelect {
+.customSelector {
     display: flex;
     justify-content: flex-start;
     position: relative;

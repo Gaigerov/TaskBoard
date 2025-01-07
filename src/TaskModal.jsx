@@ -118,14 +118,14 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
         }
 
         else if (mode === VALID_MODE.EDIT && validate()) {
-            onSave({...task, title, description, time, date, status});
+            onSave({...task, title, description, time, date});
             onClose();
             setGlobalStore({
                 title: '',
                 description: '',
                 time: '',
                 date: '',
-                status: status,
+                status: task.status,
             })
         }
     }

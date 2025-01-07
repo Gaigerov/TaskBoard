@@ -21,8 +21,10 @@ export const GlobalStoreController = ({children}) => {
         filterTo: {
             search: '',
             filterDate: undefined,
-            filterStatus: undefined,
+            filterStatus: TASK_STATUS.TO_DO,
         },
+
+        tasksPerPage: 5,
 
         errors: {
             title: '',
