@@ -980,6 +980,7 @@ textarea {
 
     table {
         width: 100%;
+        height: 80%;
         border-collapse: collapse;
     }
 
@@ -993,13 +994,14 @@ textarea {
     tbody {
         display: block;
         overflow-y: auto;
-        max-height: 400px;
+        height: 80%;
     }
 
     .tableContainer {
         display: flex;
         flex-direction: column;
         width: 100%;
+        height: 100%;
         border-collapse: collapse;
         position: relative;
         margin-top: 32px;

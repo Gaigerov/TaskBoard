@@ -1,6 +1,6 @@
 .tablePageContainer {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 150px);
     margin: 0;
     display: flex;
     flex-direction: column;

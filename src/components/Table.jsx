@@ -141,10 +141,19 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, current
                         value={tasksPerPage}
                     />
                 </div>
-
                 <div className="paginationPageNumber">
-                    <img className='chevronsButton' src={chevronsLeft} onClick={handleFirstPage} />
-                    <img className='chevronsButton' src={chevronLeft} onClick={handlePrevPage} />
+                    <img
+                        className='chevronsButton'
+                        src={chevronsLeft}
+                        onClick={handleFirstPage}
+                        style={{filter: currentPage === 1 ? 'invert(77%) sepia(8%) saturate(356%) hue-rotate(165deg) brightness(100%) contrast(83%)' : ''}}
+                    />
+                    <img
+                        className='chevronsButton'
+                        src={chevronLeft}
+                        onClick={handlePrevPage}
+                        style={{filter: currentPage === 1 ? 'invert(77%) sepia(8%) saturate(356%) hue-rotate(165deg) brightness(100%) contrast(83%)' : ''}}
+                    />
                     {[...Array(totalPages)].map((_, index) => (
                         <button
                             key={index + 1}
@@ -154,8 +163,16 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, current
                             {index + 1}
                         </button>
                     ))}
-                    <img className='chevronsButton' src={chevronRight} onClick={handleNextPage} />
-                    <img className='chevronsButton' src={chevronsRight} onClick={handleLastPage} />
+                    <img
+                        className='chevronsButton'
+                        src={chevronRight} onClick={handleNextPage}
+                        style={{filter: currentPage === totalPages ? 'invert(77%) sepia(8%) saturate(356%) hue-rotate(165deg) brightness(100%) contrast(83%)' : ''}}
+                    />
+                    <img
+                        className='chevronsButton'
+                        src={chevronsRight} onClick={handleLastPage}
+                        style={{filter: currentPage === totalPages ? 'invert(77%) sepia(8%) saturate(356%) hue-rotate(165deg) brightness(100%) contrast(83%)' : ''}}
+                    />
                 </div>
                 <div className='pageInputContainer'>
                     <p className='labelGoTo'>Go to page</p>

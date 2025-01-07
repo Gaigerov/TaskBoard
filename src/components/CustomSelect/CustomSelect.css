@@ -30,7 +30,7 @@
     background: white;
     border: 1px solid var(--light-grey);
     border-radius: 8px;
-    top: calc(100% + 4px);
+    bottom: calc(100% + 4px);
     left: 0;
     list-style: none;
     padding: 0;
