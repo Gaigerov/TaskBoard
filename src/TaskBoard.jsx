@@ -123,13 +123,16 @@ export const TaskBoard = () => {
         return filterStatus && filterDate;
     });
 
-
     const searchedTasks = filteredTasks.filter(task => task.title.toLowerCase().includes(state.filterTo.search.toLowerCase()));
-    // const searchedTasks2 = filteredTasksOfStatus.filter(task => task.date.includes(state.filterTo.search));
 
     const handleChange = event => {
         const newSearchValue = event.currentTarget.value;
-        setGlobalStore({filterTo: {...state.filterTo, search: newSearchValue}});
+        setGlobalStore({
+            filterTo: {
+                ...state.filterTo, 
+                search: newSearchValue,
+            }
+        });
     };
 
     const handleSetFilter = (date, status) => {
@@ -137,10 +140,11 @@ export const TaskBoard = () => {
             filterTo: {
                 ...state.filterTo,
                 filterDate: date !== undefined ? date : state.filterTo.filterDate,
-                filterStatus: status !== undefined ? status : state.filterTo.filterStatus
+                filterStatus: status !== undefined ? status : state.filterTo.filterStatus,
             }
         });
     };
+    
     const countChangedFields = () => {
         const initialFilterTo = {
             filterStatus: 0,
