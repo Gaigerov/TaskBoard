@@ -93,6 +93,10 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, current
                 </thead>
                 <tbody>
                     {currentTasks.map(task => {
+                                        const taskDate = new Date(task.date.split('.').reverse().join('-'));
+                                        const currentDate = new Date();
+                                        const isPastDue = taskDate < currentDate && task.status !== "Done";
+
                         return (
                             <tr
                                 key={task.id}
@@ -108,8 +112,8 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, current
                                 <td>{task.title}</td>
                                 <td>{task.description}</td>
                                 <td className='taskDateContainer'>
-                                    <span className='taskDateContainer_spanTime'>{task.time}</span>
-                                    <span className='taskDateContainer_spanDate'>{task.date}</span>
+                                    <span className='taskDateContainer_spanTime' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>{task.time}</span>
+                                    <span className='taskDateContainer_spanDate' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>{task.date}</span>
                                 </td>
                                 <td>
                                     <span className="controls" onClick={(e) => e.stopPropagation()}>
