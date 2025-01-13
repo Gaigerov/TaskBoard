@@ -9,7 +9,7 @@ import {FormBody} from './components/ModalForm/FormBody';
 import {FormFooter} from './components/ModalForm/FormFooter';
 
 export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter}) => {
-    const {title, description, time, date, status, isDirty, tasks} = useGlobalStore();
+    const {title, description, time, date, status, isDirty, tasks, filterStatus} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
 
     const modalRef = useRef(null);
@@ -113,7 +113,7 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
                 description: '',
                 time: '',
                 date: '',
-                status: status,
+                status: '',
             })
         }
 

@@ -3,6 +3,7 @@ import {
     useParams,
     useNavigate,
 } from "react-router-dom";
+
 import './config/App.css';
 import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
@@ -120,6 +121,7 @@ export const TaskBoard = () => {
     const filteredTasks = tasks.filter(task => {
         const filterStatus = state.filterTo.filterStatus ? task.status === state.filterTo.filterStatus : true;
         const filterDate = state.filterTo.filterDate ? task.date === state.filterTo.filterDate : true;
+       console.log(task.status, state.filterTo.filterStatus)
         return filterStatus && filterDate;
     });
 
@@ -136,15 +138,16 @@ export const TaskBoard = () => {
     };
 
     const handleSetFilter = (date, status) => {
+        console.log('handleSetFilter', status) 
         setGlobalStore({
             filterTo: {
                 ...state.filterTo,
                 filterDate: date !== undefined ? date : state.filterTo.filterDate,
-                filterStatus: status !== undefined ? status : state.filterTo.filterStatus,
+                filterStatus: status !== undefined ? undefined : state.filterTo.filterStatus,
             }
         });
     };
-    
+
     const countChangedFields = () => {
         const initialFilterTo = {
             filterStatus: 0,

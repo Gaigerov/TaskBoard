@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
     useNavigate,
 } from "react-router-dom";
+
 import {Popover} from './components/Popover/Popover';
 import editButton from './image/edit.svg';
 import deleteButton from './image/delete.svg';

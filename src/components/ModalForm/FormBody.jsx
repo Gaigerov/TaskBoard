@@ -28,6 +28,7 @@ export const FormBody = ({mode, task}) => {
 
     const handleStatusClick = (status) => {
         // setGlobalStore({
+        //     ...state,
         //     filterTo: {
         //         filterStatus: status,},
         // })

@@ -15,12 +15,14 @@ export const VALID_MODES = [
 ];
 
 export const TASK_STATUS = {
+    // EMPTY: '',
     TO_DO: 'To Do',
     INPROGRESS: 'In Progress',
     DONE: 'Done',
 };
 
 export const TASK_STATUSES = [
+    // TASK_STATUS.EMPTY,
     TASK_STATUS.TO_DO,
     TASK_STATUS.INPROGRESS,
     TASK_STATUS.DONE,

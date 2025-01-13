@@ -48,7 +48,3 @@
 .customOptions li:hover {
     background-color: var(--light);
 }
-
-.chevronsButton:hover {
-    cursor: pointer;
-}

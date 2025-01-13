@@ -125,7 +125,7 @@ export const FormFooter = ({task, mode, onSubmit, onEdit, onRemove, onClone, onC
                 <>
                     <Button
                         type="save"
-                        onClick={() => onFilter(date, status)}
+                        onClick={() => onFilter(date, state.filterTo.filterStatus)}
                         name="Filter"
                     />
                     <Button

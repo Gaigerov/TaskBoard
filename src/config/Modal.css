@@ -67,7 +67,7 @@
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     justify-content: center;
     align-items: center;
     z-index: 1;
@@ -230,6 +230,7 @@
     font-size: 16px;
     font-weight: normal;
     line-height: 19.36px;
+    margin-right: 32px;
 }
 
 .Button_createButton:hover {
