@@ -3,7 +3,6 @@ import {
     useParams,
     useNavigate,
 } from "react-router-dom";
-
 import './config/App.css';
 import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';

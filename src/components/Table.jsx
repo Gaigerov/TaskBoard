@@ -15,7 +15,7 @@ import chevronLeft from "../image/ChevronLeft.svg";
 import chevronsRight from "../image/ChevronsRight.svg";
 import chevronsLeft from "../image/ChevronsLeft.svg";
 
-export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, currentTaskId, deleteMode}) => {
+export const Table = ({searchedTasks, onView, onEdit, onClone, currentTaskId, deleteMode}) => {
     const navigate = useNavigate();
     const {tasksPerPage} = useGlobalStore();
     const [currentPage, setCurrentPage] = useState(1);
@@ -112,30 +112,31 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, onRemove, current
                                 <td>{task.title}</td>
                                 <td>{task.description}</td>
                                 <td className='taskDateContainer'>
-                                    <span className='taskDateContainer_spanTime' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>{task.time}</span>
-                                    <span className='taskDateContainer_spanDate' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>{task.date}</span>
+                                    <div className='taskDateContainer_spanTime' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>{task.time}</div>
+                                    <div className='taskDateContainer_spanDate' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>{task.date}</div>
                                 </td>
                                 <td>
-                                    <span className="controls" onClick={(e) => e.stopPropagation()}>
-                                        <span onClick={() => handleNavigateToEdit(task)} className='iconButton'>
+                                    <div className="controls" onClick={(e) => e.stopPropagation()}>
+                                        <div onClick={() => handleNavigateToEdit(task)} className='iconButton'>
                                             <img className="icon editButton" src={editButton} />
-                                        </span>
-                                        <span onClick={() => onClone(task.id)} className='iconButton'>
+                                        </div>
+                                        <div onClick={() => onClone(task.id)} className='iconButton'>
                                             <img className="icon cloneButton" src={cloneButton} />
-                                        </span>
+                                        </div>
                                         <PopoverRemove task={task.id} onRemove={deleteMode}>
-                                            <span className='iconButton'>
+                                            <div className='iconButton'>
                                                 <img className="icon deleteButton" src={deleteButton} />
-                                            </span>
+                                            </div>
                                         </PopoverRemove>
-                                    </span>
+                                    </div>
                                 </td>
                             </tr>
                         )
                     })}
-                    <span className="gradient-top"></span>
-                    <span className="gradient-bottom"></span>
+
                 </tbody>
+                <td className="gradient-top"></td>
+                <td className="gradient-bottom"></td>
             </table>
             <div className='footerContainer'>
                 <div className="taskOnPageContainer">
