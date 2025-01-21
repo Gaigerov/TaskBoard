@@ -50,7 +50,6 @@ export const Popover = ({tableTask}) => {
         setSelectedStatus(status);
         updateTaskStatus(Number(tableTask?.id || id), status); // Обновляем статус задачи
         setIsOpen(false);
-
     };
 
     const getButtonClassName = (status) => {
@@ -78,9 +77,6 @@ export const Popover = ({tableTask}) => {
                 return '';
         }
     };
-
-
-
 
     return (
         <div className="customSelector" onClick={(e) => e.stopPropagation()}>

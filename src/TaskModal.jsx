@@ -2,14 +2,13 @@ import React, {useEffect, useRef} from 'react';
 import {useSearchParams} from "react-router-dom";
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
-import {VALID_MODE, VALID_MODES} from './constant';
+import {TASK_STATUS, VALID_MODE, VALID_MODES} from './constant';
 import {ModalForm} from './components/ModalForm/ModalForm';
 import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
-import {FormFooter} from './components/ModalForm/FormFooter';
 
 export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter}) => {
-    const {title, description, time, date, status, isDirty, tasks, filterStatus} = useGlobalStore();
+    const {title, description, time, date, status, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
 
     const modalRef = useRef(null);
@@ -107,7 +106,7 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
 
     const handleSubmit = () => {
         if (mode === VALID_MODE.CREATE && validate()) {
-            onCreate({title, description, time, date, status});
+            onCreate({title, description, time, date, status: TASK_STATUS.TO_DO});
             setGlobalStore({
                 title: '',
                 description: '',
@@ -144,8 +143,7 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
         <div className="modalOverlay" ref={modalRef}>
             <ModalForm>
                 <FormHeader task={task} mode={mode} onClose={onClose} />
-                <FormBody task={task} mode={mode} />
-                <FormFooter
+                <FormBody
                     task={task}
                     mode={mode}
                     onSubmit={handleSubmit}

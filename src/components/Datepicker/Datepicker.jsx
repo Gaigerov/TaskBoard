@@ -3,7 +3,8 @@ import chevronRight from "../../image/ChevronRight.svg"
 import chevronLeft from "../../image/ChevronLeft.svg"
 import {useSetGlobalStore} from "../../GlobalStoreContext";
 
-export const Datepicker = () => {
+export const Datepicker = ({onChangeDate}) => {
+
     const setGlobalStore = useSetGlobalStore();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [displayDate, setDisplayDate] = useState(new Date());
@@ -23,7 +24,7 @@ export const Datepicker = () => {
         setSelectedDate(newDate);
         setIsTodaySelected(false);
         document.getElementById('date').value = newDate.toLocaleDateString();
-        setGlobalStore({date: newDate.toLocaleDateString(), });
+        onChangeDate(newDate.toLocaleDateString());
     };
     const resetToToday = () => {
         const today = new Date();

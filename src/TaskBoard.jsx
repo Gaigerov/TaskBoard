@@ -1,12 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {
-    useParams,
-    useNavigate,
-} from "react-router-dom";
+import {useParams, useNavigate} from 'react-router-dom';
 import './config/App.css';
 import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
-import {Breakpoints} from './Breakpoints'
+import {Breakpoints} from './Breakpoints';
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 import loop from './image/search.svg';
@@ -18,10 +15,10 @@ export const TaskBoard = () => {
     const {tasks, date} = state;
     const {mode} = useParams();
     const navigate = useNavigate();
-    const [currentTaskId, setCurrentTaskId] = useState(null)
+    const [currentTaskId, setCurrentTaskId] = useState(null);
     const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
 
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
         if (!event.target.closest('.headerFinderInput')) {
             setIsOpenSearchInput(false);
         }
@@ -36,20 +33,20 @@ export const TaskBoard = () => {
 
     const closeModal = () => {
         setCurrentTaskId(null);
-        navigate('/')
+        navigate('/');
     };
 
-    const handleCreateTask = (newTask) => {
+    const handleCreateTask = newTask => {
         const taskWithId = {...newTask, id: Date.now()}; // Генерация уникального ID
         const updatedTasks = [...tasks, taskWithId];
         setGlobalStore({
-            tasks: updatedTasks,
+            tasks: updatedTasks
         });
         localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         closeModal();
     };
 
-    const cloneTask = (id) => {
+    const cloneTask = id => {
         const taskToClone = tasks.find(task => task.id === id);
         if (taskToClone) {
             const newTask = {
@@ -60,26 +57,24 @@ export const TaskBoard = () => {
             const updatedTasks = [...tasks, newTask];
             localStorage.setItem('tasks', JSON.stringify(updatedTasks));
             setGlobalStore({
-                tasks: [...tasks, newTask],
+                tasks: [...tasks, newTask]
             });
-        };
+        }
     };
 
-    const handleEditTask = (updatedTask) => {
-        const updatedTasks = tasks.map(task =>
-            task.id === updatedTask.id ? updatedTask : task
-        );
+    const handleEditTask = updatedTask => {
+        const updatedTasks = tasks.map(task => (task.id === updatedTask.id ? updatedTask : task));
         localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         setGlobalStore({
-            tasks: updatedTasks,
+            tasks: updatedTasks
         });
         closeModal();
     };
 
-    const handleDeleteTask = (id) => {
+    const handleDeleteTask = id => {
         const updatedTasks = tasks.filter(task => task.id !== id);
         setGlobalStore({
-            tasks: updatedTasks,
+            tasks: updatedTasks
         });
         localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         closeModal();
@@ -91,8 +86,8 @@ export const TaskBoard = () => {
             title: '',
             description: '',
             time: '',
-            date: '',
-        })
+            date: ''
+        });
         navigate('create');
     };
 
@@ -101,48 +96,50 @@ export const TaskBoard = () => {
         navigate('filter');
     };
 
-    const openEditModal = (task) => {
+    const openEditModal = task => {
         setCurrentTaskId(task.id);
     };
 
-    const openViewModal = (task) => {
+    const openViewModal = task => {
         setCurrentTaskId(task.id);
     };
 
-    const openRemoveModal = (task) => {
+    const openRemoveModal = task => {
         setCurrentTaskId(task.id);
     };
 
     const handleOpenSearchInput = () => {
         setIsOpenSearchInput(true);
-    }
+    };
 
     const filteredTasks = tasks.filter(task => {
         const filterStatus = state.filterTo.filterStatus ? task.status === state.filterTo.filterStatus : true;
         const filterDate = state.filterTo.filterDate ? task.date === state.filterTo.filterDate : true;
-       console.log(task.status, state.filterTo.filterStatus)
+        console.log('filteredT', filterStatus, filterDate)
         return filterStatus && filterDate;
     });
 
-    const searchedTasks = filteredTasks.filter(task => task.title.toLowerCase().includes(state.filterTo.search.toLowerCase()));
+    const searchedTasks = filteredTasks.filter(task => {
+        return task.title.toLowerCase().includes(state.filterTo.search.toLowerCase());
+    });
 
     const handleChange = event => {
         const newSearchValue = event.currentTarget.value;
         setGlobalStore({
             filterTo: {
-                ...state.filterTo, 
-                search: newSearchValue,
+                ...state.filterTo,
+                search: newSearchValue
             }
         });
     };
 
     const handleSetFilter = (date, status) => {
-        console.log('handleSetFilter', status) 
         setGlobalStore({
             filterTo: {
                 ...state.filterTo,
+                search: '',
                 filterDate: date !== undefined ? date : state.filterTo.filterDate,
-                filterStatus: status !== undefined ? undefined : state.filterTo.filterStatus,
+                filterStatus: status !== undefined ? undefined : state.filterTo.filterStatus
             }
         });
     };
@@ -150,7 +147,7 @@ export const TaskBoard = () => {
     const countChangedFields = () => {
         const initialFilterTo = {
             filterStatus: 0,
-            filterDate: 0,
+            filterDate: 0
         };
         let count = 0;
         // Сравниваем текущее состояние с начальными значениями
@@ -167,20 +164,21 @@ export const TaskBoard = () => {
     return (
         <div className="taskBoard">
             <div className="headerContainer">
-                <div className='taskFinderContainer'>
-                    <div className='headerButtonsContainer' style={{display: isOpenSearchInput ? 'none' : 'flex'}}>
-                        <div className='searchButtonContainer' onClick={handleOpenSearchInput}>
-                            <img className='searchButton' src={loop} />
-                            {state.filterTo.search !== '' && (
-                                <div className='searchStatus'></div>
-                            )}
+                <div className="taskFinderContainer">
+                    <div className="headerButtonsContainer" style={{display: isOpenSearchInput ? 'none' : 'flex'}}>
+                        <div className="searchButtonContainer" onClick={handleOpenSearchInput}>
+                            <img className="searchButton" src={loop} />
+                            {state.filterTo.search !== '' && <div className="searchStatus"></div>}
                         </div>
-                        <div className='filterButtonContainer'>
+                        <div className="filterButtonContainer">
                             <div onClick={openFilterModal}>
-                                <img className='filterButton' src={filter} />
-                                {(state.filterTo.filterDate !== undefined) || (state.filterTo.filterStatus !== undefined) && (
-                                    <div className='filterStatus'><span className='filterCounter'>{changedFieldsCount}</span></div>
-                                )}
+                                <img className="filterButton" src={filter} />
+                                {state.filterTo.filterDate !== undefined ||
+                                    (state.filterTo.filterStatus !== undefined && (
+                                        <div className="filterStatus">
+                                            <span className="filterCounter">{changedFieldsCount}</span>
+                                        </div>
+                                    ))}
                             </div>
                         </div>
                     </div>
@@ -195,11 +193,7 @@ export const TaskBoard = () => {
                         />
                     )}
                 </div>
-                <Button
-                    type="createButton"
-                    onClick={openCreateModal}
-                    name="Create"
-                />
+                <Button type="createButton" onClick={openCreateModal} name="Create" />
             </div>
             <div className="tasksContainer">
                 <div className="tasksContainer__scroller">
