@@ -7,7 +7,7 @@ import {ModalForm} from './components/ModalForm/ModalForm';
 import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
 
-export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter}) => {
+export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter, notification}) => {
     const {title, description, time, date, status, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
 
@@ -106,6 +106,7 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
 
     const handleSubmit = () => {
         if (mode === VALID_MODE.CREATE && validate()) {
+            notification();
             onCreate({title, description, time, date, status: TASK_STATUS.TO_DO});
             setGlobalStore({
                 title: '',

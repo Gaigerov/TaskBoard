@@ -17,7 +17,7 @@ import filter from './image/filter.svg';
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
     const state = useGlobalStore();
-    const {tasks, date} = state;
+    const {tasks} = state;
     const {mode} = useParams();
     const navigate = useNavigate();
     const [currentTaskId, setCurrentTaskId] = useState(null);
@@ -60,13 +60,13 @@ export const TaskBoard = () => {
     } 
 
     const handleCreateTask = newTask => {
+        handleCreateNotification('success', 'Задача успешно создана');
         const taskWithId = {...newTask, id: Date.now()}; // Генерация уникального ID
         const updatedTasks = [...tasks, taskWithId];
         setGlobalStore({
             tasks: updatedTasks
         });
         localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-        handleCreateNotification('success', 'Задача успешно создана');
         closeModal();
     };
 
@@ -136,26 +136,15 @@ export const TaskBoard = () => {
         setIsOpenSearchInput(true);
     };
 
-    // const filterAndSearchTasks = () => {
-    //     return tasks.filter(task => {
-    //         const matchesStatus = state.filterTo.filterStatus ? task.status === state.filterTo.filterStatus : true;
-    //         const matchesDate = state.filterTo.filterDate ? task.date === state.filterTo.filterDate : true;
-    //         const matchesSearch = task.title.toLowerCase().includes(state.filterTo.search.toLowerCase());
-
-    //         return matchesStatus && matchesDate && matchesSearch;
-    //     });
-    // };
-
     const filteredTasks = tasks.filter(task => {
-        const filterStatus = state.filterTo.filterStatus ? task.status === state.filterTo.filterStatus : true;
-        const filterDate = state.filterTo.filterDate ? task.date === state.filterTo.filterDate : true;
-        console.log('filteredT', filterStatus, filterDate)
-        return filterStatus && filterDate;
+        const {filterStatus, filterDate} = state.filterTo;
+        return (!filterStatus || task.status === filterStatus) && 
+               (!filterDate || task.date === filterDate);
     });
 
-    const searchedTasks = filteredTasks.filter(task => {
-        return task.title.toLowerCase().includes(state.filterTo.search.toLowerCase());
-    });
+    const searchedTasks = filteredTasks.filter(task => 
+        task.title.toLowerCase().includes(state.filterTo.search.toLowerCase())
+    );
 
     const handleChange = event => {
         const newSearchValue = event.currentTarget.value;
@@ -168,24 +157,25 @@ export const TaskBoard = () => {
     };
 
     const handleSetFilter = (date, status) => {
-        setGlobalStore(prevState => ({
-            ...prevState,
+        setGlobalStore({
             filterTo: {
-                ...prevState.filterTo,
+                ...state.filterTo,
                 search: '',
-                filterDate: date !== undefined ? date : prevState.filterTo.filterDate,
-                filterStatus: status !== undefined ? status : prevState.filterTo.filterStatus
+                filterDate: date !== undefined ? date : state.filterTo.filterDate,
+                filterStatus: status !== undefined ? status : state.filterTo.filterStatus
             }
-        }));
+        });
     };
 
     const countChangedFields = () => {
         const initialFilterTo = {
-            filterStatus: 0,
-            filterDate: 0
+            filterDate: undefined,
+            filterStatus: undefined,
         };
+    
         return Object.keys(initialFilterTo).reduce((count, key) => {
-            return count + (initialFilterTo[key] !== state.filterTo[key] ? 1 : 0);
+            const currentValue = state.filterTo[key];
+            return count + (currentValue !== initialFilterTo[key] ? 1 : 0);
         }, 0);
     };
 
@@ -228,7 +218,7 @@ export const TaskBoard = () => {
             <div className="tasksContainer">
                 <div className="tasksContainer__scroller">
                     <Breakpoints
-                        searchedTasks={filteredTasks}
+                        searchedTasks={searchedTasks}
                         onView={openViewModal}
                         onEdit={openEditModal}
                         onClone={cloneTask}
@@ -247,15 +237,15 @@ export const TaskBoard = () => {
                 onClose={closeModal}
                 onClone={cloneTask}
                 onFilter={handleSetFilter}
+                notification={handleShowNotification}
             />
-            {/* {notifications.map((index) => (
+            {notifications.map((index) => (
                 <Notification
                     key={index}
                     type='success'
                     message='Задача успешно добавлена'
                     onClose={handleCloseNotification} />
-            ))} */}
-            <button onClick={handleShowNotification}>жми</button>
+            ))}
         </div>
     );
 };

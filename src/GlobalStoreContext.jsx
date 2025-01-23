@@ -14,7 +14,6 @@ export const GlobalStoreController = ({children}) => {
         description: '',
         time: '',
         date: '',
-        status: TASK_STATUS.TO_DO,
 
         isDirty: false,
 
