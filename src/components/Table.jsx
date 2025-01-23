@@ -93,9 +93,9 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, currentTaskId, de
                 </thead>
                 <tbody>
                     {currentTasks.map(task => {
-                                        const taskDate = new Date(task.date.split('.').reverse().join('-'));
-                                        const currentDate = new Date();
-                                        const isPastDue = taskDate < currentDate && task.status !== "Done";
+                        const taskDate = new Date(task.date.split('.').reverse().join('-'));
+                        const currentDate = new Date();
+                        const isPastDue = taskDate < currentDate && task.status !== "Done";
 
                         return (
                             <tr
@@ -103,7 +103,7 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, currentTaskId, de
                                 onClick={() => handleNavigateToView(task)}
                                 className='trContainer'
                                 style={{
-                                    backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '', // Изменяем цвет фона
+                                    backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '',
                                 }}
                             >
                                 <td>
@@ -112,20 +112,24 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, currentTaskId, de
                                 <td>{task.title}</td>
                                 <td>{task.description}</td>
                                 <td className='taskDateContainer'>
-                                    <div className='taskDateContainer_spanTime' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>{task.time}</div>
-                                    <div className='taskDateContainer_spanDate' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>{task.date}</div>
+                                    <div className='taskDateContainer_spanTime' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>
+                                        {task.time}
+                                    </div>
+                                    <div className='taskDateContainer_spanDate' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>
+                                        {task.date}
+                                    </div>
                                 </td>
                                 <td>
                                     <div className="controls" onClick={(e) => e.stopPropagation()}>
                                         <div onClick={() => handleNavigateToEdit(task)} className='iconButton'>
-                                            <img className="icon editButton" src={editButton} />
+                                            <img className="icon editButton" src={editButton} alt="Edit" />
                                         </div>
                                         <div onClick={() => onClone(task.id)} className='iconButton'>
-                                            <img className="icon cloneButton" src={cloneButton} />
+                                            <img className="icon cloneButton" src={cloneButton} alt="Clone" />
                                         </div>
                                         <PopoverRemove task={task.id} onRemove={deleteMode}>
                                             <div className='iconButton'>
-                                                <img className="icon deleteButton" src={deleteButton} />
+                                                <img className="icon deleteButton" src={deleteButton} alt="Delete" />
                                             </div>
                                         </PopoverRemove>
                                     </div>
@@ -133,10 +137,7 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, currentTaskId, de
                             </tr>
                         )
                     })}
-
                 </tbody>
-                <td className="gradient-top"></td>
-                <td className="gradient-bottom"></td>
             </table>
             <div className='footerContainer'>
                 <div className="taskOnPageContainer">

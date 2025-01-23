@@ -37,6 +37,7 @@
         "react": "18.3.1",
         "react-dom": "18.3.1",
         "react-input-mask": "2.0.4",
+        "react-notifications-component": "4.0.1",
         "react-router-dom": "6.26.1",
         "react-virtualized": "9.22.5"
     }

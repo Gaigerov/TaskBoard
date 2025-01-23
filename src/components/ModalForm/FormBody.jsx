@@ -18,10 +18,11 @@ export const FormBody = ({mode, task, onSubmit, onEdit, onRemove, onClose, onClo
     const [isOpen, setIsOpen] = useState(false);
     const [isDatepicker, setIsDatepicker] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(TASK_STATUS.TO_DO);
-    const [selectedDate, setSelectedDate] = useState(state.filterTo.filterDate)
+    const [selectedDate, setSelectedDate] = useState(mode === VALID_MODE.EDIT ? task.date : state.filterTo.filterDate);
 
     const handleFilter = () => {
         onFilter(selectedDate, selectedStatus);
+        console.log(selectedDate, selectedStatus)
     }
 
     const toggleDropdown = () => {
@@ -42,12 +43,6 @@ export const FormBody = ({mode, task, onSubmit, onEdit, onRemove, onClose, onClo
 
     const handleStatusClick = status => {
         setSelectedStatus(status);
-        setGlobalStore({
-            filterTo: {
-                ...state.filterTo,
-                filterStatus: status,
-            }
-        });
         setIsOpen(false);
     };
 
@@ -199,12 +194,7 @@ export const FormBody = ({mode, task, onSubmit, onEdit, onRemove, onClose, onClo
                                 style={{
                                     borderColor: errors.date ? 'var(--danger)' : 'var(--light-grey)'
                                 }}
-                                onChange={event => setGlobalStore({
-                                    filterTo: {
-                                        ...state.filterTo,
-                                        filterDate: event.target.value
-                                    }
-                                })}
+                                onChange={event => setSelectedDate(event.currentTarget.value)}
                             />
                             <div className="datepickerContainer">
                                 <img className="downButtonInDate" src={chevronDown} onClick={toggleDatepicker}></img>
@@ -218,7 +208,6 @@ export const FormBody = ({mode, task, onSubmit, onEdit, onRemove, onClose, onClo
                         )}
                     </>
                 )}
-
                 {mode === VALID_MODE.VIEW && (
                     <div>
                         <Popover />

@@ -1,9 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
+import {ReactNotifications} from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
+// import 'animate.css/animate.min.css';
+// import 'animate.css/animate.compat.css'
 import './config/App.css';
 import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
 import {Breakpoints} from './Breakpoints';
+import {Notification} from './components/Notification/Notification';
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 import loop from './image/search.svg';
@@ -17,6 +22,19 @@ export const TaskBoard = () => {
     const navigate = useNavigate();
     const [currentTaskId, setCurrentTaskId] = useState(null);
     const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
+    const [showNotification, setShowNotification] = useState(false);
+    const [notifications, setNotifications] = useState([]);
+
+    const handleShowNotification = () => {
+        setNotifications((prevNotifications) => [
+            ...prevNotifications,
+            `Уведомление ${prevNotifications.length + 1}`,
+        ]);
+    };
+
+    const handleCloseNotification = () => {
+        setShowNotification(false);
+    };
 
     const handleClickOutside = event => {
         if (!event.target.closest('.headerFinderInput')) {
@@ -36,6 +54,11 @@ export const TaskBoard = () => {
         navigate('/');
     };
 
+    const handleCreateNotification = (type, message) => {
+        setShowNotification(true);
+        return <Notification type={`${type}`} message={`${message}`} />
+    } 
+
     const handleCreateTask = newTask => {
         const taskWithId = {...newTask, id: Date.now()}; // Генерация уникального ID
         const updatedTasks = [...tasks, taskWithId];
@@ -43,6 +66,7 @@ export const TaskBoard = () => {
             tasks: updatedTasks
         });
         localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+        handleCreateNotification('success', 'Задача успешно создана');
         closeModal();
     };
 
@@ -112,6 +136,16 @@ export const TaskBoard = () => {
         setIsOpenSearchInput(true);
     };
 
+    // const filterAndSearchTasks = () => {
+    //     return tasks.filter(task => {
+    //         const matchesStatus = state.filterTo.filterStatus ? task.status === state.filterTo.filterStatus : true;
+    //         const matchesDate = state.filterTo.filterDate ? task.date === state.filterTo.filterDate : true;
+    //         const matchesSearch = task.title.toLowerCase().includes(state.filterTo.search.toLowerCase());
+
+    //         return matchesStatus && matchesDate && matchesSearch;
+    //     });
+    // };
+
     const filteredTasks = tasks.filter(task => {
         const filterStatus = state.filterTo.filterStatus ? task.status === state.filterTo.filterStatus : true;
         const filterDate = state.filterTo.filterDate ? task.date === state.filterTo.filterDate : true;
@@ -134,14 +168,15 @@ export const TaskBoard = () => {
     };
 
     const handleSetFilter = (date, status) => {
-        setGlobalStore({
+        setGlobalStore(prevState => ({
+            ...prevState,
             filterTo: {
-                ...state.filterTo,
+                ...prevState.filterTo,
                 search: '',
-                filterDate: date !== undefined ? date : state.filterTo.filterDate,
-                filterStatus: status !== undefined ? undefined : state.filterTo.filterStatus
+                filterDate: date !== undefined ? date : prevState.filterTo.filterDate,
+                filterStatus: status !== undefined ? status : prevState.filterTo.filterStatus
             }
-        });
+        }));
     };
 
     const countChangedFields = () => {
@@ -149,14 +184,9 @@ export const TaskBoard = () => {
             filterStatus: 0,
             filterDate: 0
         };
-        let count = 0;
-        // Сравниваем текущее состояние с начальными значениями
-        for (const key in initialFilterTo) {
-            if (initialFilterTo.hasOwnProperty(key) && date[key] !== initialFilterTo[key]) {
-                count++;
-            }
-        }
-        return count;
+        return Object.keys(initialFilterTo).reduce((count, key) => {
+            return count + (initialFilterTo[key] !== state.filterTo[key] ? 1 : 0);
+        }, 0);
     };
 
     const changedFieldsCount = countChangedFields();
@@ -198,7 +228,7 @@ export const TaskBoard = () => {
             <div className="tasksContainer">
                 <div className="tasksContainer__scroller">
                     <Breakpoints
-                        searchedTasks={searchedTasks}
+                        searchedTasks={filteredTasks}
                         onView={openViewModal}
                         onEdit={openEditModal}
                         onClone={cloneTask}
@@ -218,6 +248,14 @@ export const TaskBoard = () => {
                 onClone={cloneTask}
                 onFilter={handleSetFilter}
             />
+            {/* {notifications.map((index) => (
+                <Notification
+                    key={index}
+                    type='success'
+                    message='Задача успешно добавлена'
+                    onClose={handleCloseNotification} />
+            ))} */}
+            <button onClick={handleShowNotification}>жми</button>
         </div>
     );
 };
