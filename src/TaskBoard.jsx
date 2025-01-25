@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
-import {ReactNotifications} from 'react-notifications-component'
+// import {ReactNotifications} from 'react-notifications-component'
 import 'react-notifications-component/dist/theme.css'
-// import 'animate.css/animate.min.css';
-// import 'animate.css/animate.compat.css'
 import './config/App.css';
 import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
@@ -54,13 +52,7 @@ export const TaskBoard = () => {
         navigate('/');
     };
 
-    const handleCreateNotification = (type, message) => {
-        setShowNotification(true);
-        return <Notification type={`${type}`} message={`${message}`} />
-    } 
-
     const handleCreateTask = newTask => {
-        handleCreateNotification('success', 'Задача успешно создана');
         const taskWithId = {...newTask, id: Date.now()}; // Генерация уникального ID
         const updatedTasks = [...tasks, taskWithId];
         setGlobalStore({
@@ -243,9 +235,10 @@ export const TaskBoard = () => {
                 <Notification
                     key={index}
                     type='success'
-                    message='Задача успешно добавлена'
-                    onClose={handleCloseNotification} />
-            ))}
+                    message='Some description of your notification'
+                    onClose={handleCloseNotification} 
+                    />
+             ))} 
         </div>
     );
 };

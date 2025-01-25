@@ -8,9 +8,9 @@ import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
 
 export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter, notification}) => {
-    const {title, description, time, date, status, isDirty, tasks} = useGlobalStore();
+    const {title, description, time, date, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
-
+    
     const modalRef = useRef(null);
     const [searchParams, setParams] = useSearchParams();
     const id = searchParams.get('id');
@@ -136,7 +136,7 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
     })();
 
     if (!isShow) {
-        console.log('Некорректный режим')
+        // console.log('Некорректный режим')
         return null;
     }
 

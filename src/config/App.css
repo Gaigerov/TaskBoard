@@ -254,6 +254,7 @@ textarea {
     align-items: flex-end;
     gap: 4px;
     padding: 0 16px 0 0;
+    margin-left: 32px;
 }
 
 .headerButtonsContainer {
@@ -262,7 +263,6 @@ textarea {
     position: absolute;
     left: 5px;
     gap: 8px;
-    margin-left: 32px;
 }
 
 .headerContainer {

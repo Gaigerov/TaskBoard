@@ -22,7 +22,6 @@ export const FormBody = ({mode, task, onSubmit, onEdit, onRemove, onClose, onClo
 
     const handleFilter = () => {
         onFilter(selectedDate, selectedStatus);
-        console.log(selectedDate, selectedStatus)
     }
 
     const toggleDropdown = () => {

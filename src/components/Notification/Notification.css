@@ -1,33 +1,76 @@
 @keyframes appear {
     0% {
-        opacity: 0; 
-        transform: translateY(20px) scale(0.1); 
+        opacity: 0;
+        transform: translateY(20px) scale(0.1);
     }
     100% {
-        opacity: 1; 
-        transform: translateY(0) scale(1); 
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 
 .notificationContainer {
-    position: absolute;
-    padding: 10px 20px;
-    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px 4px 8px;
     color: var(--dark);
-    width: 240px; 
+    width: 240px;
     transition: all 0.3s ease-in-out;
     opacity: 0;
-    animation: appear 1s forwards; 
+    animation: appear 1s forwards;
     font-size: 12px;
     font-weight: 400;
     line-height: 15px;
+    border-radius: 8px;
+}
+
+.messageContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+.titleNotification {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+
+.messageNotification {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+
+.iconNotification {
+    display: flex;
+    position: static;
+    width: 20px;
+    height: 20px;
 }
 
 @media screen and (max-width: 1199px) {
     .notificationContainer {
         bottom: 20px;
         left: 50%;
-        transform: translateY(-50%); 
+        /* transform: translateY(-50%); */
     }
 }
 
@@ -35,7 +78,7 @@
     .notificationContainer {
         bottom: 20px;
         right: 20px;
-        width: 280px; 
-        transform: translateY(20px) scale(0.1); 
+        width: 280px;
+        /* transform: translateY(20px) scale(0.1); */
     }
 }
