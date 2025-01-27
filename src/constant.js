@@ -22,7 +22,7 @@ export const TASK_STATUS = {
 };
 
 export const TASK_STATUSES = [
-    // TASK_STATUS.EMPTY,
+    TASK_STATUS.EMPTY,
     TASK_STATUS.TO_DO,
     TASK_STATUS.INPROGRESS,
     TASK_STATUS.DONE,

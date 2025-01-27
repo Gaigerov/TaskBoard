@@ -23,7 +23,7 @@ export const GlobalStoreController = ({children}) => {
             filterStatus: undefined,
         },
 
-        tasksPerPage: 5,
+        tasksPerPage: 10,
 
         errors: {
             title: '',

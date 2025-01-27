@@ -1,10 +1,9 @@
 import React from 'react';
-// import {List, Autosizer} from 'react-virtualized';
 
-import {Task} from '../Task';
+import {Tasks} from '../Tasks';
 export const Mobile = ({searchedTasks, onView, onEdit, onClone, onRemove, currentTaskId, notification}) => {
     return (
-        <Task
+        <Tasks
             searchedTasks={searchedTasks}
             onView={onView}
             onEdit={onEdit}

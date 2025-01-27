@@ -136,7 +136,7 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
     })();
 
     if (!isShow) {
-        // console.log('Некорректный режим')
+        console.log('Некорректный режим')
         return null;
     }
 

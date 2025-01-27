@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {Task} from '../Task';
+import {Tasks} from '../Tasks';
 export const Tablet = ({searchedTasks, onView, onEdit, onClone, onRemove, currentTaskId}) => {
     return (
-        <Task
+        <Tasks
             searchedTasks={searchedTasks}
             onView={onView}
             onEdit={onEdit}
