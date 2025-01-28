@@ -85,9 +85,9 @@ export const Popover = ({tableTask}) => {
             </div>
             {isOpen && (
                 <div className="statuses">
-                    {TASK_STATUSES.map((status) => (
+                    {TASK_STATUSES.map((status, index) => (
                         <div
-                            key={status}
+                            key={`${status}-${index}`}
                             className={getStatusClassName(status)}
                             onClick={() => handleStatusClick(status)}
                         >

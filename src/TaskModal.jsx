@@ -7,12 +7,12 @@ import {ModalForm} from './components/ModalForm/ModalForm';
 import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
 
-export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter, notification}) => {
+export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter}) => {
     const {title, description, time, date, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
-    
+
     const modalRef = useRef(null);
-    const [searchParams, setParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
 
     const task = tasks.find(task => task.id === Number(id));
@@ -103,43 +103,18 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
             validate();
         }
     }, [title, description, time, date]);
-
-    const handleSubmit = () => {
-        if (mode === VALID_MODE.CREATE && validate()) {
-            notification();
-            onCreate({title, description, time, date, status: TASK_STATUS.TO_DO});
-            setGlobalStore({
-                title: '',
-                description: '',
-                time: '',
-                date: '',
-                status: '',
-            })
-        }
-
-        else if (mode === VALID_MODE.EDIT && validate()) {
-            onSave({...task, title, description, time, date});
-            onClose();
-            setGlobalStore({
-                title: '',
-                description: '',
-                time: '',
-                date: '',
-                status: task.status,
-            })
-        }
-    }
+   
     const isShow = (() => {
-        if (tasks == []) return true;
-        if ((mode === VALID_MODE.CREATE) || (mode === VALID_MODE.FILTER)) return true;
-        return VALID_MODES.some(m => m === mode) && isValidId();
+        if (tasks.length === 0) return true; // Проверка на пустой массив
+        return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER) || 
+               (VALID_MODES.includes(mode) && isValidId());
     })();
-
+    
     if (!isShow) {
-        console.log('Некорректный режим')
+        console.log('Некорректный режим');
         return null;
     }
-
+    
     return (
         <div className="modalOverlay" ref={modalRef}>
             <ModalForm>
@@ -147,12 +122,14 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
                 <FormBody
                     task={task}
                     mode={mode}
-                    onSubmit={handleSubmit}
+                    onCreate={onCreate}
+                    onSave={onSave}
                     onEdit={onEdit}
                     onRemove={onRemove}
                     onClose={onClose}
                     onClone={onClone}
                     onFilter={onFilter}
+                    validate={validate}
                 />
             </ModalForm>
         </div>

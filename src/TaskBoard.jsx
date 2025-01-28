@@ -6,7 +6,6 @@ import './config/App.css';
 import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
 import {Breakpoints} from './Breakpoints';
-import {Notification} from './components/Notification/Notification';
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 import loop from './image/search.svg';
@@ -20,19 +19,6 @@ export const TaskBoard = () => {
     const navigate = useNavigate();
     const [currentTaskId, setCurrentTaskId] = useState(null);
     const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
-    const [showNotification, setShowNotification] = useState(false);
-    const [notifications, setNotifications] = useState([]);
-
-    const handleShowNotification = () => {
-        setNotifications((prevNotifications) => [
-            ...prevNotifications,
-            `Уведомление ${prevNotifications.length + 1}`,
-        ]);
-    };
-
-    const handleCloseNotification = () => {
-        setShowNotification(false);
-    };
 
     const handleClickOutside = event => {
         if (!event.target.closest('.headerFinderInput')) {
@@ -229,16 +215,7 @@ export const TaskBoard = () => {
                 onClose={closeModal}
                 onClone={cloneTask}
                 onFilter={handleSetFilter}
-                notification={handleShowNotification}
             />
-            {notifications.map((index) => (
-                <Notification
-                    key={index}
-                    type='success'
-                    message='Some description of your notification'
-                    onClose={handleCloseNotification} 
-                    />
-             ))} 
         </div>
     );
 };

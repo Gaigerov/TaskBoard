@@ -9,17 +9,17 @@ import xCircle from '../../image/xCircle.svg';
 export const Notification = ({message, type, onClose}) => {
     const [isVisible, setIsVisible] = useState(true);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsVisible(false);
-            onClose();
-        }, 3000);
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         setIsVisible(false);
+    //         onClose();
+    //     }, 3000);
 
-        return () => clearTimeout(timer);
-    }, [onClose]);
+    //     return () => clearTimeout(timer);
+    // }, [onClose]);
 
     const handleClick = () => {
-        setIsVisible(false);
+        setIsVisible(!isVisible);
         onClose();
     };
 

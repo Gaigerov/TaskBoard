@@ -10,7 +10,7 @@ import {Popover} from '../Popover/Popover';
 import {Datepicker} from '../Datepicker/Datepicker';
 import {FormFooter} from './FormFooter';
 
-export const FormBody = ({mode, task, onSubmit, onEdit, onRemove, onClose, onClone, onFilter}) => {
+export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClose, onClone, onFilter, validate}) => {
     const state = useGlobalStore();
     const {title, description, time, errors, isDirty} = state;
     const setGlobalStore = useSetGlobalStore();
@@ -221,12 +221,14 @@ export const FormBody = ({mode, task, onSubmit, onEdit, onRemove, onClose, onClo
             <FormFooter
                 task={task}
                 mode={mode}
-                onSubmit={onSubmit}
+                onCreate={onCreate}
+                onSave={onSave}
                 onEdit={onEdit}
                 onRemove={onRemove}
                 onClose={onClose}
                 onClone={onClone}
                 onFilter={handleFilter}
+                validate={validate}
             />
         </Fragment>
     );
