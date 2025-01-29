@@ -13,7 +13,6 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
     const setGlobalStore = useSetGlobalStore();
     const navigate = useNavigate();
     const {title, description, time, date} = state;
-console.log(validate)
     const [showNotification, setShowNotification] = useState(false);
     const [message, setMessage] = useState('default message');
     const [notificationType, setNotificationType] = useState('success');
@@ -46,16 +45,17 @@ console.log(validate)
     };
     
     const handleSubmit = () => {
-        resetGlobalStore()
         if (validate()) {
-            handleShowNotification();
-            handleNotification('Задача создана успешно', 'success');
             if (mode === VALID_MODE.CREATE) {
                 onCreate({ title, description, time, date, status: TASK_STATUS.TO_DO });
+                handleShowNotification();
+                handleNotification('Задача создана успешно', 'success');
             } else if (mode === VALID_MODE.EDIT) {
                 onSave({ ...task, title, description, time, date });
+                handleShowNotification();
+                handleNotification('Задача успешно отредактирована', 'success');
             }
-            resetGlobalStore(mode === VALID_MODE.EDIT ? task.status : '');
+            setGlobalStore(mode === VALID_MODE.EDIT ? task.status : '');
             onClose();
         }
     };

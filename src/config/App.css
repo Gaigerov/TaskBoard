@@ -1,6 +1,7 @@
 @import url('../config/font.css');
 @import url('../config/variables.css');
 @import url('../config/Modal.css');
+@import url('../components/Menu/Menu.css');
 @import url('../config/Buttons.css');
 @import url('../components/Datepicker/Datepicker.css');
 @import url('../components/Table.css');

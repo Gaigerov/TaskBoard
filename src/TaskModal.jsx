@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {useSearchParams} from "react-router-dom";
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
-import {TASK_STATUS, VALID_MODE, VALID_MODES} from './constant';
+import {VALID_MODE, VALID_MODES} from './constant';
 import {ModalForm} from './components/ModalForm/ModalForm';
 import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
@@ -10,7 +10,6 @@ import {FormBody} from './components/ModalForm/FormBody';
 export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter}) => {
     const {title, description, time, date, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
-
     const modalRef = useRef(null);
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
@@ -61,17 +60,29 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
                 time: task.time,
                 date: task.date,
                 status: task.status,
-            })
+            });
+        } else {
+            setGlobalStore({
+                title: '',
+                description: '',
+                time: '',
+                date: '',
+                status: '',
+            });
         }
     }, [task]);
 
-    const isValidId = () => tasks.some(t => t.id.toString() === id || console.log('Некорректный id'));
-
-    const validateField = (value, fieldName, maxLength) => {
-        if (!value) return `${fieldName}`;
-        if (value.length > maxLength) return `Максимум ${maxLength} символов`;
-        return '';
+    const isValidId = () => {
+        const valid = tasks.some(t => t.id.toString() === id);
+        if (!valid) console.log('Некорректный id');
+        return valid;
     };
+
+const validateField = (value, fieldName, maxLength) => {
+    if (!value) return `${fieldName} is required`;
+    if (value.length > maxLength) return `Максимум ${maxLength} символов`;
+    return '';
+};
 
     const validateTime = (time) => {
         if (!/^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/.test(time)) return 'Enter a valid time';
@@ -102,7 +113,7 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
         if (mode === VALID_MODE.CREATE && isDirty) {
             validate();
         }
-    }, [title, description, time, date]);
+    }, [title, description, time, date, isDirty]);
    
     const isShow = (() => {
         if (tasks.length === 0) return true; // Проверка на пустой массив

@@ -46,8 +46,12 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
     };
 
     const clearField = field => {
-        setGlobalStore({[field]: ''});
+        setGlobalStore(prevState => ({
+            ...prevState,
+            [field]: ''
+        }));
     };
+    
     const makeSetField = field => event => {
         setGlobalStore({
             [field]: event.target.value

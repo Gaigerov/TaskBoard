@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
-// import {ReactNotifications} from 'react-notifications-component'
-import 'react-notifications-component/dist/theme.css'
 import './config/App.css';
+import {Menu} from './components/Menu/Menu';
 import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
 import {Breakpoints} from './Breakpoints';
@@ -116,11 +115,11 @@ export const TaskBoard = () => {
 
     const filteredTasks = tasks.filter(task => {
         const {filterStatus, filterDate} = state.filterTo;
-        return (!filterStatus || task.status === filterStatus) && 
-               (!filterDate || task.date === filterDate);
+        return (!filterStatus || task.status === filterStatus) &&
+            (!filterDate || task.date === filterDate);
     });
 
-    const searchedTasks = filteredTasks.filter(task => 
+    const searchedTasks = filteredTasks.filter(task =>
         task.title.toLowerCase().includes(state.filterTo.search.toLowerCase())
     );
 
@@ -150,7 +149,7 @@ export const TaskBoard = () => {
             filterDate: undefined,
             filterStatus: undefined,
         };
-    
+
         return Object.keys(initialFilterTo).reduce((count, key) => {
             const currentValue = state.filterTo[key];
             return count + (currentValue !== initialFilterTo[key] ? 1 : 0);
@@ -206,6 +205,7 @@ export const TaskBoard = () => {
                     />
                 </div>
             </div>
+            <Menu />
             <TaskModal
                 mode={mode}
                 onCreate={handleCreateTask}
