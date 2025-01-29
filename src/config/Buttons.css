@@ -10,6 +10,14 @@
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
 
+.menuButtonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+}
+
 .searchButtonContainer {
     display: flex;
     justify-content: center;
@@ -27,23 +35,13 @@
     height: 36px;
 }
 
-.filterButton {
+.menuButton {
     display: flex;
     width: 20px;
     height: 20px;
 }
 
-.filterButton:hover {
-    cursor: pointer;
-}
-
-.searchButton {
-    display: flex;
-    width: 20px;
-    height: 20px;
-}
-
-.searchButton {
+.menuButton:hover {
     cursor: pointer;
 }
 

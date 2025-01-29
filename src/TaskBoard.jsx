@@ -10,6 +10,7 @@ import {useSetGlobalStore} from './GlobalStoreContext';
 import {useBreakpoint} from './breakpoints/useBreakpoint';
 import loop from './image/search.svg';
 import filter from './image/filter.svg';
+import desktopMenu from './image/desktop-menu.svg'
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
@@ -165,13 +166,18 @@ export const TaskBoard = () => {
             <div className="headerContainer">
                 <div className="taskFinderContainer">
                     <div className="headerButtonsContainer" style={{display: isOpenSearchInput ? 'none' : 'flex'}}>
+                        {breakpoint === 'desktop' &&
+                            <div className="menuButtonContainer" onClick={handleOpenSearchInput}>
+                                <img className="menuButton" src={desktopMenu} />
+                            </div>
+                        }
                         <div className="searchButtonContainer" onClick={handleOpenSearchInput}>
-                            <img className="searchButton" src={loop} />
+                            <img className="menuButton" src={loop} />
                             {state.filterTo.search !== '' && <div className="searchStatus"></div>}
                         </div>
                         <div className="filterButtonContainer">
                             <div onClick={openFilterModal}>
-                                <img className="filterButton" src={filter} />
+                                <img className="menuButton" src={filter} />
                                 {state.filterTo.filterDate !== undefined ||
                                     (state.filterTo.filterStatus !== undefined && (
                                         <div className="filterStatus">
@@ -207,7 +213,7 @@ export const TaskBoard = () => {
                     />
                 </div>
             </div>
-            {breakpoint !== 'desktop' && 
+            {breakpoint !== 'desktop' &&
                 <Menu />
             }
 
