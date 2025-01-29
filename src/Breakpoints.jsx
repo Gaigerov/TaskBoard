@@ -1,38 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import {Desktop} from './breakpoints/Desktop';
 import {Tablet} from './breakpoints/Tablet';
 import {Mobile} from './breakpoints/Mobile';
-import { throttle } from 'lodash';
-
-function getBreakpoint(width) {
-    if (width < 770) {
-        return 'mobile'
-    }
-    if (width < 1200) {
-        return 'tablet'
-    }
-
-    return 'desktop'
-}
-
-function useBreakpoint() {
-  const [breakpoint, setBreakpoint] = useState(getBreakpoint(window.innerWidth));
-
-  useEffect(() => {
-    function handleResize() {
-      const width = window.innerWidth;
-      setBreakpoint(getBreakpoint(width));
-    }
-    const handleResizeThrottle = throttle(handleResize, 300);
-
-    window.addEventListener('resize', handleResizeThrottle); 
-
-    return () => window.removeEventListener('resize', handleResizeThrottle);
-  }, []);
-
-  return breakpoint;
-}
+import {useBreakpoint} from './breakpoints/useBreakpoint';
 
 export const Breakpoints = ({searchedTasks, onView, onEdit, onClone, onRemove, currentTaskId, deleteMode}) => {
     const breakpoint = useBreakpoint();

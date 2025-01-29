@@ -7,6 +7,7 @@ import {TaskModal} from './TaskModal';
 import {Breakpoints} from './Breakpoints';
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
+import {useBreakpoint} from './breakpoints/useBreakpoint';
 import loop from './image/search.svg';
 import filter from './image/filter.svg';
 
@@ -18,6 +19,7 @@ export const TaskBoard = () => {
     const navigate = useNavigate();
     const [currentTaskId, setCurrentTaskId] = useState(null);
     const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
+    const breakpoint = useBreakpoint();
 
     const handleClickOutside = event => {
         if (!event.target.closest('.headerFinderInput')) {
@@ -205,7 +207,10 @@ export const TaskBoard = () => {
                     />
                 </div>
             </div>
-            <Menu />
+            {breakpoint !== 'desktop' && 
+                <Menu />
+            }
+
             <TaskModal
                 mode={mode}
                 onCreate={handleCreateTask}
