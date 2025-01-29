@@ -13,7 +13,7 @@ export const Notification = ({message, type, onClose}) => {
         const timer = setTimeout(() => {
             setIsVisible(false);
             onClose();
-        }, 3000);
+        }, 4000);
 
         return () => clearTimeout(timer);
     }, [onClose]);
@@ -51,7 +51,7 @@ export const Notification = ({message, type, onClose}) => {
 
     return (
         <div
-            className="notificationContainer"
+            className='notificationContainer'
             style={{backgroundColor}}
             onClick={handleClick}
         >
