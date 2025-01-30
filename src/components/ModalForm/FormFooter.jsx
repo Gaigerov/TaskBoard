@@ -67,7 +67,7 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
     };
     
     const handleRemoveTask = () => {
-        handleNotification('Задача удалена успешно', 'error');
+        handleNotification('Задача удалена успешно', 'success');
         handleShowNotification();
         onRemove(task.id);
         onClose();

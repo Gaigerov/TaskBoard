@@ -9,7 +9,7 @@ export default defineConfig({
     cors: true,
   },
   build: {
-    outDir: 'dist',
+    outDir: 'build',
     sourcemap: true,
     minify: 'esbuild',
   },
