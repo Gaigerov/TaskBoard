@@ -1,20 +1,28 @@
 @keyframes appear {
     0% {
         opacity: 0;
-        transform: translateY(20) scale(0.1);
+        transform: translateY(20px) scale(0.1);
     }
     50% {
-        opacity: 1;
-        transform: translateY(10);
+        opacity: 0.5;
+        transform: translateY(-10px) scale(1.05);
     }
     100% {
-        opacity: 0;
-        transform: translateY(-20px) scale(1);
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 
-.notificationContainer {
+.notificationList {
     position: absolute;
+    z-index: 1000;
+}
+
+.notificationContainer {
+    margin-bottom: 10px;
+}
+
+.notificationContainer {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -22,9 +30,9 @@
     gap: 8px;
     padding: 4px 8px;
     color: var(--dark);
-    width: 240px;
-    opacity: 0; 
-    animation: appear 3s forwards; 
+    opacity: 0;
+    animation: appear 0.7s forwards;
+    animation-delay: 0.1s;
     transition: opacity 0.5s ease, transform 0.5s ease;
     font-weight: 400;
     line-height: 15px;
@@ -71,18 +79,24 @@
 }
 
 @media screen and (max-width: 1199px) {
-    .notificationContainer {
-        bottom: 20px;
+    .notificationList {
         left: 50%;
-        transform: translateY(-50%);
+        bottom: 20px;
+        transform: translateX(-50%);
+    }
+
+    .notificationContainer {
+        width: 240px;
     }
 }
 
 @media screen and (min-width: 1200px) {
-    .notificationContainer {
-        bottom: 20px;
+    .notificationList {
         right: 20px;
+        bottom: 20px;
+    }
+
+    .notificationContainer {
         width: 280px;
-        transform: translateY(20px);
     }
 }

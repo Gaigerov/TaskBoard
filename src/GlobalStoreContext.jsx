@@ -1,5 +1,4 @@
 import React, {createContext, useContext, useState} from 'react';
-import {TASK_STATUS} from './constant';
 
 export const GlobalStoreContext = createContext();
 

@@ -8,9 +8,12 @@ import {Breakpoints} from './Breakpoints';
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
 import {useBreakpoint} from './breakpoints/useBreakpoint';
+import {useNotification} from './components/Notification/NotificationContext';
+
 import loop from './image/search.svg';
 import filter from './image/filter.svg';
 import desktopMenu from './image/desktop-menu.svg'
+
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
@@ -21,6 +24,7 @@ export const TaskBoard = () => {
     const [currentTaskId, setCurrentTaskId] = useState(null);
     const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
     const breakpoint = useBreakpoint();
+    const showNotification = useNotification();
 
     const handleClickOutside = event => {
         if (!event.target.closest('.headerFinderInput')) {
@@ -63,6 +67,7 @@ export const TaskBoard = () => {
             setGlobalStore({
                 tasks: [...tasks, newTask]
             });
+            showNotification('Задача скопирована в конец списка', 'success');
         }
     };
 
@@ -72,6 +77,7 @@ export const TaskBoard = () => {
         setGlobalStore({
             tasks: updatedTasks
         });
+        showNotification('Задача отредактирована', 'success');
         closeModal();
     };
 
@@ -81,6 +87,7 @@ export const TaskBoard = () => {
             tasks: updatedTasks
         });
         localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+        showNotification('Задача удалена', 'success');
         closeModal();
     };
 
@@ -167,7 +174,7 @@ export const TaskBoard = () => {
                 <div className="taskFinderContainer">
                     <div className="headerButtonsContainer" style={{display: isOpenSearchInput ? 'none' : 'flex'}}>
                         {breakpoint === 'desktop' &&
-                            <div className="menuButtonContainer" onClick={handleOpenSearchInput}>
+                            <div className="menuButtonContainer" onClick={console.log("Привет")}>
                                 <img className="menuButton" src={desktopMenu} />
                             </div>
                         }

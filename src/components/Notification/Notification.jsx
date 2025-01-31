@@ -9,52 +9,47 @@ import xCircle from '../../image/xCircle.svg';
 export const Notification = ({message, type, onClose}) => {
     const [isVisible, setIsVisible] = useState(true);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsVisible(false);
-            onClose();
-        }, 4000);
-
-        return () => clearTimeout(timer);
-    }, [onClose]);
-
     const handleClick = () => {
         setIsVisible(!isVisible);
         onClose();
     };
 
+    const getBackgroundColor = (type) => {
+        return (() => {
+            if (type === 'error') return 'rgb(255, 150, 160)';
+            if (type === 'warning') return 'rgb(255, 227, 142)';
+            if (type === 'success') return 'rgb(51, 228, 146)';
+            if (type === 'info') return 'rgb(171, 241, 255)';
+            return 'rgb(179, 189, 199)';
+        })();
+    };
+
+    const getTitleNotification = (type) => {
+        return (() => {
+            if (type === 'error') return 'Error';
+            if (type === 'warning') return 'Warning';
+            if (type === 'success') return 'Success';
+            if (type === 'info') return 'Info';
+            return 'Notification';
+        })();
+    };
+
+    const getIconNotification = (type) => {
+        return (() => {
+            if (type === 'error') return xCircle;
+            if (type === 'warning') return alertCircle;
+            if (type === 'success') return checkCircle;
+            if (type === 'info') return helpCircle;
+            return messageCircle;
+        })();
+    };
+
+    const backgroundColor = getBackgroundColor(type);
+    const titleNotification = getTitleNotification(type);
+    const iconNotification = getIconNotification(type);
+
     if (!isVisible) return null;
 
-    const backgroundColor =
-        type === 'error'
-            ? 'rgb(255, 150, 160)'
-            : type === 'warning'
-            ? 'rgb(255, 227, 142)'
-            : type === 'success'
-            ? 'rgb(51, 228, 146)'
-            : type === 'info'
-            ? 'rgb(171, 241, 255)'
-            : 'rgb(179, 189, 199)';
-    const titleNotification =
-        type === 'error'
-            ? 'Error'
-            : type === 'warning'
-            ? 'Warning'
-            : type === 'success'
-            ? 'Success'
-            : type === 'info'
-            ? 'Info'
-            : 'Notification';
-    const iconNotification =
-        type === 'error'
-            ? xCircle
-            : type === 'warning'
-            ? alertCircle
-            : type === 'success'
-            ? checkCircle
-            : type === 'info'
-            ? helpCircle
-            : messageCircle;
     return (
         <div className="notificationContainer" style={{backgroundColor}} onClick={handleClick}>
             <img className="iconNotification" src={iconNotification} />

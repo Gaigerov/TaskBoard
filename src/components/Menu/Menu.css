@@ -1,9 +1,9 @@
 .menuContainer {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     align-items: flex-start;
-    gap: 80;
+    gap: 80px;
     padding: 4px 28px 4px 28px;
     border-top: 1px solid rgb(235, 235, 235);
     margin-top: auto;

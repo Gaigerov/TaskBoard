@@ -1,0 +1,41 @@
+import React, {createContext, useContext, useState} from 'react';
+import {Notification} from './Notification';
+
+const NotificationContext = createContext();
+
+export const NotificationProvider = ({ children }) => {
+    const [notifications, setNotifications] = useState([]);
+
+    const showNotification = (msg, type) => {
+        const newNotification = { id: Date.now(), message: msg, type };
+        setNotifications((prev) => [...prev, newNotification]);
+    
+        setTimeout(() => {
+            handleClose(newNotification.id);
+        }, 5000);
+    };
+
+    const handleClose = (id) => {
+        setNotifications((prev) => prev.filter(notif => notif.id !== id));
+    };
+
+    return (
+        <NotificationContext.Provider value={showNotification}>
+            {children}
+            <div className="notificationList">
+                {notifications.map((notification) => (
+                    <Notification 
+                        key={notification.id} 
+                        message={notification.message} 
+                        type={notification.type} 
+                        onClose={() => handleClose(notification.id)} 
+                    />
+                ))}
+            </div>
+        </NotificationContext.Provider>
+    );
+};
+
+export const useNotification = () => {
+    return useContext(NotificationContext);
+};

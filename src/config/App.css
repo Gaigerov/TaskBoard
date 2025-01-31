@@ -395,6 +395,7 @@ textarea {
         flex-direction: column;
         justify-content: center;
         position: relative;
+        height: 100%;
     }
 
     .taskContainer:hover {
@@ -424,7 +425,7 @@ textarea {
     .tasksContainer__scroller {
         overflow-y: scroll;
         width: auto;
-        height: 600px;
+        height: 100%;
         padding: 0 32px;
     }
 
@@ -615,6 +616,7 @@ textarea {
         flex-direction: column;
         justify-content: center;
         position: relative;
+        height: 100%;
     }
 
     .taskContainer:hover {
@@ -643,7 +645,7 @@ textarea {
     .tasksContainer__scroller {
         overflow-y: scroll;
         width: auto;
-        height: 600px;
+        height: 100%;
         padding: 0 32px;
     }
 
