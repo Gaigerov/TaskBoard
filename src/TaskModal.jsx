@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {useSearchParams} from "react-router-dom";
 import {useGlobalStore} from './GlobalStoreContext';
 import {useSetGlobalStore} from './GlobalStoreContext';
+import {useNotification} from './components/Notification/NotificationContext';
 import {VALID_MODE, VALID_MODES} from './constant';
 import {ModalForm} from './components/ModalForm/ModalForm';
 import {FormHeader} from './components/ModalForm/FormHeader';
@@ -10,6 +11,7 @@ import {FormBody} from './components/ModalForm/FormBody';
 export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter}) => {
     const {title, description, time, date, isDirty, tasks} = useGlobalStore();
     const setGlobalStore = useSetGlobalStore();
+    const showNotification = useNotification();
     const modalRef = useRef(null);
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
@@ -72,6 +74,13 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
         }
     }, [task]);
 
+    // const notifyIncorrectMode = () => {
+    //     if (VALID_MODES.includes(mode)) {
+    //         return;
+    //     }
+    //     showNotification('Некорректный режим', 'error');
+    // };
+
     const isValidId = () => {
         const valid = tasks.some(t => t.id.toString() === id);
         if (!valid) console.log('Некорректный id');
@@ -113,7 +122,7 @@ const validateField = (value, fieldName, maxLength) => {
         if (mode === VALID_MODE.CREATE && isDirty) {
             validate();
         }
-    }, [title, description, time, date, isDirty]);
+    }, [title, description, time, date, isDirty, mode]);
    
     const isShow = (() => {
         if (tasks.length === 0) return true; // Проверка на пустой массив
@@ -122,7 +131,6 @@ const validateField = (value, fieldName, maxLength) => {
     })();
     
     if (!isShow) {
-        console.log('Некорректный режим');
         return null;
     }
     

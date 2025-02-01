@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react';
 import {TASK_STATUS, TASK_STATUSES} from '../../constant';
 import {useSearchParams} from "react-router-dom";
 import {useGlobalStore, useSetGlobalStoreTasks} from "../../GlobalStoreContext";
+import {useNotification} from '../Notification/NotificationContext';
 
 export const Popover = ({tableTask}) => {
     const {tasks} = useGlobalStore();
     const handleSetNewTasks = useSetGlobalStoreTasks();
+    const showNotification = useNotification();
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
     const currentTask = tasks.find(task => task.id === Number(tableTask?.id || id));
@@ -40,9 +42,9 @@ export const Popover = ({tableTask}) => {
         if (taskToUpdate) {
             taskToUpdate.status = newStatus;
             handleSetNewTasks(tasks);
-            console.log(`Статус задачи с ID ${taskId} обновлён на '${newStatus}'`);
+            showNotification(`Статус задачи '${taskToUpdate.title}' обновлён на '${newStatus}'`, 'info');
         } else {
-            console.log(`Задача с ID ${taskId} не найдена`);
+            showNotification(`Задача с ID ${taskId} не найдена`, 'error');
         }
     }
 

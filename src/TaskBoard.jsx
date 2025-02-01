@@ -174,7 +174,7 @@ export const TaskBoard = () => {
                 <div className="taskFinderContainer">
                     <div className="headerButtonsContainer" style={{display: isOpenSearchInput ? 'none' : 'flex'}}>
                         {breakpoint === 'desktop' &&
-                            <div className="menuButtonContainer" onClick={console.log("Привет")}>
+                            <div className="menuButtonContainer">
                                 <img className="menuButton" src={desktopMenu} />
                             </div>
                         }
