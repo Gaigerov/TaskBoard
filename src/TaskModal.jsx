@@ -74,12 +74,12 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
         }
     }, [task]);
 
-    // const notifyIncorrectMode = () => {
-    //     if (VALID_MODES.includes(mode)) {
-    //         return;
-    //     }
-    //     showNotification('Некорректный режим', 'error');
-    // };
+    const notifyIncorrectMode = () => {
+        if (VALID_MODES.includes(mode)) {
+            return;
+        }
+        showNotification('Некорректный режим', 'error');
+    };
 
     const isValidId = () => {
         const valid = tasks.some(t => t.id.toString() === id);

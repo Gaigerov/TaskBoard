@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import xButton from '../../image/x.svg';
+import xButton from '../../image/x.svg?react';
 import {VALID_MODE} from '../../constant';
 
 export const FormHeader = ({task, mode, onClose}) => {

@@ -1,11 +1,31 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useContext, useState, useEffect} from 'react';
+import {useNotification} from './components/Notification/NotificationContext';
 
 export const GlobalStoreContext = createContext();
 
-const storedTasks = localStorage.getItem('tasks');
-const tasks = storedTasks ? JSON.parse(storedTasks) : [];
-
 export const GlobalStoreController = ({children}) => {
+    const showNotification = useNotification();
+    const [tasks, setTasks] = useState(() => {
+        const storedTasks = localStorage.getItem('tasks');
+        let initialTasks = storedTasks ? JSON.parse(storedTasks) : [];
+
+        if (!Array.isArray(initialTasks)) {
+            console.log('ERROR')
+            // showNotification('Данные в localStorage не являются массивом. Очищаем localStorage.', 'error');
+            localStorage.removeItem('tasks');
+            initialTasks = [];
+        } else {
+            initialTasks = initialTasks.filter((task, id) => {
+                const isValid = task.title && task.description && task.time && task.date;
+                if (!isValid) {
+                    console.log('ERROR')
+                    // showNotification(`Задача с индексом ${id} некорректна. Убедитесь, что все поля заполнены., 'error'`);
+                }
+                return isValid;
+            });
+        }
+        return initialTasks;
+    });
 
     const [state, setState] = useState({
         tasks: tasks,
@@ -32,11 +52,20 @@ export const GlobalStoreController = ({children}) => {
         },
     });
 
+    useEffect(() => {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        setState(prevState => ({
+            ...prevState,
+            tasks: tasks,
+        }));
+    }, [tasks]);
+
     return (
         <GlobalStoreContext.Provider
             value={{
                 state,
                 setState,
+                setTasks,
             }}
         >
             {children}
@@ -45,32 +74,25 @@ export const GlobalStoreController = ({children}) => {
 };
 
 export const useGlobalStore = () => {
-    const {state} = useContext(GlobalStoreContext);
+    const { state } = useContext(GlobalStoreContext);
     return state;
 };
 
 export const useSetGlobalStoreTasks = () => {
-    const {setState} = useContext(GlobalStoreContext);
+    const { setTasks } = useContext(GlobalStoreContext);
     const handleSetNewTasks = (newTasks) => {
-        localStorage.setItem('tasks', JSON.stringify(newTasks));
-        setState(state => {
-            return {
-                ...state,
-                tasks: newTasks,
-            }
-        })
-    }
+        setTasks(newTasks);
+    };
     return handleSetNewTasks;
-}
+};
 
 export const useSetGlobalStore = () => {
-    const {setState} = useContext(GlobalStoreContext);
+    const { setState } = useContext(GlobalStoreContext);
     const handleSetState = (newState) => {
-        setState(state => {
-            return {
-                ...state, ...newState,
-            }
-        })
-    }
+        setState(prevState => ({
+            ...prevState,
+            ...newState,
+        }));
+    };
     return handleSetState;
 };

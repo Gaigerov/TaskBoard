@@ -15,7 +15,7 @@ export const VALID_MODES = [
 ];
 
 export const TASK_STATUS = {
-    // EMPTY: '',
+    EMPTY: '',
     TO_DO: 'To Do',
     INPROGRESS: 'In Progress',
     DONE: 'Done',

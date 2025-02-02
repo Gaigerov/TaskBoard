@@ -17,7 +17,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
     const inputRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const [isDatepicker, setIsDatepicker] = useState(false);
-    const [selectedStatus, setSelectedStatus] = useState(TASK_STATUS.TO_DO);
+    const [selectedStatus, setSelectedStatus] = useState(TASK_STATUS.EMPTY);
     const [selectedDate, setSelectedDate] = useState(mode === VALID_MODE.EDIT ? task.date : state.filterTo.filterDate);
 
     const handleFilter = () => {
@@ -51,7 +51,11 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
             [field]: ''
         }));
     };
-    
+
+    const clearStatusFilter = () => {
+        setSelectedStatus(TASK_STATUS.EMPTY);
+    };
+
     const makeSetField = field => event => {
         setGlobalStore({
             [field]: event.target.value
@@ -167,12 +171,13 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                 {mode === VALID_MODE.FILTER && (
                     <>
                         <label>Status</label>
-                        <div className="customSelector">
+                        <div className="customFilterSelector">
                             <div className="selectedStatus">{selectedStatus}</div>
+                            <img className="inputClearStatus" src={xButton} onClick={() => clearStatusFilter()} />
                             <img className="downButton" src={chevronDown} onClick={toggleDropdown}></img>
                             {isOpen && (
                                 <div className="statusesFilter">
-                                    {TASK_STATUSES.map(status => (
+                                    {TASK_STATUSES.filter(status => status !== TASK_STATUS.EMPTY).map(status => (
                                         <div
                                             key={status}
                                             className="customStatus"

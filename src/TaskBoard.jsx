@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 import './config/App.css';
 import {Menu} from './components/Menu/Menu';
+import {DesktopMenu} from './components/DesktopMenu/DesctopMenu';
 import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
 import {Breakpoints} from './Breakpoints';
@@ -23,6 +24,7 @@ export const TaskBoard = () => {
     const navigate = useNavigate();
     const [currentTaskId, setCurrentTaskId] = useState(null);
     const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
+    const [isOpenMenu, setIsOpenMenu] = useState(false);
     const breakpoint = useBreakpoint();
     const showNotification = useNotification();
 
@@ -123,6 +125,11 @@ export const TaskBoard = () => {
         setIsOpenSearchInput(true);
     };
 
+    const handleToggleMenu = () => {
+        setIsOpenMenu(!isOpenMenu);
+    };
+
+
     const filteredTasks = tasks.filter(task => {
         const {filterStatus, filterDate} = state.filterTo;
         return (!filterStatus || task.status === filterStatus) &&
@@ -174,7 +181,8 @@ export const TaskBoard = () => {
                 <div className="taskFinderContainer">
                     <div className="headerButtonsContainer" style={{display: isOpenSearchInput ? 'none' : 'flex'}}>
                         {breakpoint === 'desktop' &&
-                            <div className="menuButtonContainer">
+                            <div className="menuButtonContainer" onClick={handleToggleMenu}>
+                                {isOpenMenu ? <DesktopMenu /> : null}
                                 <img className="menuButton" src={desktopMenu} />
                             </div>
                         }
@@ -198,7 +206,7 @@ export const TaskBoard = () => {
                         <input
                             id="searchInput"
                             type="text"
-                            placeholder="Search"
+                            placeholder="Search..."
                             className="headerFinderInput"
                             onChange={handleChange}
                             value={state.filterTo.search}

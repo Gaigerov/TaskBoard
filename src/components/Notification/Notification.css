@@ -3,13 +3,17 @@
         opacity: 0;
         transform: translateY(20px) scale(0.1);
     }
-    50% {
-        opacity: 0.5;
+    20% {
+        opacity: 1;
+        transform: translateY(-10px) scale(1.05);
+    }
+    80% {
+        opacity: 1;
         transform: translateY(-10px) scale(1.05);
     }
     100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+        opacity: 0;
+        transform: translateY(-10px) scale(1.05);
     }
 }
 
@@ -31,13 +35,18 @@
     padding: 4px 8px;
     color: var(--dark);
     opacity: 0;
-    animation: appear 0.7s forwards;
+    animation: appear 7s forwards;
     animation-delay: 0.1s;
     transition: opacity 0.5s ease, transform 0.5s ease;
     font-weight: 400;
     line-height: 15px;
     border-radius: 8px;
 }
+
+.notificationContainer.fadeOut {
+    animation: fadeOut 0.5s forwards; 
+}
+
 
 .messageContainer {
     display: flex;

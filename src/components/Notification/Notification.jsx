@@ -51,7 +51,7 @@ export const Notification = ({message, type, onClose}) => {
     if (!isVisible) return null;
 
     return (
-        <div className="notificationContainer" style={{backgroundColor}} onClick={handleClick}>
+        <div className='notificationContainer' style={{backgroundColor}} onClick={handleClick}>
             <img className="iconNotification" src={iconNotification} />
             <div className="messageContainer">
                 <span className="titleNotification">{titleNotification}</span>

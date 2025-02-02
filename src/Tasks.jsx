@@ -25,7 +25,7 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone, current
     const rowRenderer = ({key, index, style}) => {
         const task = searchedTasks[index];
         return (
-            <div key={key} style={{...style, width: '100%'}}>
+            <div key={key} style={{...style, width: '100%', height: '100%'}}>
                 <Task
                     task={task}
                     onEdit={onEdit}
@@ -46,7 +46,7 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone, current
                 rowCount={searchedTasks.length}
                 rowHeight={130}
                 rowRenderer={rowRenderer}
-                style={{overflowY: 'auto'}}
+                style={{overflowY: 'auto', overflowX: 'auto'}}
             />
         </div>
     );

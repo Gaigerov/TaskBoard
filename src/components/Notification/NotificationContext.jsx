@@ -3,16 +3,14 @@ import {Notification} from './Notification';
 
 const NotificationContext = createContext();
 
-export const NotificationProvider = ({ children }) => {
+export const NotificationProvider = ({children}) => {
     const [notifications, setNotifications] = useState([]);
-
     const showNotification = (msg, type) => {
-        const newNotification = { id: Date.now(), message: msg, type };
+        const newNotification = {id: Date.now(), message: msg, type};
         setNotifications((prev) => [...prev, newNotification]);
-    
         setTimeout(() => {
             handleClose(newNotification.id);
-        }, 5000);
+        }, 7000);
     };
 
     const handleClose = (id) => {
@@ -22,16 +20,18 @@ export const NotificationProvider = ({ children }) => {
     return (
         <NotificationContext.Provider value={showNotification}>
             {children}
-            <div className="notificationList">
+            {/* <div 
+            className="notificationList"
+            >
                 {notifications.map((notification) => (
-                    <Notification 
-                        key={notification.id} 
-                        message={notification.message} 
-                        type={notification.type} 
-                        onClose={() => handleClose(notification.id)} 
-                    />
+                        <Notification
+                            key={notification.id}
+                            message={notification.message}
+                            type={notification.type}
+                            onClose={() => handleClose(notification.id)}
+                        />
                 ))}
-            </div>
+            </div> */}
         </NotificationContext.Provider>
     );
 };
