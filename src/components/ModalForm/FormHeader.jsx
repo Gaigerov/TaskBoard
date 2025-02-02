@@ -11,6 +11,7 @@ export const FormHeader = ({task, mode, onClose}) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    
     return (
         <>
             <div className='modalRectangle'>
