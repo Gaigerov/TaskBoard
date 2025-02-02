@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, Fragment} from 'react';
 import {useGlobalStore} from '../../GlobalStoreContext';
 import {useSetGlobalStore} from '../../GlobalStoreContext';
-import xButton from '../../image/x.svg';
+import xButton from '../../image/xButton.svg';
 import chevronDown from '../../image/ChevronDown.svg';
 import {VALID_MODE} from '../../constant';
 import InputMask from 'react-input-mask';
