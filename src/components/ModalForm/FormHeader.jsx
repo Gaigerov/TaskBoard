@@ -19,13 +19,17 @@ export const FormHeader = ({task, mode, onClose}) => {
             {mode === VALID_MODE.CREATE && (
                 <div className="modalHeader">
                     <h2 className="modalHeaderName">Create Task</h2>
-                    <div onClick={onClose}><img className="modalCloseButton" src={xButton} alt="Закрыть" /></div>
+                    <div onClick={onClose}>
+                        <img className="modalCloseButton" src={xButton} alt="Закрыть" />
+                    </div>
                 </div>
             )}
             {mode === VALID_MODE.EDIT && (
                 <div className="modalHeader">
                     <h2 className="modalHeaderName">Edit Task</h2>
-                    <div onClick={onClose}><img className="modalCloseButton" src={xButton} alt="Закрыть" /></div>
+                    <div onClick={onClose}>
+                        <img className="modalCloseButton" src={xButton} alt="Закрыть" />
+                    </div>
                 </div>
             )}
             {mode === VALID_MODE.VIEW && (
@@ -40,7 +44,9 @@ export const FormHeader = ({task, mode, onClose}) => {
                 <div className="modalModeText">
                     <div className="modalHeader">
                         <h2 className="modalHeaderName">Remove Task</h2>
-                        <div onClick={onClose}><img className="modalCloseButton" src={xButton} alt="Закрыть" /></div>
+                        <div onClick={onClose}>
+                            <img className="modalCloseButton" src={xButton} alt="Закрыть" />
+                        </div>
                     </div>
                     <p className="modalRemoveParagraph">Are you sure you want to delete the task "
                         <span className="modalBoldText">{task.title}</span>"?
@@ -52,7 +58,9 @@ export const FormHeader = ({task, mode, onClose}) => {
                     <h2 className="modalHeaderName">
                         Filter Task
                     </h2>
-                    <div onClick={onClose}><img className="modalCloseButton" src={xButton} alt="Закрыть" /></div>
+                    <div onClick={onClose}>
+                        <img className="modalCloseButton" src={xButton} alt="Закрыть" />
+                    </div>
                 </div>
             )}
         </>
