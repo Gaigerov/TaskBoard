@@ -7,6 +7,7 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone, current
 
     const listRef = useRef();
     const [listWidth, setListWidth] = useState(0);
+    const rowHeight = 130;
 
     useEffect(() => {
         const updateWidth = () => {
@@ -25,7 +26,7 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone, current
     const rowRenderer = ({key, index, style}) => {
         const task = searchedTasks[index];
         return (
-            <div key={key} style={{...style, width: '100%', height: '100%'}}>
+            <div key={key} style={{...style, height: '100%'}}>
                 <Task
                     task={task}
                     onEdit={onEdit}
@@ -38,15 +39,18 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone, current
         );
     }
 
+    const listHeight = Math.min(searchedTasks.length * rowHeight, 800);
+
     return (
-        <div ref={listRef} style={{width: '100%'}}>
+        <div ref={listRef} >
             <List
                 width={listWidth}
-                height={800}
+                height={listHeight}
+                paddingRight='50px'
                 rowCount={searchedTasks.length}
-                rowHeight={130}
+                rowHeight={rowHeight}
                 rowRenderer={rowRenderer}
-                style={{overflowY: 'auto', overflowX: 'auto'}}
+                style={{overflowY: 'auto', overflowX: 'hidden'}}
             />
         </div>
     );

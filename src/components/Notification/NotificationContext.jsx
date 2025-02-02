@@ -20,7 +20,7 @@ export const NotificationProvider = ({children}) => {
     return (
         <NotificationContext.Provider value={showNotification}>
             {children}
-            {/* <div 
+            <div 
             className="notificationList"
             >
                 {notifications.map((notification) => (
@@ -31,7 +31,7 @@ export const NotificationProvider = ({children}) => {
                             onClose={() => handleClose(notification.id)}
                         />
                 ))}
-            </div> */}
+            </div>
         </NotificationContext.Provider>
     );
 };

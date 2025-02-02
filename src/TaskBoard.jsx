@@ -231,17 +231,18 @@ export const TaskBoard = () => {
             {breakpoint !== 'desktop' &&
                 <Menu />
             }
-
-            <TaskModal
-                mode={mode}
-                onCreate={handleCreateTask}
-                onSave={handleEditTask}
-                onEdit={openEditModal}
-                onRemove={handleDeleteTask}
-                onClose={closeModal}
-                onClone={cloneTask}
-                onFilter={handleSetFilter}
-            />
+            {mode &&
+                <TaskModal
+                    mode={mode}
+                    onCreate={handleCreateTask}
+                    onSave={handleEditTask}
+                    onEdit={openEditModal}
+                    onRemove={handleDeleteTask}
+                    onClose={closeModal}
+                    onClone={cloneTask}
+                    onFilter={handleSetFilter}
+                />
+            }
         </div>
     );
 };

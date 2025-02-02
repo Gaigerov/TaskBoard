@@ -7,7 +7,16 @@ export const GlobalStoreController = ({children}) => {
     const showNotification = useNotification();
     const [tasks, setTasks] = useState(() => {
         const storedTasks = localStorage.getItem('tasks');
-        let initialTasks = storedTasks ? JSON.parse(storedTasks) : [];
+        
+        function jsonParse(data) {
+            try {
+                return JSON.parse(data);
+            } catch (error) {
+                return undefined;
+            }
+        }
+
+        let initialTasks = jsonParse(storedTasks) || [];
 
         if (!Array.isArray(initialTasks)) {
             console.log('ERROR')
