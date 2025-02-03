@@ -14,24 +14,26 @@ export const NotificationProvider = ({children}) => {
     };
 
     const handleClose = (id) => {
-        setNotifications((prev) => prev.filter(notif => notif.id !== id));
+        setNotifications((prevNotifications) =>
+            prevNotifications.filter(notification => notification.id !== id)
+        );
     };
 
     return (
         <NotificationContext.Provider value={showNotification}>
             {children}
-            <div 
-            className="notificationList"
-            >
-                {notifications.map((notification) => (
+            {/* <div className="notificationList">
+                {notifications.length > 0 && (
+                    notifications.map((notification) => (
                         <Notification
                             key={notification.id}
                             message={notification.message}
                             type={notification.type}
                             onClose={() => handleClose(notification.id)}
                         />
-                ))}
-            </div>
+                    ))
+                )}
+            </div> */}
         </NotificationContext.Provider>
     );
 };

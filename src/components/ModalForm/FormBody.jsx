@@ -12,15 +12,18 @@ import {FormFooter} from './FormFooter';
 
 export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClose, onClone, onFilter, validate}) => {
     const state = useGlobalStore();
-    const {title, description, time, errors, isDirty} = state;
+    const {title, description, time, errors = {}, isDirty, filterTo = {} } = state;
     const setGlobalStore = useSetGlobalStore();
     const inputRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const [isDatepicker, setIsDatepicker] = useState(false);
-    const [selectedStatus, setSelectedStatus] = useState(TASK_STATUS.EMPTY);
-    const [selectedDate, setSelectedDate] = useState(mode === VALID_MODE.EDIT ? task.date : state.filterTo.filterDate);
+    const [selectedStatus, setSelectedStatus] = useState(filterTo.filterStatus);
+    const [selectedDate, setSelectedDate] = useState(mode === VALID_MODE.EDIT ? task.date : filterTo.filterDate);
 
     const handleFilter = () => {
+        console.log('Selected Date:', selectedDate);
+        console.log('Selected Status:', selectedStatus);
+    
         onFilter(selectedDate, selectedStatus);
     }
 

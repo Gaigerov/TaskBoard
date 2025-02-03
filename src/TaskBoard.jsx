@@ -18,7 +18,7 @@ import desktopMenu from './image/desktop-menu.svg'
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
-    const state = useGlobalStore();
+    const {state} = useGlobalStore();
     const {tasks} = state;
     const {mode} = useParams();
     const navigate = useNavigate();
@@ -27,6 +27,7 @@ export const TaskBoard = () => {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const breakpoint = useBreakpoint();
     const showNotification = useNotification();
+
 
     const handleClickOutside = event => {
         if (!event.target.closest('.headerFinderInput')) {
@@ -101,11 +102,13 @@ export const TaskBoard = () => {
             time: '',
             date: ''
         });
+        navigate('/');
         navigate('create');
     };
 
     const openFilterModal = () => {
         setCurrentTaskId(null);
+        navigate('/');
         navigate('filter');
     };
 
@@ -129,11 +132,11 @@ export const TaskBoard = () => {
         setIsOpenMenu(!isOpenMenu);
     };
 
-
-    const filteredTasks = tasks.filter(task => {
+    const filteredTasks = tasks?.filter(task => {
         const {filterStatus, filterDate} = state.filterTo;
-        return (!filterStatus || task.status === filterStatus) &&
-            (!filterDate || task.date === filterDate);
+        const statusMatch = !filterStatus || task.status === filterStatus;
+        const dateMatch = !filterDate || task.date === filterDate;
+        return dateMatch && statusMatch;
     });
 
     const searchedTasks = filteredTasks.filter(task =>
@@ -149,15 +152,18 @@ export const TaskBoard = () => {
             }
         });
     };
-
+    
     const handleSetFilter = (date, status) => {
-        setGlobalStore({
-            filterTo: {
-                ...state.filterTo,
+        console.log('Updating filter:', { date, status });
+        setGlobalStore(prevState => {
+            const newFilterTo = {
+                ...prevState.filterTo,
                 search: '',
-                filterDate: date !== undefined ? date : state.filterTo.filterDate,
-                filterStatus: status !== undefined ? status : state.filterTo.filterStatus
-            }
+                filterDate: date != null ? date : prevState.filterTo.filterDate,
+                filterStatus: status != null ? status : prevState.filterTo.filterStatus
+            };
+            console.log('New filter state:', newFilterTo);
+            return { ...prevState, filterTo: newFilterTo };
         });
     };
 

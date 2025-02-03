@@ -5,6 +5,7 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import {GlobalStoreController} from './GlobalStoreContext';
+import {AppLifeCycleProvider} from './AppLifeCycleContext';
 import {NotificationProvider} from './components/Notification/NotificationContext';
 
 import './config/App.css';
@@ -19,10 +20,12 @@ const router = createHashRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <GlobalStoreController>
-            <NotificationProvider>
-                <RouterProvider router={router} />
-            </NotificationProvider>
-        </GlobalStoreController>
+        <AppLifeCycleProvider>
+            <GlobalStoreController>
+                <NotificationProvider>
+                    <RouterProvider router={router} />
+                </NotificationProvider>
+            </GlobalStoreController>
+        </AppLifeCycleProvider>
     </React.StrictMode>
 );

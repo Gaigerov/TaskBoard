@@ -1,5 +1,6 @@
 import React, {createContext, useContext, useState, useEffect} from 'react';
 import {useNotification} from './components/Notification/NotificationContext';
+import {TASK_STATUS} from './constant';
 
 export const GlobalStoreContext = createContext();
 
@@ -7,7 +8,7 @@ export const GlobalStoreController = ({children}) => {
     const showNotification = useNotification();
     const [tasks, setTasks] = useState(() => {
         const storedTasks = localStorage.getItem('tasks');
-        
+
         function jsonParse(data) {
             try {
                 return JSON.parse(data);
@@ -19,16 +20,14 @@ export const GlobalStoreController = ({children}) => {
         let initialTasks = jsonParse(storedTasks) || [];
 
         if (!Array.isArray(initialTasks)) {
-            console.log('ERROR')
-            // showNotification('Данные в localStorage не являются массивом. Очищаем localStorage.', 'error');
+            console.log('ERROR');
             localStorage.removeItem('tasks');
             initialTasks = [];
         } else {
-            initialTasks = initialTasks.filter((task, id) => {
+            initialTasks = initialTasks.filter((task) => {
                 const isValid = task.title && task.description && task.time && task.date;
                 if (!isValid) {
-                    console.log('ERROR')
-                    // showNotification(`Задача с индексом ${id} некорректна. Убедитесь, что все поля заполнены., 'error'`);
+                    console.log('ERROR');
                 }
                 return isValid;
             });
@@ -42,17 +41,13 @@ export const GlobalStoreController = ({children}) => {
         description: '',
         time: '',
         date: '',
-
         isDirty: false,
-
         filterTo: {
             search: '',
-            filterDate: undefined,
-            filterStatus: undefined,
+            filterDate: null,
+            filterStatus: TASK_STATUS.EMPTY,
         },
-
         tasksPerPage: 10,
-
         errors: {
             title: '',
             description: '',
@@ -83,25 +78,18 @@ export const GlobalStoreController = ({children}) => {
 };
 
 export const useGlobalStore = () => {
-    const { state } = useContext(GlobalStoreContext);
-    return state;
+    return useContext(GlobalStoreContext);
 };
 
 export const useSetGlobalStoreTasks = () => {
-    const { setTasks } = useContext(GlobalStoreContext);
-    const handleSetNewTasks = (newTasks) => {
-        setTasks(newTasks);
-    };
-    return handleSetNewTasks;
+    const {setTasks} = useContext(GlobalStoreContext);
+    return (newTasks) => setTasks(newTasks);
 };
 
 export const useSetGlobalStore = () => {
-    const { setState } = useContext(GlobalStoreContext);
-    const handleSetState = (newState) => {
-        setState(prevState => ({
-            ...prevState,
-            ...newState,
-        }));
-    };
-    return handleSetState;
+    const {setState} = useContext(GlobalStoreContext);
+    return (newState) => setState(prevState => ({
+        ...prevState,
+        ...newState,
+    }));
 };

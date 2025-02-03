@@ -13,18 +13,33 @@ export const Task = ({task, onEdit, onView, onRemove, onClone, currentTaskId, ke
     const navigate = useNavigate();
 
     const handleNavigateToEdit = (task) => {
-        navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
-        onEdit(task);
+        if (task && task.id) {
+            navigate('/');
+            navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
+            onEdit(task);
+        } else {
+            console.error("Task или task.id undefined");
+        }
     }
 
     const handleNavigateToDelete = (task) => {
-        navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
-        onRemove(task.id);
+        if (task && task.id) {
+            navigate('/');
+            navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
+            onRemove(task.id);
+        } else {
+            console.error("Task или task.id undefined");
+        }
     }
 
     const handleNavigateToView = (task) => {
-        navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
-        onView(task);
+        if (task && task.id) {
+            navigate('/');
+            navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
+            onView(task);
+        } else {
+            console.error("Task или task.id undefined");
+        }
     }
 
     const taskDate = new Date(task.date.split('.').reverse().join('-'));

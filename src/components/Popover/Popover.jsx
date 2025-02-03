@@ -10,7 +10,7 @@ export const Popover = ({tableTask}) => {
     const showNotification = useNotification();
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
-    const currentTask = tasks.find(task => task.id === Number(tableTask?.id || id));
+    const currentTask = tasks?.find(task => task.id === Number(tableTask?.id || id));
     const initialStatus = currentTask ? currentTask.status : TASK_STATUS.TO_DO;
     const [isOpen, setIsOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(initialStatus);
@@ -38,7 +38,7 @@ export const Popover = ({tableTask}) => {
 
     function updateTaskStatus(taskId, newStatus) {
         // Находим задачу по id и обновляем её статус
-        const taskToUpdate = tasks.find(task => task.id === taskId);
+        const taskToUpdate = tasks?.find(task => task.id === taskId);
         if (taskToUpdate) {
             taskToUpdate.status = newStatus;
             handleSetNewTasks(tasks);

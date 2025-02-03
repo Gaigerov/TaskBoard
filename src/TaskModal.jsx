@@ -16,7 +16,7 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
 
-    const task = tasks.find(task => task.id === Number(id));
+    const task = tasks?.find(task => task.id === Number(id));
 
     const handleClickOutside = (event) => {
         if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -78,20 +78,22 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
         if (VALID_MODES.includes(mode)) {
             return;
         }
-        showNotification('Некорректный режим', 'error');
+        console.log('Некорректный режим', 'error');
     };
 
     const isValidId = () => {
-        const valid = tasks.some(t => t.id.toString() === id);
-        if (!valid) console.log('Некорректный id');
-        return valid;
+        const valid = tasks?.some(t => t.id.toString() === id);
+        if (!valid) {
+            console.log('Некорректный id', 'error');
+        };
+        return valid
     };
 
-const validateField = (value, fieldName, maxLength) => {
-    if (!value) return `${fieldName} is required`;
-    if (value.length > maxLength) return `Максимум ${maxLength} символов`;
-    return '';
-};
+    const validateField = (value, fieldName, maxLength) => {
+        if (!value) return `${fieldName} is required`;
+        if (value.length > maxLength) return `Максимум ${maxLength} символов`;
+        return '';
+    };
 
     const validateTime = (time) => {
         if (!/^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/.test(time)) return 'Enter a valid time';
@@ -123,17 +125,17 @@ const validateField = (value, fieldName, maxLength) => {
             validate();
         }
     }, [title, description, time, date, isDirty, mode]);
-   
+
     const isShow = (() => {
-        if (tasks.length === 0) return true; // Проверка на пустой массив
-        return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER) || 
-               (VALID_MODES.includes(mode) && isValidId());
+        if (tasks?.length === 0) return true;
+        return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER) ||
+            (VALID_MODES.includes(mode) && isValidId());
     })();
-    
+
     if (!isShow) {
         return null;
     }
-    
+
     return (
         <div className="modalOverlay" ref={modalRef}>
             <ModalForm>
