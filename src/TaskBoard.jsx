@@ -16,7 +16,7 @@ import desktopMenu from './image/desktop-menu.svg'
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
-    const {state} = useGlobalStore();
+    const state = useGlobalStore();
     const {tasks} = state;
     const {mode} = useParams();
     const navigate = useNavigate();

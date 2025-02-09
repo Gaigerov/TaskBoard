@@ -17,6 +17,8 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
     const setGlobalStore = useSetGlobalStore();
     const {title, description, time, date, errors = {}, isDirty, filterTo = {}} = state;
 
+    console.log(state)
+
     const [isOpen, setIsOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(filterTo.filterStatus);
     const [selectedDate, setSelectedDate] = useState(mode === VALID_MODE.EDIT ? task.date : filterTo.filterDate);
@@ -34,8 +36,6 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
     }
 
     const handleFilter = () => {
-        console.log('Selected Date:', selectedDate);
-        console.log('Selected Status:', selectedStatus);
         onFilter(selectedDate, selectedStatus);
     }
 
@@ -45,10 +45,10 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
     };
 
     const clearField = field => {
-        setGlobalStore(prevState => ({
+        setGlobalStore({
             ...prevState,
             [field]: ''
-        }));
+        });
     };
 
     const clearStatusFilter = () => {
@@ -56,10 +56,10 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
     };
 
     const makeSetField = field => event => {
-        setGlobalStore(prevState => ({
-            ...prevState,
+        console.log(field, event.target.value)
+        setGlobalStore({
             [field]: event.target.value, 
-        }));
+        });
     };
 
     useEffect(() => {
@@ -76,7 +76,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                         <TextInput
                             label="Title"
                             value={title}
-                            onChange={makeSetField(title)}
+                            onChange={makeSetField('title')}
                             error={errors.title}
                             placeholder="Enter title"
                             clearField={() => clearField('title')}
@@ -84,7 +84,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                         <TextArea
                             label="Description"
                             value={description}
-                            onChange={makeSetField(description)}
+                            onChange={makeSetField('description')}
                             error={errors.description}
                             placeholder="Enter description"
                             clearField={() => clearField('description')}
@@ -93,16 +93,16 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                             <label className="modalContainer__time">Time
                                 <TimeInput
                                     value={time}
-                                    onChange={makeSetField(time)}
+                                    onChange={makeSetField('time')}
                                     error={errors.time}
                                 />
                             </label>
                             <label className="modalContainer__date">Date
                                 <DateInput
-                                    value={selectedDate}
+                                    value={date}
                                     error={errors.date}
                                     onChangeDate={onChangeDate}
-                                    onChange={makeSetField(date)}
+                                    onChange={makeSetField('date')}
                                 />
                             </label>
                         </div>
@@ -135,7 +135,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                                 value={selectedDate}
                                 error={errors.date}
                                 onChangeDate={onChangeDate}
-                                onChange={makeSetField(date)}
+                                onChange={makeSetField('date')}
                             />
                         </label>
                     </>

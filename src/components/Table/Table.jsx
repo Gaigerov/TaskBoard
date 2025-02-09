@@ -9,7 +9,7 @@ import {Pagination} from '../Pagination/Pagination';
 
 export const Table = ({searchedTasks, onView, onEdit, onClone, currentTaskId, deleteMode}) => {
     const navigate = useNavigate();
-    const {state} = useGlobalStore();
+    const state = useGlobalStore();
     const {tasksPerPage} = state;
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastTask = currentPage * tasksPerPage;

@@ -5,9 +5,9 @@ import {useGlobalStore, useSetGlobalStoreTasks} from "../../GlobalStoreContext";
 import {useNotification} from '../Notification/NotificationContext';
 
 export const Popover = ({tableTask}) => {
-    const {state} = useGlobalStore();
+    const state = useGlobalStore();
     const {tasks} = state;
-    const handleSetNewTasks = useSetGlobalStoreTasks();
+    const setGlobalStoreTasks = useSetGlobalStoreTasks();
     const showNotification = useNotification();
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
@@ -44,7 +44,7 @@ export const Popover = ({tableTask}) => {
             }
             return task; 
         });
-        handleSetNewTasks(updatedTasks);
+        setGlobalStoreTasks(updatedTasks);
         const taskToUpdate = tasks.find(task => task.id === taskId);
         if (taskToUpdate) {
             showNotification(`Статус задачи '${taskToUpdate.title}' обновлён на '${newStatus}'`, 'info');

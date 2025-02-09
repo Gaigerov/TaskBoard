@@ -8,7 +8,7 @@ import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
 
 export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter}) => {
-    const {state} = useGlobalStore();
+    const state = useGlobalStore();
     const {title, description, time, date, isDirty, tasks} = state;
     const setGlobalStore = useSetGlobalStore();
     // const showNotification = useNotification();
@@ -113,16 +113,26 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
         return isValid;
     };
 
-    useEffect(() => {
-        if (mode === VALID_MODE.CREATE && isDirty) {
-            validate();
-        }
-    }, [title, description, time, date, isDirty, mode]);
+    // useEffect(() => {
+    //     if (mode === VALID_MODE.CREATE && isDirty) {
+    //         const isValid = validate();
+    //         if (isValid) {
+    //             return true;
+    //         }
+    //     }
+    // }, [title, description, time, date, isDirty, mode]);
 
-    const isShow =
-        VALID_MODES.includes(mode) &&
-        (mode !== 'VIEW' || task) &&
-        (mode !== 'REMOVE' || task);
+    // useEffect(() => {
+    //     if (mode === VALID_MODE.CREATE && isDirty) {
+    //         validate();
+    //     }
+    // }, [title, description, time, date, isDirty, mode]);
+
+    const isShow = (() => {
+        if (tasks.length === 0) return true; // Проверка на пустой массив
+        return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER) || 
+               (VALID_MODES.includes(mode) && isValidId());
+    })();
 
 
     if (!isShow) {

@@ -6,7 +6,7 @@ export const GlobalStoreContext = createContext();
 
 export const GlobalStoreController = ({children}) => {
     // const showNotification = useNotification();
-    const [tasks, setTasks] = useState(() => {
+    const [tasks] = useState(() => {
         const storedTasks = localStorage.getItem('tasks');
 
         function jsonParse(data) {
@@ -69,7 +69,6 @@ export const GlobalStoreController = ({children}) => {
             value={{
                 state,
                 setState,
-                setTasks,
             }}
         >
             {children}
@@ -78,18 +77,28 @@ export const GlobalStoreController = ({children}) => {
 };
 
 export const useGlobalStore = () => {
-    return useContext(GlobalStoreContext);
+    const {state} = useContext(GlobalStoreContext);
+    return state
 };
 
 export const useSetGlobalStoreTasks = () => {
-    const {setTasks} = useContext(GlobalStoreContext);
-    return (newTasks) => setTasks(newTasks);
+    const {setState} = useContext(GlobalStoreContext);
+    return (newTasks) => setState((prevState) => ({
+        ...prevState,
+        tasks: newTasks,
+    }));
 };
 
 export const useSetGlobalStore = () => {
     const {setState} = useContext(GlobalStoreContext);
-    return (newState) => setState(prevState => ({
-        ...prevState,
-        ...newState,
-    }));
+    return (newState) => {
+        setState(prevState => {
+            const x = {
+                ...prevState,
+                ...newState,
+            }
+            console.log(newState)
+            return x
+})
+    };
 };
