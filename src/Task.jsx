@@ -9,37 +9,25 @@ import deleteButton from './image/delete.svg';
 import cloneButton from './image/clone.svg';
 import {VALID_MODE} from './constant';
 
-export const Task = ({task, onEdit, onView, onRemove, onClone, currentTaskId, key}) => {
+export const Task = ({task, onEdit, onView, onRemove, onClone, currentTaskId}) => {
     const navigate = useNavigate();
 
-    const handleNavigateToEdit = (task) => {
-        if (task && task.id) {
+    const handleNavigateToEdit = () => {
             navigate('/');
             navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
             onEdit(task);
-        } else {
-            console.error("Task или task.id undefined");
-        }
     }
 
-    const handleNavigateToDelete = (task) => {
-        if (task && task.id) {
+    const handleNavigateToDelete = () => {
             navigate('/');
             navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
             onRemove(task.id);
-        } else {
-            console.error("Task или task.id undefined");
-        }
     }
 
-    const handleNavigateToView = (task) => {
-        if (task && task.id) {
+    const handleNavigateToView = () => {
             navigate('/');
             navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
             onView(task);
-        } else {
-            console.error("Task или task.id undefined");
-        }
     }
 
     const taskDate = new Date(task.date.split('.').reverse().join('-'));
@@ -47,7 +35,7 @@ export const Task = ({task, onEdit, onView, onRemove, onClone, currentTaskId, ke
     const isPastDue = taskDate < currentDate && task.status !== 'Done';
 
     return (
-        <div key={key}
+        <div 
             className="taskContainer"
             onClick={() => handleNavigateToView(task)}
             style={{

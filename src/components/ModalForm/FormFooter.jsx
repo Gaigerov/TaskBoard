@@ -3,8 +3,7 @@ import {
     useNavigate,
 } from "react-router-dom";
 import {Button} from '../Button/Button';
-import {useGlobalStore} from '../../GlobalStoreContext';
-import {useSetGlobalStore} from '../../GlobalStoreContext';
+import {useGlobalStore, useSetGlobalStore} from '../../GlobalStoreContext';
 import {VALID_MODE, TASK_STATUS} from '../../constant';
 import {useNotification} from '../Notification/NotificationContext';
 
@@ -29,20 +28,27 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
     };
 
     const handleSubmit = () => {
+        resetGlobalStore()
         if (validate()) {
             if (mode === VALID_MODE.CREATE) {
-                onCreate({title: state.title, description: state.description, time: state.time, date: state.date, status: TASK_STATUS.TO_DO});
+                onCreate({
+                    title: state.title,
+                    description: state.description,
+                    time: state.time,
+                    date: state.date,
+                    status: TASK_STATUS.TO_DO
+                });
                 showNotification('Задача создана успешно', 'success');
             } else if (mode === VALID_MODE.EDIT) {
-                onSave({...task, title: state.title, description: state.description, time: state.time, date: state.date});
+                onSave({...task, title, description, time, date});
+                showNotification('Задача успешно отредактирована', 'success');
             }
-            setGlobalStore(mode === VALID_MODE.EDIT ? task.status : '');
+            resetGlobalStore(mode === VALID_MODE.EDIT ? task.status : '');
             onClose();
         }
     };
 
-    const handleClose = (event) => {
-        event.preventDefault();
+    const handleClose = () => {
         onClose();
         resetGlobalStore();
     };
@@ -59,6 +65,7 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
     }
 
     const handleNavigateToEdit = (task) => {
+        console.log('handleNavigateToEdit', task)
         navigate('/');
         navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
         onEdit(task);
@@ -109,7 +116,10 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
                 <Button
                     key={buttonConfig.name || index}
                     type={buttonConfig.type}
-                    onClick={buttonConfig.onClick}
+                    onClick={() => {
+                        console.log(`${buttonConfig.name} button clicked`);
+                        buttonConfig.onClick();
+                    }}
                     name={buttonConfig.name}
                 />
             ))}

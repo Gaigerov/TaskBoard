@@ -3,10 +3,7 @@ import {
     useNavigate,
     useSearchParams,
 } from "react-router-dom";
-
-
-import {useGlobalStore} from './GlobalStoreContext';
-import {useSetGlobalStore} from './GlobalStoreContext';
+import {useGlobalStore, useSetGlobalStore} from './GlobalStoreContext';
 import {VALID_MODE, VALID_MODES} from './constant';
 import {Button} from './components/Button/Button';
 import xButton from './image/x.svg';

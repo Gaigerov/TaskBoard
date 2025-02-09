@@ -18,14 +18,23 @@ const router = createHashRouter([
     },
 ]);
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <AppLifeCycleProvider>
-            <GlobalStoreController>
-                <NotificationProvider>
-                    <RouterProvider router={router} />
-                </NotificationProvider>
-            </GlobalStoreController>
-        </AppLifeCycleProvider>
-    </React.StrictMode>
+const App = () => (
+    <AppLifeCycleProvider>
+        <GlobalStoreController>
+            <NotificationProvider>
+                <RouterProvider router={router} />
+            </NotificationProvider>
+        </GlobalStoreController>
+    </AppLifeCycleProvider>
 );
+
+const rootElement = document.getElementById("root");
+if (rootElement) {
+    ReactDOM.createRoot(rootElement).render(
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    );
+} else {
+    console.error("Root element not found");
+}

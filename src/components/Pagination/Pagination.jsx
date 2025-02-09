@@ -10,6 +10,11 @@ export const Pagination = ({searchedTasks, tasksPerPage, currentPage, setCurrent
     const [pageInput, setPageInput] = useState('');
     const totalPages = Math.ceil(searchedTasks.length / tasksPerPage);
 
+    if (totalPages === 0) {
+        return <div>Tasks not found</div>;
+    }
+
+
     const handleNextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
@@ -64,7 +69,7 @@ export const Pagination = ({searchedTasks, tasksPerPage, currentPage, setCurrent
                     onClick={handlePrevPage}
                     style={{filter: currentPage === 1 ? 'invert(77%) sepia(8%) saturate(356%) hue-rotate(165deg) brightness(100%) contrast(83%)' : ''}}
                 />
-                {[...Array(totalPages)].map((_, index) => (
+                {totalPages > 0 && [...Array(totalPages)].map((_, index) => (
                     <button
                         key={index + 1}
                         onClick={() => handlePageClick(index + 1)}

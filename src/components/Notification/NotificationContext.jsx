@@ -22,7 +22,7 @@ export const NotificationProvider = ({children}) => {
     return (
         <NotificationContext.Provider value={showNotification}>
             {children}
-            {/* <div className="notificationList">
+            <div className="notificationList">
                 {notifications.length > 0 && (
                     notifications.map((notification) => (
                         <Notification
@@ -33,7 +33,7 @@ export const NotificationProvider = ({children}) => {
                         />
                     ))
                 )}
-            </div> */}
+            </div>
         </NotificationContext.Provider>
     );
 };

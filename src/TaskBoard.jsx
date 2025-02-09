@@ -2,19 +2,17 @@ import React, {useState, useEffect} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 import './config/App.css';
 import {Menu} from './components/Menu/Menu';
-import {DesktopMenu} from './components/DesktopMenu/DesctopMenu';
+import {DesktopMenu} from './components/DesktopMenu/DesktopMenu';
 import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
 import {Breakpoints} from './Breakpoints';
-import {useGlobalStore} from './GlobalStoreContext';
-import {useSetGlobalStore} from './GlobalStoreContext';
+import {useGlobalStore, useSetGlobalStore} from './GlobalStoreContext';
 import {useBreakpoint} from './breakpoints/useBreakpoint';
 import {useNotification} from './components/Notification/NotificationContext';
 
 import loop from './image/search.svg';
 import filter from './image/filter.svg';
 import desktopMenu from './image/desktop-menu.svg'
-
 
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
@@ -27,7 +25,6 @@ export const TaskBoard = () => {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const breakpoint = useBreakpoint();
     const showNotification = useNotification();
-
 
     const handleClickOutside = event => {
         if (!event.target.closest('.headerFinderInput')) {
@@ -51,9 +48,9 @@ export const TaskBoard = () => {
         const taskWithId = {...newTask, id: Date.now()}; // Генерация уникального ID
         const updatedTasks = [...tasks, taskWithId];
         setGlobalStore({
-            tasks: updatedTasks
+            tasks: updatedTasks,
         });
-        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+        // localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         closeModal();
     };
 
@@ -78,7 +75,7 @@ export const TaskBoard = () => {
         const updatedTasks = tasks.map(task => (task.id === updatedTask.id ? updatedTask : task));
         localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         setGlobalStore({
-            tasks: updatedTasks
+            tasks: updatedTasks,
         });
         showNotification('Задача отредактирована', 'success');
         closeModal();
@@ -87,7 +84,7 @@ export const TaskBoard = () => {
     const handleDeleteTask = id => {
         const updatedTasks = tasks.filter(task => task.id !== id);
         setGlobalStore({
-            tasks: updatedTasks
+            tasks: updatedTasks,
         });
         localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         showNotification('Задача удалена', 'success');
@@ -132,16 +129,13 @@ export const TaskBoard = () => {
         setIsOpenMenu(!isOpenMenu);
     };
 
-    const filteredTasks = tasks?.filter(task => {
-        const {filterStatus, filterDate} = state.filterTo;
-        const statusMatch = !filterStatus || task.status === filterStatus;
-        const dateMatch = !filterDate || task.date === filterDate;
-        return dateMatch && statusMatch;
+    const filteredTasks = tasks.filter(task => {
+        const filterStatus = state.filterTo.filterStatus ? task.status === state.filterTo.filterStatus : true;
+        const filterDate = state.filterTo.filterDate ? task.date === state.filterTo.filterDate : true;
+        return filterStatus && filterDate;
     });
 
-    const searchedTasks = filteredTasks.filter(task =>
-        task.title.toLowerCase().includes(state.filterTo.search.toLowerCase())
-    );
+    const searchedTasks = filteredTasks.filter(task => task.title.toLowerCase().includes(state.filterTo.search.toLowerCase()));
 
     const handleChange = event => {
         const newSearchValue = event.currentTarget.value;
@@ -152,18 +146,14 @@ export const TaskBoard = () => {
             }
         });
     };
-    
+
     const handleSetFilter = (date, status) => {
-        console.log('Updating filter:', { date, status });
-        setGlobalStore(prevState => {
-            const newFilterTo = {
-                ...prevState.filterTo,
-                search: '',
-                filterDate: date != null ? date : prevState.filterTo.filterDate,
-                filterStatus: status != null ? status : prevState.filterTo.filterStatus
-            };
-            console.log('New filter state:', newFilterTo);
-            return { ...prevState, filterTo: newFilterTo };
+        setGlobalStore({
+            filterTo: {
+                ...state.filterTo,
+                filterDate: date !== undefined ? date : state.filterTo.filterDate,
+                filterStatus: status !== undefined ? status : state.filterTo.filterStatus
+            }
         });
     };
 
@@ -199,12 +189,13 @@ export const TaskBoard = () => {
                         <div className="filterButtonContainer">
                             <div onClick={openFilterModal}>
                                 <img className="menuButton" src={filter} />
-                                {state.filterTo.filterDate !== undefined ||
-                                    (state.filterTo.filterStatus !== undefined && (
+                                {(state.filterTo.filterDate !== undefined) ||
+                                    (state.filterTo.filterStatus !== undefined) &&
+                                    (
                                         <div className="filterStatus">
                                             <span className="filterCounter">{changedFieldsCount}</span>
                                         </div>
-                                    ))}
+                                    )}
                             </div>
                         </div>
                     </div>

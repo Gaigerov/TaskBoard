@@ -10,15 +10,15 @@ export const menuItems = [
 ];
 
 const MenuButton = ({src, title}) => (
-    <div className='Menu_buttonContainer'>
-        <img className="Menu_buttonImage" src={src} alt={title} />
-        <h3 className='Menu_buttonTitle'>{title}</h3>
+    <div className='DesktopMenu_buttonContainer'>
+        <img className="DesktopMenu_buttonImage" src={src} alt={title} />
+        <h3 className='DesktopMenu_buttonTitle'>{title}</h3>
     </div>
 );
 
-export const Menu = () => {
+export const DesktopMenu = () => {
     return (
-        <div className='menuContainer'>
+        <div className='DesktopMenu'>
             {menuItems.map((item, index) => (
                 <MenuButton key={index} src={item.src} title={item.title} />
             ))}

@@ -5,7 +5,7 @@ import {TASK_STATUS} from './constant';
 export const GlobalStoreContext = createContext();
 
 export const GlobalStoreController = ({children}) => {
-    const showNotification = useNotification();
+    // const showNotification = useNotification();
     const [tasks, setTasks] = useState(() => {
         const storedTasks = localStorage.getItem('tasks');
 

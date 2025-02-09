@@ -7,6 +7,7 @@ import deleteButton from '../../image/delete.svg';
 import cloneButton from '../../image/clone.svg';
 
 export const TaskRow = ({ task, isPastDue, onNavigateToView, onNavigateToEdit, onClone, onDelete, currentTaskId}) => {
+
     return (
         <tr
             onClick={() => onNavigateToView(task)}

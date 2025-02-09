@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react';
-
 import {List} from 'react-virtualized';
 import {Task} from './Task';
 
@@ -22,12 +21,13 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone, current
             window.removeEventListener('resize', updateWidth);
         };
     }, []);
-
+    
     const rowRenderer = ({key, index, style}) => {
         const task = searchedTasks[index];
         return (
             <div key={key} style={{...style, height: '100%'}}>
                 <Task
+                    searchedTasks={searchedTasks}
                     task={task}
                     onEdit={onEdit}
                     onView={onView}

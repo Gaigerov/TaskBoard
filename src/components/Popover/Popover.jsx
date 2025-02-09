@@ -5,7 +5,8 @@ import {useGlobalStore, useSetGlobalStoreTasks} from "../../GlobalStoreContext";
 import {useNotification} from '../Notification/NotificationContext';
 
 export const Popover = ({tableTask}) => {
-    const {tasks} = useGlobalStore();
+    const {state} = useGlobalStore();
+    const {tasks} = state;
     const handleSetNewTasks = useSetGlobalStoreTasks();
     const showNotification = useNotification();
     const [searchParams] = useSearchParams();
@@ -37,11 +38,15 @@ export const Popover = ({tableTask}) => {
     }, []);
 
     function updateTaskStatus(taskId, newStatus) {
-        // Находим задачу по id и обновляем её статус
-        const taskToUpdate = tasks?.find(task => task.id === taskId);
+        const updatedTasks = tasks.map(task => {
+            if (task.id === taskId) {
+                return { ...task, status: newStatus };
+            }
+            return task; 
+        });
+        handleSetNewTasks(updatedTasks);
+        const taskToUpdate = tasks.find(task => task.id === taskId);
         if (taskToUpdate) {
-            taskToUpdate.status = newStatus;
-            handleSetNewTasks(tasks);
             showNotification(`Статус задачи '${taskToUpdate.title}' обновлён на '${newStatus}'`, 'info');
         } else {
             showNotification(`Задача с ID ${taskId} не найдена`, 'error');
@@ -50,7 +55,7 @@ export const Popover = ({tableTask}) => {
 
     const handleStatusClick = (status) => {
         setSelectedStatus(status);
-        updateTaskStatus(Number(tableTask?.id || id), status); // Обновляем статус задачи
+        updateTaskStatus(Number(tableTask?.id || id), status); 
         setIsOpen(false);
     };
 

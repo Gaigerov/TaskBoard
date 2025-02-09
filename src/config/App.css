@@ -2,6 +2,7 @@
 @import url('../config/variables.css');
 @import url('../config/Modal.css');
 @import url('../components/Menu/Menu.css');
+@import url('../components/DesktopMenu/DesktopMenu.css');
 @import url('../config/Buttons.css');
 @import url('../components/Datepicker/Datepicker.css');
 @import url('../components/Table/Table.css');
@@ -130,11 +131,11 @@ padding: 0;
 .taskDateAndTimeContainer {
     display: flex;
     flex-direction: row;
-    gap: 10px;
 }
 
 .modalContainer__time {
     max-width: 78px;
+    margin-right: 10px;
 }
 
 .taskStatusSelector {
@@ -1112,6 +1113,7 @@ padding: 0;
         background-color: var(--light);
         padding: 8px;
         border-radius: 10px;
+        z-index: 3;
     }
 
     .buttonContainer {
