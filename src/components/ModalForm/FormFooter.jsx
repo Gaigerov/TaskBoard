@@ -7,7 +7,7 @@ import {useGlobalStore, useSetGlobalStore} from '../../GlobalStoreContext';
 import {VALID_MODE, TASK_STATUS} from '../../constant';
 import {useNotification} from '../Notification/NotificationContext';
 
-export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onClone, onClose, onFilter, validate}) => {
+export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onClone, onClose, onFilter, validate, clearStatusFilter}) => {
     const state = useGlobalStore();
     const {title, description, time, date} = state;
     const setGlobalStore = useSetGlobalStore();
@@ -31,11 +31,9 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
     const handleSubmit = () => {
         if (validate()) {
             if (mode === VALID_MODE.CREATE) {
-                showNotification('Задача создана успешно', 'success');
-                onCreate({ title, description, time, date, status: TASK_STATUS.TO_DO });
+                onCreate({title, description, time, date, status: TASK_STATUS.TO_DO});
             } else if (mode === VALID_MODE.EDIT) {
-                showNotification('Задача успешно отредактирована', 'success');
-                onSave({ ...task, title, description, time, date });
+                onSave({...task, title, description, time, date});
             }
             resetGlobalStore();
             onClose();
@@ -66,6 +64,7 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
     }
 
     const handleDropFilter = () => {
+        clearStatusFilter();
         setGlobalStore({
             ...state,
             filterTo: {

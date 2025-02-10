@@ -5,27 +5,27 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import {GlobalStoreController} from './GlobalStoreContext';
-import {AppLifeCycleProvider} from './AppLifeCycleContext';
+import {AppLifecycleProvider} from './AppLifeCycleContext';
 import {NotificationProvider} from './components/Notification/NotificationContext';
 
 import './config/App.css';
-import {TaskBoard} from './TaskBoard';
+import {MainPage} from './MainPage';
 
 const router = createHashRouter([
     {
         path: "/:mode?",
-        element: <TaskBoard />,
+        element: <MainPage />,
     },
 ]);
 
 const App = () => (
-    <AppLifeCycleProvider>
+    <AppLifecycleProvider>
         <GlobalStoreController>
             <NotificationProvider>
                 <RouterProvider router={router} />
             </NotificationProvider>
         </GlobalStoreController>
-    </AppLifeCycleProvider>
+    </AppLifecycleProvider>
 );
 
 const rootElement = document.getElementById("root");

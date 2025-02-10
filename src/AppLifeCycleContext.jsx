@@ -1,35 +1,41 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-// import {useNotification} from './components/Notification/NotificationContext';
+import {APP_LIFECYCLE_STATUS} from './constant';
 
-export const AppLifeCycleContext = createContext();
+export const AppLifecycleContext = createContext();
 
-export const APP_LIFECYCLE_STATUS = {
-    INITIALIZATION: 'INITIALIZATION',
-    READY: 'READY',
-    DESTROYING: 'DESTROYING',
-};
+export const requestToBackend = () => new Promise((resolve) => {
+    setTimeout(() => {
+        resolve;
+    }, 5000);
+});
 
-export const AppLifeCycleProvider = ({children}) => {
-    // const showNotification = useNotification();
+export const AppLifecycleProvider = ({children}) => {
     const [lifecycleStatus, setLifecycleStatus] = useState(APP_LIFECYCLE_STATUS.INITIALIZATION);
 
     useEffect(() => {
-        setLifecycleStatus(APP_LIFECYCLE_STATUS.READY);
-        console.log(APP_LIFECYCLE_STATUS.READY);
-
+        //INITIALIZATION
+        requestToBackend()
+            .then((result) => {
+                console.log({result});
+            })
+            .then(() => {
+                setLifecycleStatus(APP_LIFECYCLE_STATUS.READY);
+                console.log(APP_LIFECYCLE_STATUS.READY);
+            });
         return () => {
+            //DESTROYING
             setLifecycleStatus(APP_LIFECYCLE_STATUS.DESTROYING);
             console.log(APP_LIFECYCLE_STATUS.DESTROYING);
         };
     }, []);
 
     return (
-        <AppLifeCycleContext.Provider value={{lifecycleStatus}}>
+        <AppLifecycleContext.Provider value={{lifecycleStatus}}>
             {children}
-        </AppLifeCycleContext.Provider>
+        </AppLifecycleContext.Provider>
     );
 };
 
-export const useAppLifeCycle = () => {
-    return useContext(AppLifeCycleContext);
+export const useAppLifecycleStatus = () => {
+    return useContext(AppLifecycleContext);
 };

@@ -14,7 +14,7 @@ import loop from './image/search.svg';
 import filter from './image/filter.svg';
 import desktopMenu from './image/desktop-menu.svg'
 
-export const TaskBoard = () => {
+export const Calendar = () => {
     const setGlobalStore = useSetGlobalStore();
     const state = useGlobalStore();
     const {tasks} = state;

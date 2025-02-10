@@ -162,6 +162,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                 onClone={onClone}
                 onFilter={handleFilter}
                 validate={validate}
+                clearStatusFilter={() => clearStatusFilter()}
             />
         </Fragment>
     );
