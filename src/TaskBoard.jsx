@@ -9,7 +9,6 @@ import {Breakpoints} from './Breakpoints';
 import {useGlobalStore, useSetGlobalStore} from './GlobalStoreContext';
 import {useBreakpoint} from './breakpoints/useBreakpoint';
 import {useNotification} from './components/Notification/NotificationContext';
-
 import loop from './image/search.svg';
 import filter from './image/filter.svg';
 import desktopMenu from './image/desktop-menu.svg'

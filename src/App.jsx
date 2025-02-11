@@ -9,12 +9,12 @@ import {AppLifecycleProvider} from './AppLifeCycleContext';
 import {NotificationProvider} from './components/Notification/NotificationContext';
 
 import './config/App.css';
-import {MainPage} from './MainPage';
+import {TaskBoard} from './TaskBoard';
 
 const router = createHashRouter([
     {
         path: "/:mode?",
-        element: <MainPage />,
+        element: <TaskBoard />,
     },
 ]);
 
