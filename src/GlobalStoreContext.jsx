@@ -20,14 +20,14 @@ export const GlobalStoreController = ({children}) => {
         let initialTasks = jsonParse(storedTasks) || [];
 
         if (!Array.isArray(initialTasks)) {
-            console.log('ERROR');
+            console.log('Отсутствует массив данных');
             localStorage.removeItem('tasks');
             initialTasks = [];
         } else {
             initialTasks = initialTasks.filter((task) => {
                 const isValid = task.title && task.description && task.time && task.date;
                 if (!isValid) {
-                    console.log('ERROR');
+                    console.log('Не все данные у задачи');
                 }
                 return isValid;
             });
@@ -97,7 +97,6 @@ export const useSetGlobalStore = () => {
                 ...prevState,
                 ...newState,
             }
-            console.log(newState)
             return x
 })
     };

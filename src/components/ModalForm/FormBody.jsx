@@ -17,8 +17,6 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
     const setGlobalStore = useSetGlobalStore();
     const {title, description, time, date, errors = {}, isDirty, filterTo = {}} = state;
 
-    console.log(state)
-
     const [isOpen, setIsOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(filterTo.filterStatus);
     const [selectedDate, setSelectedDate] = useState(mode === VALID_MODE.EDIT ? task.date : filterTo.filterDate);
@@ -56,7 +54,6 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
     };
 
     const makeSetField = field => event => {
-        console.log(field, event.target.value)
         setGlobalStore({
             [field]: event.target.value, 
         });

@@ -113,21 +113,6 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
         return isValid;
     };
 
-    // useEffect(() => {
-    //     if (mode === VALID_MODE.CREATE && isDirty) {
-    //         const isValid = validate();
-    //         if (isValid) {
-    //             return true;
-    //         }
-    //     }
-    // }, [title, description, time, date, isDirty, mode]);
-
-    // useEffect(() => {
-    //     if (mode === VALID_MODE.CREATE && isDirty) {
-    //         validate();
-    //     }
-    // }, [title, description, time, date, isDirty, mode]);
-
     const isShow = (() => {
         if (tasks.length === 0) return true; // Проверка на пустой массив
         return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER) || 

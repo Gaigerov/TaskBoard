@@ -9,6 +9,9 @@ import {Breakpoints} from './Breakpoints';
 import {useGlobalStore, useSetGlobalStore} from './GlobalStoreContext';
 import {useBreakpoint} from './breakpoints/useBreakpoint';
 import {useNotification} from './components/Notification/NotificationContext';
+import {useSelector, useDispatch} from 'react-redux';
+import {tasksActions} from './redux/tasksStore';
+import {modalActions} from './redux/modalStore';
 import loop from './image/search.svg';
 import filter from './image/filter.svg';
 import desktopMenu from './image/desktop-menu.svg'
@@ -16,7 +19,9 @@ import desktopMenu from './image/desktop-menu.svg'
 export const TaskBoard = () => {
     const setGlobalStore = useSetGlobalStore();
     const state = useGlobalStore();
-    const {tasks} = state;
+    const dispatch = useDispatch();
+    const tasks = useSelector(state => state.tasks);
+    const modal = useSelector(state => state.modal);
     const {mode} = useParams();
     const navigate = useNavigate();
     const [currentTaskId, setCurrentTaskId] = useState(null);
@@ -32,6 +37,10 @@ export const TaskBoard = () => {
     };
 
     useEffect(() => {
+        dispatch(tasksActions.setInitialTasks(state.tasks));
+    }, [dispatch, state.tasks]);
+
+    useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
@@ -39,85 +48,52 @@ export const TaskBoard = () => {
     }, []);
 
     const closeModal = () => {
-        setCurrentTaskId(null);
+        dispatch(modalActions.closeAllModals());
         navigate('/');
     };
 
-    const handleCreateTask = newTask => {
-        const taskWithId = {...newTask, id: Date.now()}; // Генерация уникального ID
-        const updatedTasks = [...tasks, taskWithId];
-        setGlobalStore({
-            tasks: updatedTasks,
-        });
+    const openCreateModal = () => {
+        dispatch(modalActions.openCreateModal());
+        navigate('/create');
+    };
+
+    const openFilterModal = () => {
+        dispatch(modalActions.openFilterModal());
+        navigate('/filter');
+    };
+
+    const openEditModal = (task) => {
+        dispatch(modalActions.openEditModal(task));
+    };
+
+    const openViewModal = (task) => {
+        dispatch(modalActions.openViewModal(task));
+    };
+
+    const openRemoveModal = (task) => {
+        dispatch(modalActions.openRemoveModal(task));
+    };
+
+    const handleCreateTask = (task) => {
+        dispatch(tasksActions.addTask(task));
         showNotification('Задача создана успешно', 'success');
         closeModal();
     };
 
-    const cloneTask = id => {
-        const taskToClone = tasks.find(task => task.id === id);
-        if (taskToClone) {
-            const newTask = {
-                ...taskToClone,
-                title: 'Copy ' + taskToClone.title,
-                id: Date.now()
-            };
-            const updatedTasks = [...tasks, newTask];
-            localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-            setGlobalStore({
-                tasks: [...tasks, newTask]
-            });
-            showNotification('Задача скопирована в конец списка', 'success');
-        }
-    };
-
-    const handleEditTask = updatedTask => {
-        const updatedTasks = tasks.map(task => (task.id === updatedTask.id ? updatedTask : task));
-        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-        setGlobalStore({
-            tasks: updatedTasks,
-        });
+    const handleEditTask = (task) => {
+        dispatch(tasksActions.editTask(task));
         showNotification('Задача отредактирована', 'success');
         closeModal();
     };
 
-    const handleDeleteTask = id => {
-        const updatedTasks = tasks.filter(task => task.id !== id);
-        setGlobalStore({
-            tasks: updatedTasks,
-        });
-        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    const handleDeleteTask = (id) => {
+        dispatch(tasksActions.removeTask({id}));
         showNotification('Задача удалена', 'success');
-        closeModal();
     };
 
-    const openCreateModal = () => {
-        setCurrentTaskId(null);
-        setGlobalStore({
-            title: '',
-            description: '',
-            time: '',
-            date: ''
-        });
-        navigate('/');
-        navigate('create');
-    };
-
-    const openFilterModal = () => {
-        setCurrentTaskId(null);
-        navigate('/');
-        navigate('filter');
-    };
-
-    const openEditModal = task => {
-        setCurrentTaskId(task.id);
-    };
-
-    const openViewModal = task => {
-        setCurrentTaskId(task.id);
-    };
-
-    const openRemoveModal = task => {
-        setCurrentTaskId(task.id);
+    const cloneTask = (id) => {
+        dispatch(tasksActions.cloneTask({id}));
+        showNotification('Задача скопирована в конец списка', 'success');
     };
 
     const handleOpenSearchInput = () => {
@@ -227,7 +203,7 @@ export const TaskBoard = () => {
             {breakpoint !== 'desktop' &&
                 <Menu />
             }
-            {mode &&
+            {mode &&  
                 <TaskModal
                     mode={mode}
                     onCreate={handleCreateTask}
