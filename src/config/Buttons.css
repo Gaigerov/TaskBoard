@@ -117,11 +117,141 @@
     cursor: pointer;
 }
 
+.Button_create {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--success);
+    border-radius: 8px;
+    color: var(--light);
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.5px;
+}
+
+.Button_create:hover {
+    cursor: pointer;
+    background-color: var(--success-light);
+}
+
+.Button_createButton:hover {
+    cursor: pointer;
+    background-color: var(--primary-light);
+}
+
+.Button_cancel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--secondary);
+    border-radius: 8px;
+    color: var(--light);
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.5px;
+}
+
+.Button_cancel:hover {
+    cursor: pointer;
+    background-color: var(--secondary-light);
+    color: var(--light);
+}
+
+.Button_save {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--warning);
+    border-radius: 8px;
+    color: var(--dark-grey);
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.5px;
+}
+
+.Button_clone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--warning);
+    border-radius: 8px;
+    color: var(--dark-grey);
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.5px;
+}
+
+.Button_clone:hover {
+    cursor: pointer;
+    background-color: var(--warning-light);
+    color: var(--dark-grey);
+}
+
+.Button_save:hover {
+    cursor: pointer;
+    background-color: var(--warning-light);
+}
+
+.Button_edit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--info);
+    border-radius: 8px;
+    color: var(--dark-grey);
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.5px;
+}
+
+.Button_edit:hover {
+    cursor: pointer;
+    background-color: var(--info-light);
+}
+
+.Button_remove {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--danger);
+    border-radius: 8px;
+    color: var(--light);
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.5px;
+}
+
+.Button_remove:hover {
+    cursor: pointer;
+    background-color: var(--danger-light);
+}
+
 @media screen and (max-width: 769px) {
     .downButtonInDate {
         position: absolute;
         bottom: 8px;
         right: 16px;
+    }
+
+    .Button_createButton {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 12px;
+        background-color: var(--primary);
+        border-radius: 10px;
+        border-style: none;
+        color: var(--light);
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 19.36px;
+        margin-right: 8px;
     }
 }
 
@@ -131,5 +261,42 @@
         top: 8px;
         right: 16px;
     }
+
+    .Button_createButton {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 12px;
+        background-color: var(--primary);
+        border-radius: 10px;
+        border-style: none;
+        color: var(--light);
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 19.36px;
+        margin-right: 8px;
+    }
 }
 
+@media screen and (min-width: 1200px) {
+    .downButtonInDate {
+        position: absolute;
+        top: 8px;
+        right: 16px;
+    }
+
+    .Button_createButton {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 12px;
+        background-color: var(--primary);
+        border-radius: 10px;
+        border-style: none;
+        color: var(--light);
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 19.36px;
+        margin-right: 32px;
+    }
+}

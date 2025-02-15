@@ -5,7 +5,7 @@ import {TASK_STATUS} from './constant';
 export const GlobalStoreContext = createContext();
 
 export const GlobalStoreController = ({children}) => {
-    // const showNotification = useNotification();
+    const showNotification = useNotification();
     const [tasks] = useState(() => {
         const storedTasks = localStorage.getItem('tasks');
 
@@ -54,6 +54,7 @@ export const GlobalStoreController = ({children}) => {
             time: '',
             date: '',
         },
+        activePage: 'taskBoard',
     });
 
     useEffect(() => {

@@ -11,12 +11,14 @@ import {Provider} from 'react-redux';
 import store from './redux/globalStore';
 
 import './config/App.css';
+import {Calendar} from './Calendar';
 import {TaskBoard} from './TaskBoard';
+import {MainPage} from './MainPage';
 
 const router = createHashRouter([
     {
         path: "/:mode?",
-        element: <TaskBoard />,
+        element: <MainPage />,
     },
 ]);
 

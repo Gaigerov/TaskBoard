@@ -49,6 +49,12 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
         });
     };
 
+    const clearDate = () => {
+        setGlobalStore({
+            date: '',
+        });
+    };
+
     const clearStatusFilter = () => {
         setSelectedStatus(TASK_STATUS.EMPTY);
     };
@@ -129,7 +135,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                         </div>
                         <label>Date
                             <DateInput
-                                value={selectedDate}
+                                value={date}
                                 error={errors.date}
                                 onChangeDate={onChangeDate}
                                 onChange={makeSetField('date')}

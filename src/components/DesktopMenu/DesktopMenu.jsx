@@ -9,18 +9,18 @@ export const menuItems = [
     { src: webBoard, title: 'Board' },
 ];
 
-const MenuButton = ({src, title}) => (
-    <div className='DesktopMenu_buttonContainer'>
+const MenuButton = ({src, title, goToTaskBoard, goToCalendar}) => (
+    <div className='DesktopMenu_buttonContainer' onClick={title === 'Tasks' ? goToTaskBoard : goToCalendar}>
         <img className="DesktopMenu_buttonImage" src={src} alt={title} />
         <h3 className='DesktopMenu_buttonTitle'>{title}</h3>
     </div>
 );
 
-export const DesktopMenu = () => {
+export const DesktopMenu = ({goToTaskBoard, goToCalendar}) => {
     return (
         <div className='DesktopMenu'>
             {menuItems.map((item, index) => (
-                <MenuButton key={index} src={item.src} title={item.title} />
+                <MenuButton key={index} src={item.src} title={item.title} goToTaskBoard={goToTaskBoard} goToCalendar={goToCalendar} />
             ))}
         </div>
     );

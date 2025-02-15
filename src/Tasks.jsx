@@ -6,21 +6,26 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone, current
 
     const listRef = useRef();
     const [listWidth, setListWidth] = useState(0);
+    const [listHeight, setListHeight] = useState(0);
+
     const rowHeight = 130;
 
     useEffect(() => {
-        const updateWidth = () => {
+        const updateDimensions = () => {
             if (listRef.current) {
                 setListWidth(listRef.current.offsetWidth);
+                setListHeight(listRef.current.offsetHeight); // Устанавливаем высоту родительского контейнера
             }
         };
-        window.addEventListener('resize', updateWidth);
-        updateWidth();
+        
+        window.addEventListener('resize', updateDimensions);
+        updateDimensions(); // Устанавливаем начальные размеры
 
         return () => {
-            window.removeEventListener('resize', updateWidth);
+            window.removeEventListener('resize', updateDimensions);
         };
     }, []);
+
     
     const rowRenderer = ({key, index, style}) => {
         const task = searchedTasks[index];
@@ -39,18 +44,16 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone, current
         );
     }
 
-    const listHeight = Math.min(searchedTasks.length * rowHeight, 800);
-
+const calculatedHeight = listHeight > 0 ? listHeight : 800;
     return (
-        <div ref={listRef} >
+        <div ref={listRef} style={{ height: '100%', overflow: 'hidden' }}>
             <List
                 width={listWidth}
-                height={listHeight}
-                paddingRight='50px'
+                height={calculatedHeight}
                 rowCount={searchedTasks.length}
                 rowHeight={rowHeight}
                 rowRenderer={rowRenderer}
-                style={{overflowY: 'auto', overflowX: 'hidden'}}
+                style={{ overflowY: 'auto', overflowX: 'hidden' }}
             />
         </div>
     );
