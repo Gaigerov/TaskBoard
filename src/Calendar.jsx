@@ -40,7 +40,7 @@ export const Calendar = ({searchedTasks}) => {
             </div>
             <div className="tasksContainer">
                 <div className="tasksContainer__scroller">
-                    <div className='dateInCalendarContainer'>
+                  
                         <div className="taskInCalendar">
                             <ul className='ulTasksInCalendar'>
                                 {breakpoint !== 'desktop' ?
@@ -49,7 +49,7 @@ export const Calendar = ({searchedTasks}) => {
                                 }
                             </ul>
                         </div>
-                    </div>
+                   
                 </div>
             </div>
         </>
