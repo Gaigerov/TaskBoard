@@ -1,42 +1,40 @@
 import React, {createContext, useContext, useState, useEffect} from 'react';
-import {useNotification} from './components/Notification/NotificationContext';
 import {TASK_STATUS} from './constant';
+import {useNotification} from './components/Notification/NotificationContext';
 
 export const GlobalStoreContext = createContext();
 
+const jsonParse = (data) => {
+    try {
+        return JSON.parse(data);
+    } catch (error) {
+        useNotification('Ошибка при парсинге JSON:', 'error');
+        return undefined;
+    }
+};
+
 export const GlobalStoreController = ({children}) => {
-    const showNotification = useNotification();
     const [tasks] = useState(() => {
         const storedTasks = localStorage.getItem('tasks');
-
-        function jsonParse(data) {
-            try {
-                return JSON.parse(data);
-            } catch (error) {
-                return undefined;
-            }
-        }
-
         let initialTasks = jsonParse(storedTasks) || [];
 
         if (!Array.isArray(initialTasks)) {
             console.log('Отсутствует массив данных');
             localStorage.removeItem('tasks');
-            initialTasks = [];
-        } else {
-            initialTasks = initialTasks.filter((task) => {
-                const isValid = task.title && task.description && task.time && task.date;
-                if (!isValid) {
-                    console.log('Не все данные у задачи');
-                }
-                return isValid;
-            });
+            return [];
         }
-        return initialTasks;
+
+        return initialTasks.filter((task) => {
+            const isValid = task.title && task.description && task.time && task.date;
+            if (!isValid) {
+                console.log('Не все данные у задачи', task);
+            }
+            return isValid;
+        });
     });
 
     const [state, setState] = useState({
-        tasks: tasks,
+        tasks,
         title: '',
         description: '',
         time: '',
@@ -58,28 +56,18 @@ export const GlobalStoreController = ({children}) => {
     });
 
     useEffect(() => {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        setState(prevState => ({
-            ...prevState,
-            tasks: tasks,
-        }));
-    }, [tasks]);
+        localStorage.setItem('tasks', JSON.stringify(state.tasks));
+    }, [state.tasks]);
 
     return (
-        <GlobalStoreContext.Provider
-            value={{
-                state,
-                setState,
-            }}
-        >
+        <GlobalStoreContext.Provider value={{ state, setState }}>
             {children}
         </GlobalStoreContext.Provider>
     );
 };
 
 export const useGlobalStore = () => {
-    const {state} = useContext(GlobalStoreContext);
-    return state
+    return useContext(GlobalStoreContext).state;
 };
 
 export const useSetGlobalStoreTasks = () => {
@@ -92,13 +80,8 @@ export const useSetGlobalStoreTasks = () => {
 
 export const useSetGlobalStore = () => {
     const {setState} = useContext(GlobalStoreContext);
-    return (newState) => {
-        setState(prevState => {
-            const x = {
-                ...prevState,
-                ...newState,
-            }
-            return x
-})
-    };
+    return (newState) => setState((prevState) => ({
+        ...prevState,
+        ...newState,
+    }));
 };

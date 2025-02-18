@@ -1,29 +1,30 @@
 import React, {useState, useEffect} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
+import {useNotification} from './components/Notification/NotificationContext';
+import {useSelector, useDispatch} from 'react-redux';
+import {useBreakpoint} from './breakpoints/useBreakpoint';
 import './config/App.css';
+
 import {Menu} from './components/Menu/Menu';
 import {DesktopMenu} from './components/DesktopMenu/DesktopMenu';
 import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
-import {useNotification} from './components/Notification/NotificationContext';
-import {useGlobalStore, useSetGlobalStore} from './GlobalStoreContext';
-import {useBreakpoint} from './breakpoints/useBreakpoint';
-import desktopMenu from './image/desktop-menu.svg'
-import loop from './image/search.svg';
-import filter from './image/filter.svg';
 import {TaskBoard} from './TaskBoard';
 import {Calendar} from './Calendar';
-import {useSelector, useDispatch} from 'react-redux';
+
 import {tasksActions} from './redux/tasksStore';
 import {modalActions} from './redux/modalStore';
 
+import desktopMenu from './image/desktop-menu.svg';
+import loop from './image/search.svg';
+import filter from './image/filter.svg';
+
 export const MainPage = () => {
-    const setGlobalStore = useSetGlobalStore();
-    const state = useGlobalStore();
-    const {activePage} = state;
     const dispatch = useDispatch();
-    const tasks = useSelector(state => state.tasks);
-    const modal = useSelector(state => state.modal);
+    const tasks = useSelector((state) => state.tasks.tasks);
+    const activePage = useSelector((state) => state.tasks.activePage);
+    const filterTo = useSelector((state) => state.tasks.filterTo);
+
     const [currentTaskId, setCurrentTaskId] = useState(null);
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
@@ -32,42 +33,39 @@ export const MainPage = () => {
     const showNotification = useNotification();
     const {mode} = useParams();
 
+    // Загрузка задач из localStorage при монтировании
+    useEffect(() => {
+        const storedTasks = localStorage.getItem('tasks');
+        if (storedTasks) {
+            dispatch(tasksActions.setInitialTasks(JSON.parse(storedTasks)));
+        }
+    }, [dispatch]);
+
+    // Фильтрация задач
     const filteredTasks = tasks.filter(task => {
-        const filterStatus = state.filterTo.filterStatus ? task.status === state.filterTo.filterStatus : true;
-        const filterDate = state.filterTo.filterDate ? task.date === state.filterTo.filterDate : true;
+        const filterStatus = filterTo.filterStatus ? task.status === filterTo.filterStatus : true;
+        const filterDate = filterTo.filterDate ? task.date === filterTo.filterDate : true;
         return filterStatus && filterDate;
     });
 
-    const searchedTasks = filteredTasks.filter(task => task.title.toLowerCase().includes(state.filterTo.search.toLowerCase()));
+    const searchedTasks = filteredTasks.filter(task =>
+        task.title.toLowerCase().includes(filterTo.search.toLowerCase())
+    );
 
-    const renderPage = () => {
-        switch (activePage) {
-            case 'taskBoard':
-                return <TaskBoard
-                    searchedTasks={searchedTasks}
-                    openEditModal={openEditModal}
-                    openViewModal={openViewModal}
-                    openRemoveModal={openRemoveModal}
-                    cloneTask={cloneTask}
-                    currentTaskId={currentTaskId}
-                    deleteMode={handleDeleteTask}
-                />;
-            case 'calendar':
-                return <Calendar searchedTasks={searchedTasks} />;
-        }
-    }
-
+    // Открытие модального окна фильтрации
     const openFilterModal = () => {
         dispatch(modalActions.openFilterModal());
         navigate('/filter');
     };
 
+    // Обработчик клика вне элемента
     const handleClickOutside = event => {
         if (!event.target.closest('.headerFinderInput')) {
             setIsOpenSearchInput(false);
         }
     };
 
+    // Эффект для добавления слушателя события клика
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
@@ -75,39 +73,33 @@ export const MainPage = () => {
         };
     }, []);
 
+    // Обработчик открытия поля поиска
     const handleOpenSearchInput = () => {
         setIsOpenSearchInput(true);
     };
 
-    const openCreateModal = () => {
-        setCurrentTaskId(null);
-        setGlobalStore({
-            title: '',
-            description: '',
-            time: '',
-            date: ''
-        });
-        navigate('/');
-        navigate('create');
-    };
-
+    // Переключение меню
     const handleToggleMenu = () => {
         setIsOpenMenu(!isOpenMenu);
     };
 
+    // Обработчик изменения значения поиска
     const handleChange = event => {
         const newSearchValue = event.currentTarget.value;
-        setGlobalStore({
-            filterTo: {
-                ...state.filterTo,
-                search: newSearchValue
-            }
-        });
+        dispatch(tasksActions.setFilter(newSearchValue));
     };
 
+    // Закрытие модального окна
     const closeModal = () => {
         dispatch(modalActions.closeAllModals());
         navigate('/');
+    };
+
+    // Открытие модальных окон для создания, редактирования, просмотра и удаления задач
+    const openCreateModal = () => {
+        setCurrentTaskId(null);
+        dispatch(modalActions.openCreateModal({title: '', description: '', time: '', date: ''}));
+        navigate('/create');
     };
 
     const openEditModal = (task) => {
@@ -122,8 +114,9 @@ export const MainPage = () => {
         dispatch(modalActions.openRemoveModal(task));
     };
 
-    const handleCreateTask = (task) => {
-        dispatch(tasksActions.addTask(task));
+    // Обработчики создания, редактирования, удаления и клонирования задач
+    const handleCreateTask = (newTask) => {
+        dispatch(tasksActions.addTask(newTask));
         showNotification('Задача создана успешно', 'success');
         closeModal();
     };
@@ -144,16 +137,6 @@ export const MainPage = () => {
         showNotification('Задача скопирована в конец списка', 'success');
     };
 
-    const handleSetFilter = (date, status) => {
-        setGlobalStore({
-            filterTo: {
-                ...state.filterTo,
-                filterDate: date !== undefined ? date : state.filterTo.filterDate,
-                filterStatus: status !== undefined ? status : state.filterTo.filterStatus
-            }
-        });
-    };
-
     const countChangedFields = () => {
         const initialFilterTo = {
             filterDate: undefined,
@@ -161,49 +144,69 @@ export const MainPage = () => {
         };
 
         return Object.keys(initialFilterTo).reduce((count, key) => {
-            const currentValue = state.filterTo[key];
+            const currentValue = filterTo[key];
             return count + (currentValue !== initialFilterTo[key] ? 1 : 0);
         }, 0);
     };
 
-    useEffect(() => {
-        dispatch(tasksActions.setInitialTasks(state.tasks));
-    }, [dispatch, state.tasks]);
-
     const changedFieldsCount = countChangedFields();
+
+    const renderPage = () => {
+        switch (activePage) {
+            case 'taskBoard':
+                return <TaskBoard
+                    searchedTasks={searchedTasks}
+                    openEditModal={openEditModal}
+                    openViewModal={openViewModal}
+                    openRemoveModal={openRemoveModal}
+                    cloneTask={cloneTask}
+                    currentTaskId={currentTaskId}
+                    deleteMode={handleDeleteTask}
+                />;
+            case 'calendar':
+                return <Calendar
+                    searchedTasks={searchedTasks}
+                    currentTaskId={currentTaskId}
+                    onView={openViewModal}
+                    onEdit={openEditModal}
+                    onClone={cloneTask}
+                    onRemove={openRemoveModal}
+                />;
+            default:
+                return null;
+        }
+    }
 
     return (
         <>
-            <div className="taskBoard">
+            <div className="pageContainer">
                 <div className="headerContainer">
-                    {activePage === 'taskBoard' &&
+                    {activePage === 'taskBoard' && (
                         <div className="taskFinderContainer">
                             <div className="headerButtonsContainer" style={{display: isOpenSearchInput ? 'none' : 'flex'}}>
-                                {breakpoint === 'desktop' &&
+                                {breakpoint === 'desktop' && (
                                     <div className="menuButtonContainer" onClick={handleToggleMenu}>
-                                        {isOpenMenu ? <DesktopMenu
-                                            goToTaskBoard={() => setGlobalStore({activePage: 'taskBoard', })}
-                                            goToCalendar={() => setGlobalStore({activePage: 'calendar', })}
-                                        />
-                                            : null
-                                        }
-                                        <img className="menuButton" src={desktopMenu} />
+                                        {isOpenMenu ? (
+                                            <DesktopMenu
+                                                goToTaskBoard={() => dispatch(tasksActions.setActivePage('taskBoard'))}
+                                                goToCalendar={() => dispatch(tasksActions.setActivePage('calendar'))}
+                                            />
+                                        ) : null}
+                                        <img className="menuButton" src={desktopMenu} alt="Menu" />
                                     </div>
-                                }
+                                )}
                                 <div className="searchButtonContainer" onClick={handleOpenSearchInput}>
-                                    <img className="menuButton" src={loop} />
-                                    {state.filterTo.search !== '' && <div className="searchStatus"></div>}
+                                    <img className="menuButton" src={loop} alt="Search" />
+                                    {filterTo.search !== '' && <div className="searchStatus"></div>}
                                 </div>
                                 <div className="filterButtonContainer">
                                     <div onClick={openFilterModal}>
-                                        <img className="menuButton" src={filter} />
-                                        {(state.filterTo.filterDate !== undefined) ||
-                                            (state.filterTo.filterStatus !== undefined) &&
-                                            (
-                                                <div className="filterStatus">
-                                                    <span className="filterCounter">{changedFieldsCount}</span>
-                                                </div>
-                                            )}
+                                        <img className="menuButton" src={filter} alt="Filter" />
+                                        {(filterTo.filterDate !== undefined || filterTo.filterStatus !== undefined) && (
+                                            <div className="filterStatus">
+                                                <span className="filterCounter">{changedFieldsCount}</span>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -214,36 +217,40 @@ export const MainPage = () => {
                                     placeholder="Search..."
                                     className="headerFinderInput"
                                     onChange={handleChange}
-                                    value={state.filterTo.search}
+                                    value={filterTo.search}
                                 />
                             )}
                         </div>
-                    }
-                    {activePage === 'calendar' &&
+                    )}
+                    {activePage === 'calendar' && (
                         <div className="taskFinderContainer">
                             <div className="headerButtonsContainer">
-                                {breakpoint === 'desktop' &&
+                                {breakpoint === 'desktop' && (
                                     <div className="menuButtonContainer" onClick={handleToggleMenu}>
-                                        {isOpenMenu ? <DesktopMenu
-                                            goToTaskBoard={() => setGlobalStore({activePage: 'taskBoard', })}
-                                            goToCalendar={() => setGlobalStore({activePage: 'calendar', })}
-                                        />
-                                            : null
-                                        }
-                                        <img className="menuButton" src={desktopMenu} />
+                                        {isOpenMenu ? (
+                                            <DesktopMenu
+                                                goToTaskBoard={() => dispatch(tasksActions.setActivePage('taskBoard'))}
+                                                goToCalendar={() => dispatch(tasksActions.setActivePage('calendar'))}
+                                            />
+                                        ) : null}
+                                        <img className="menuButton" src={desktopMenu} alt="Menu" />
                                     </div>
-                                }
+                                )}
                             </div>
                         </div>
-                    }
+                    )}
                     <Button type="createButton" onClick={openCreateModal} name="Create" />
                 </div>
+
                 {renderPage()}
+
                 {breakpoint !== 'desktop' &&
                     <Menu
-                        goToTaskBoard={() => setGlobalStore({activePage: 'taskBoard', })}
-                        goToCalendar={() => setGlobalStore({activePage: 'calendar', })} />
+                        goToTaskBoard={() => dispatch(tasksActions.setActivePage('taskBoard'))}
+                        goToCalendar={() => dispatch(tasksActions.setActivePage('calendar'))}
+                    />
                 }
+
                 {mode &&
                     <TaskModal
                         mode={mode}
@@ -253,7 +260,7 @@ export const MainPage = () => {
                         onRemove={handleDeleteTask}
                         onClose={closeModal}
                         onClone={cloneTask}
-                        onFilter={handleSetFilter}
+                        onFilter={() => dispatch(tasksActions.setFilter())}
                     />
                 }
             </div>

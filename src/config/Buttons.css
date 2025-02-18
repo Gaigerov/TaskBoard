@@ -39,6 +39,7 @@
     display: flex;
     width: 20px;
     height: 20px;
+    position: relative;
 }
 
 .menuButton:hover {
@@ -230,6 +231,11 @@
 .Button_remove:hover {
     cursor: pointer;
     background-color: var(--danger-light);
+}
+
+.chevronButton {
+    margin: 10px;
+    padding: 4px;
 }
 
 @media screen and (max-width: 769px) {

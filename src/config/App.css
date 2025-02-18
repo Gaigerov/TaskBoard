@@ -34,6 +34,7 @@ html, body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    overflow: hidden;
 }
 
 div {
@@ -75,7 +76,7 @@ margin: 0;
 padding: 0;
 }
 
-.taskBoard {
+.pageContainer {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -88,7 +89,7 @@ padding: 0;
     box-sizing: content-box;
 }
 
-.taskBoard::-webkit-scrollbar {
+.pageContainer::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
 }
 
@@ -368,20 +369,6 @@ padding: 0;
     font-size: 12px;
 }
 
-.dateInCalendarChanger {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.dateInCalendar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 12.5px 34px;  
-}
-
 .ulTasksInCalendar {
     margin: 0;
     padding: 0;
@@ -409,6 +396,21 @@ padding: 0;
         gap: 10;
         padding: 0px;
         height: 15px;
+    }
+
+    .dateInCalendar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0 24px;  
+    }
+
+    .dateInCalendarChanger {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 8px;
     }
 
     .rectangle {
@@ -671,6 +673,7 @@ padding: 0;
         cursor: pointer;
         background-color: var(--light-grey);
     }
+
     .tasksContainer::before {
         content: '';
         position: absolute;
@@ -703,6 +706,22 @@ padding: 0;
 
     .tasksContainer .taskContainer:last-child {
         margin-bottom: 30px;
+    }
+
+    .dateInCalendar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        width: 100%;
+        padding: 10px;  
+    }
+    
+    .dateInCalendarChanger {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 32px;
     }
 
     .taskContent {
@@ -789,7 +808,7 @@ padding: 0;
         justify-content: flex-start;
         align-items: flex-end;
         padding: 0 16px 0 0;
-        margin-left: 8px;
+        margin-left: 32px;
     }
 
     .frameOfHeaderTask {
@@ -936,6 +955,13 @@ padding: 0;
         order: -2;
         justify-content: center;
         align-self: center;
+    }
+
+    .dateInCalendarChanger {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 32px;
     }
 
     .taskName {

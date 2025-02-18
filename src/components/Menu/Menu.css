@@ -27,6 +27,10 @@
     filter: invert(26%) sepia(87%) saturate(1316%) hue-rotate(199deg) brightness(99%) contrast(114%);
 }
 
+.Menu_buttonContainer.active {
+    filter: invert(26%) sepia(87%) saturate(1316%) hue-rotate(199deg) brightness(99%) contrast(114%);
+}
+
 .Menu_buttonImage {
     position: static;
     width: 24px;

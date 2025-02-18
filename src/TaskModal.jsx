@@ -1,37 +1,40 @@
 import React, {useEffect, useRef} from 'react';
 import {useSearchParams} from "react-router-dom";
-import {useGlobalStore, useSetGlobalStore} from './GlobalStoreContext';
-// import {useNotification} from './components/Notification/NotificationContext';
+import {useSelector, useDispatch} from 'react-redux';
+
 import {VALID_MODE, VALID_MODES} from './constant';
+
 import {ModalForm} from './components/ModalForm/ModalForm';
 import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
 
+import {tasksActions} from './redux/tasksStore';
+import {modalActions} from './redux/modalStore';
+
 export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter}) => {
-    const state = useGlobalStore();
-    const {title, description, time, date, isDirty, tasks} = state;
-    const setGlobalStore = useSetGlobalStore();
-    // const showNotification = useNotification();
+    const dispatch = useDispatch();
+    const tasks = useSelector((state) => state.tasks.tasks);
     const modalRef = useRef(null);
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
 
     const task = tasks?.find(task => task.id === Number(id));
-
+console.log('TaskModal', task)
 
     const handleClickOutside = (event) => {
         if (modalRef.current && !modalRef.current.contains(event.target)) {
-            resetForm();
+            dispatch(tasksActions.setInitialTasks());
             onClose();
         }
     };
 
     const handleKeyDown = (event) => {
         if (event.key === 'Escape') {
-            resetForm();
+            dispatch(tasksActions.setInitialTasks());
             onClose();
         }
     };
+
 
     useEffect(() => {
         if (mode) {
@@ -47,32 +50,16 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
 
     useEffect(() => {
         if (task) {
-            setGlobalStore({
+            dispatch(tasksActions.updateTask({
                 title: task.title,
                 description: task.description,
                 time: task.time,
                 date: task.date,
-            });
+            }));
         } else {
-            resetForm();
+            dispatch(tasksActions.setInitialTasks());
         }
     }, [task]);
-
-    const resetForm = () => {
-        setGlobalStore({
-            title: '',
-            description: '',
-            time: '',
-            date: '',
-        });
-    };
-
-    // const notifyIncorrectMode = () => {
-    //     if (VALID_MODES.includes(mode)) {
-    //         return;
-    //     }
-    //     console.log('Некорректный режим', 'error');
-    // };
 
     const isValidId = () => {
         const valid = tasks?.some(t => t.id.toString() === id);
@@ -109,16 +96,15 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
             date: date ? validateDate(date) : 'Enter date'
         };
         const isValid = Object.values(newErrors).every(error => !error);
-        setGlobalStore({errors: newErrors});
+        dispatch(tasksActions.setErrors(newErrors));
         return isValid;
     };
 
     const isShow = (() => {
-        if (tasks.length === 0) return true; // Проверка на пустой массив
+        if (tasks.length === 0) return true; 
         return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER) || 
                (VALID_MODES.includes(mode) && isValidId());
     })();
-
 
     if (!isShow) {
         return null;
