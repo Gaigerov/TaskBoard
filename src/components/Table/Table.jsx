@@ -2,15 +2,14 @@ import React, {useState} from 'react';
 import {
     useNavigate,
 } from "react-router-dom";
-import {useGlobalStore} from '../../GlobalStoreContext';
+import {useSelector} from 'react-redux';
 import {TaskRow} from '../TaskRow/TaskRow';
 import {VALID_MODE} from '../../constant';
 import {Pagination} from '../Pagination/Pagination';
 
 export const Table = ({searchedTasks, onView, onEdit, onClone, currentTaskId, deleteMode}) => {
     const navigate = useNavigate();
-    const state = useGlobalStore();
-    const {tasksPerPage} = state;
+    const tasksPerPage = useSelector((state) => state.tasks.tasksPerPage);
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastTask = currentPage * tasksPerPage;
     const indexOfFirstTask = indexOfLastTask - tasksPerPage;

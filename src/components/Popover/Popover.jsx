@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {TASK_STATUS, TASK_STATUSES} from '../../constant';
 import {useSearchParams} from "react-router-dom";
-import {useGlobalStore, useSetGlobalStoreTasks} from "../../GlobalStoreContext";
 import {useNotification} from '../Notification/NotificationContext';
+import {useSelector, useDispatch} from 'react-redux';
+import {tasksActions} from '../../redux/tasksStore';
 
 export const Popover = ({tableTask}) => {
-    const state = useGlobalStore();
-    const {tasks} = state;
-    const setGlobalStoreTasks = useSetGlobalStoreTasks();
+    const dispatch = useDispatch();
+    const tasks = useSelector((state) => state.tasks.tasks);
     const showNotification = useNotification();
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
@@ -38,15 +38,9 @@ export const Popover = ({tableTask}) => {
     }, []);
 
     function updateTaskStatus(taskId, newStatus) {
-        const updatedTasks = tasks.map(task => {
-            if (task.id === taskId) {
-                return { ...task, status: newStatus };
-            }
-            return task; 
-        });
-        setGlobalStoreTasks(updatedTasks);
         const taskToUpdate = tasks.find(task => task.id === taskId);
         if (taskToUpdate) {
+            dispatch(tasksActions.editTask({ id: taskId, task: {status: newStatus} }));
             showNotification(`Статус задачи '${taskToUpdate.title}' обновлён на '${newStatus}'`, 'info');
         } else {
             showNotification(`Задача с ID ${taskId} не найдена`, 'error');

@@ -4,15 +4,12 @@ import {
     createHashRouter,
     RouterProvider,
 } from "react-router-dom";
-import {GlobalStoreController} from './GlobalStoreContext';
 import {AppLifecycleProvider} from './AppLifeCycleContext';
 import {NotificationProvider} from './components/Notification/NotificationContext';
 import {Provider} from 'react-redux';
 import store from './redux/globalStore';
 
 import './config/App.css';
-import {Calendar} from './Calendar';
-import {TaskBoard} from './TaskBoard';
 import {MainPage} from './MainPage';
 
 const router = createHashRouter([
@@ -24,11 +21,11 @@ const router = createHashRouter([
 
 const App = () => (
     <AppLifecycleProvider>
-        <GlobalStoreController>
-            <NotificationProvider>
+        <NotificationProvider>
+            <Provider store={store}>
                 <RouterProvider router={router} />
+            </Provider>
         </NotificationProvider>
-    </GlobalStoreController>
     </AppLifecycleProvider >
 );
 
@@ -36,9 +33,7 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
     ReactDOM.createRoot(rootElement).render(
         <React.StrictMode>
-            <Provider store={store}>
                 <App />
-            </Provider>
         </React.StrictMode>
     );
 } else {

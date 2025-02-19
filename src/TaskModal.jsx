@@ -9,7 +9,6 @@ import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
 
 import {tasksActions} from './redux/tasksStore';
-import {modalActions} from './redux/modalStore';
 
 export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter}) => {
     const dispatch = useDispatch();
@@ -34,7 +33,6 @@ console.log('TaskModal', task)
             onClose();
         }
     };
-
 
     useEffect(() => {
         if (mode) {

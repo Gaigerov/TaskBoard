@@ -1,5 +1,5 @@
 import React, {useState, useEffect, Fragment} from 'react';
-import {useGlobalStore, useSetGlobalStore} from '../../GlobalStoreContext';
+import {useSelector, useDispatch} from 'react-redux';
 import xButton from '../../image/xButton.svg';
 import chevronDown from '../../image/ChevronDown.svg';
 import {VALID_MODE} from '../../constant';
@@ -10,13 +10,17 @@ import {TextInput} from '../Inputs/TextInput/TextInput';
 import {TextArea} from '../Inputs/TextArea/TextArea';
 import {TimeInput} from '../Inputs/TimeInput/TimeInput';
 import {DateInput} from '../Inputs/DateInput/DateInput';
-
+import {tasksActions} from '../../redux/tasksStore';
 
 export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClose, onClone, onFilter, validate}) => {
-    const state = useGlobalStore();
-    const setGlobalStore = useSetGlobalStore();
-    const {title, description, time, date, errors = {}, isDirty, filterTo = {}} = state;
-
+    const dispatch = useDispatch();
+    const title = useSelector((state) => state.tasks.title);
+    const description = useSelector((state) => state.tasks.description);
+    const time = useSelector((state) => state.tasks.time);
+    const date = useSelector((state) => state.tasks.date);
+    const errors = useSelector((state) => state.tasks.errors);
+    const isDirty = useSelector((state) => state.tasks.isDirty);
+    const filterTo = useSelector((state) => state.tasks.filterTo);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(filterTo.filterStatus);
     const [selectedDate, setSelectedDate] = useState(mode === VALID_MODE.EDIT ? task.date : filterTo.filterDate);
@@ -27,10 +31,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
 
     const onChangeDate = (date) => {
         setSelectedDate(date);
-        setGlobalStore({
-            ...state,
-            date: date,
-        })
+        dispatch(tasksActions.setDate(date));
     }
 
     const handleFilter = () => {
@@ -42,27 +43,12 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
         setIsOpen(false);
     };
 
-    const clearField = field => {
-        setGlobalStore({
-            ...prevState,
-            [field]: ''
-        });
-    };
-
-    const clearDate = () => {
-        setGlobalStore({
-            date: '',
-        });
+    const clearField = (field) => {
+        dispatch(tasksActions.clearFields(field)); 
     };
 
     const clearStatusFilter = () => {
         setSelectedStatus(TASK_STATUS.EMPTY);
-    };
-
-    const makeSetField = field => event => {
-        setGlobalStore({
-            [field]: event.target.value, 
-        });
     };
 
     useEffect(() => {
@@ -79,7 +65,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                         <TextInput
                             label="Title"
                             value={title}
-                            onChange={makeSetField('title')}
+                            onChange={(title) => dispatch(tasksActions.setTitle(title))}
                             error={errors.title}
                             placeholder="Enter title"
                             clearField={() => clearField('title')}
@@ -87,7 +73,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                         <TextArea
                             label="Description"
                             value={description}
-                            onChange={makeSetField('description')}
+                            onChange={(description) => dispatch(tasksActions.setDescription(description))}
                             error={errors.description}
                             placeholder="Enter description"
                             clearField={() => clearField('description')}
@@ -96,7 +82,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                             <label className="modalContainer__time">Time
                                 <TimeInput
                                     value={time}
-                                    onChange={makeSetField('time')}
+                                    onChange={(time) => dispatch(tasksActions.setTime(time))}
                                     error={errors.time}
                                 />
                             </label>
@@ -105,7 +91,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                                     value={date}
                                     error={errors.date}
                                     onChangeDate={onChangeDate}
-                                    onChange={makeSetField('date')}
+                                    onChange={(date) => dispatch(tasksActions.setDate(date))}
                                 />
                             </label>
                         </div>
@@ -138,7 +124,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                                 value={date}
                                 error={errors.date}
                                 onChangeDate={onChangeDate}
-                                onChange={makeSetField('date')}
+                                onChange={(date) => dispatch(tasksActions.setDate(date))}
                             />
                         </label>
                     </>

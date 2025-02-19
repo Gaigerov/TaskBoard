@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-
 import chevronRight from "../../image/ChevronRight.svg";
 import chevronLeft from "../../image/ChevronLeft.svg";
 import chevronsRight from "../../image/ChevronsRight.svg";

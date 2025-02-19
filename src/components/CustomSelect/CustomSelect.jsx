@@ -1,17 +1,15 @@
 import React, {useState, useEffect, useRef} from 'react';
 import chevronDown from "../../image/ChevronDown.svg";
-
-import {useSetGlobalStore} from "../../GlobalStoreContext";
+import {useDispatch} from 'react-redux';
+import {tasksActions} from '../../redux/tasksStore';
 
 export const CustomSelect = ({options, value, onChange}) => {
+    const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
     const selectRef = useRef(null);
-    const setGlobalStore = useSetGlobalStore();
 
     const handleOptionClick = (option) => {
-        setGlobalStore({
-            tasksPerPage: option,
-        })
+        dispatch(tasksActions.setTasksPerPage(option));
         setIsOpen(false);
     };
 

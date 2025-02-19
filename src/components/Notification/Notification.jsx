@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './Notification.css';
 import checkCircle from '../../image/сheckСircle.svg';
 import alertCircle from '../../image/alertCircle.svg';

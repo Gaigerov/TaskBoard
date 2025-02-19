@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import chevronRight from "../../image/ChevronRight.svg"
 import chevronLeft from "../../image/ChevronLeft.svg"
-import {useSetGlobalStore} from "../../GlobalStoreContext";
+import {useDispatch} from 'react-redux';
+import {tasksActions} from '../../redux/tasksStore';
 
 export const Datepicker = ({onChangeDate}) => {
-
-    const setGlobalStore = useSetGlobalStore();
+    const dispatch = useDispatch();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [displayDate, setDisplayDate] = useState(new Date());
     const [isTodaySelected, setIsTodaySelected] = useState(true);
@@ -32,7 +32,7 @@ export const Datepicker = ({onChangeDate}) => {
         setSelectedDate(today);
         setIsTodaySelected(true);
         document.getElementById('date').value = today.toLocaleDateString();
-        setGlobalStore({date: today.toLocaleDateString(), });
+        dispatch(tasksActions.setDate(today.toLocaleDateString()));
     };
     const renderDays = () => {
         const daysInMonth = getDaysInMonth(displayDate);

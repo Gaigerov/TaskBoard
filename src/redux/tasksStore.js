@@ -1,8 +1,25 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {TASK_STATUS} from '../constant';
+import { createSlice } from '@reduxjs/toolkit';
+import { TASK_STATUS } from '../constant';
+
+function loadTasksFromLocalStorage() {
+    const tasksString = localStorage.getItem('tasks');
+    if (tasksString) {
+        try {
+            return JSON.parse(tasksString);
+        } catch (error) {
+            console.error("Ошибка при парсинге JSON:", error);
+            return [];
+        }
+    }
+    return []; 
+}
+
+const saveTasksToLocalStorage = (tasks) => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+};
 
 const initialState = {
-    tasks: [],
+    tasks: loadTasksFromLocalStorage(),
     title: '',
     description: '',
     time: '',
@@ -30,14 +47,14 @@ export const tasksSlice = createSlice({
         addTask: (state, action) => {
             const taskWithId = { ...action.payload, id: Date.now() };
             state.tasks.push(taskWithId);
-            localStorage.setItem('tasks', JSON.stringify(state.tasks));
+            saveTasksToLocalStorage(state.tasks);
         },
 
         editTask: (state, action) => {
             const foundedTaskIndex = state.tasks.findIndex(task => task.id === action.payload.id);
             if (foundedTaskIndex >= 0) {
                 state.tasks[foundedTaskIndex] = { ...state.tasks[foundedTaskIndex], ...action.payload.task };
-                localStorage.setItem('tasks', JSON.stringify(state.tasks)); 
+                saveTasksToLocalStorage(state.tasks); 
             }
         },
 
@@ -45,7 +62,7 @@ export const tasksSlice = createSlice({
             const indexToRemove = state.tasks.findIndex(task => task.id === action.payload.id);
             if (indexToRemove >= 0) {
                 state.tasks.splice(indexToRemove, 1);
-                localStorage.setItem('tasks', JSON.stringify(state.tasks));
+                saveTasksToLocalStorage(state.tasks);
             }
         },
 
@@ -58,7 +75,7 @@ export const tasksSlice = createSlice({
                     id: Date.now(),
                 };
                 state.tasks.push(newTask);
-                localStorage.setItem('tasks', JSON.stringify(state.tasks)); 
+                saveTasksToLocalStorage(state.tasks);
             }
         },
 
@@ -76,7 +93,7 @@ export const tasksSlice = createSlice({
             state.description = '';
             state.time = '';
             state.date = '';
-            localStorage.setItem('tasks', JSON.stringify(state.tasks)); 
+            saveTasksToLocalStorage(state.tasks); 
         },
 
         setField: (state, action) => {
@@ -93,9 +110,57 @@ export const tasksSlice = createSlice({
                 state.filterTo.filterStatus = filterStatus;
             }
         },
-        
+
+        setFilterTo: (state, action) => {
+            state.filterTo = action.payload;
+        },
+
+        setTitle(state, action) {
+            state.title = action.payload;
+            state.isDirty = true;
+        },
+
+        setDescription(state, action) {
+            state.description = action.payload;
+            state.isDirty = true; 
+        },
+
+        setTime(state, action) {
+            state.time = action.payload;
+            state.isDirty = true;
+        },
+
+        setDate(state, action) {
+            state.date = action.payload;
+            state.isDirty = true; 
+        },
+
+        clearFields(state, action) {
+            switch (action.payload) {
+                case 'title':
+                    state.title = '';
+                    break;
+                case 'description':
+                    state.description = '';
+                    break;
+                case 'time':
+                    state.time = '';
+                    break;
+                case 'date':
+                    state.date = '';
+                    break;
+                default:
+                    state.title = '';
+                    state.description = '';
+                    state.time = '';
+                    state.date = '';
+                    break;
+            }
+            state.isDirty = false;
+        },
+
         setErrors(state, action) {
-            const { title, description, time, date } = action.payload;
+            const {title, description, time, date} = action.payload;
             state.errors.title = title || '';
             state.errors.description = description || '';
             state.errors.time = time || '';
@@ -104,6 +169,11 @@ export const tasksSlice = createSlice({
 
         setActivePage(state, action) {
             state.activePage = action.payload;
+        },
+
+        clearTasks(state) {
+            state.tasks = [];
+            saveTasksToLocalStorage(state.tasks); 
         },
 
     },

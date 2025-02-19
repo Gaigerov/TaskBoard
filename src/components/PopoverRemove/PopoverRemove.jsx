@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Button} from '../Button/Button';
-import {useSetGlobalStore} from '../../GlobalStoreContext';
+import {tasksActions} from '../../redux/tasksStore';
 
 export const PopoverRemove = ({children, task, onRemove}) => {
     const [isShow, setIsShow] = useState(false);
@@ -9,15 +9,9 @@ export const PopoverRemove = ({children, task, onRemove}) => {
         setIsShow(!isShow);
     };
 
-    const setGlobalStore = useSetGlobalStore();
     const handleRemoveTask = (task) => {
         onRemove(task);
-        setGlobalStore({
-            title: '',
-            description: '',
-            time: '',
-            date: '',
-        })
+        dispatch(tasksActions.setInitialTasks());
         setIsShow(false);
     }
 

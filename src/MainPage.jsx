@@ -33,13 +33,13 @@ export const MainPage = () => {
     const showNotification = useNotification();
     const {mode} = useParams();
 
-    // Загрузка задач из localStorage при монтировании
-    useEffect(() => {
-        const storedTasks = localStorage.getItem('tasks');
-        if (storedTasks) {
-            dispatch(tasksActions.setInitialTasks(JSON.parse(storedTasks)));
-        }
-    }, [dispatch]);
+    // // Загрузка задач из localStorage при монтировании
+    // useEffect(() => {
+    //     const storedTasks = localStorage.getItem('tasks');
+    //     if (storedTasks) {
+    //         dispatch(tasksActions.setInitialTasks(JSON.parse(storedTasks)));
+    //     }
+    // }, [dispatch]);
 
     // Фильтрация задач
     const filteredTasks = tasks.filter(task => {

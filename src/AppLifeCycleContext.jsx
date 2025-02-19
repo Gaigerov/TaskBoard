@@ -12,7 +12,7 @@ export const requestToBackend = () => new Promise((resolve) => {
 
 export const AppLifecycleProvider = ({children}) => {
     const [lifecycleStatus, setLifecycleStatus] = useState(APP_LIFECYCLE_STATUS.INITIALIZATION);
-    const [isLoading, setIsLoading] = useState(true); // Состояние для индикатора загрузки
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const initializeApp = async () => {

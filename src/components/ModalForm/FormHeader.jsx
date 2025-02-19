@@ -5,13 +5,14 @@ import {VALID_MODE} from '../../constant';
 export const FormHeader = ({task, mode, onClose}) => {
 
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 1200);
+   
     useEffect(() => {
         const handleResize = () => setIsWideScreen(window.innerWidth > 1200);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    
+
     return (
         <>
             <div className='modalRectangle'>

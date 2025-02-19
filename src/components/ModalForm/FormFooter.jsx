@@ -1,16 +1,19 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
     useNavigate,
 } from "react-router-dom";
-import {Button} from '../Button/Button';
-import {useGlobalStore, useSetGlobalStore} from '../../GlobalStoreContext';
-import {VALID_MODE, TASK_STATUS} from '../../constant';
+import {useSelector, useDispatch} from 'react-redux';
 import {useNotification} from '../Notification/NotificationContext';
+import {Button} from '../Button/Button';
+import {VALID_MODE, TASK_STATUS} from '../../constant';
+import {tasksActions} from '../../redux/tasksStore';
 
 export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onClone, onClose, onFilter, validate, clearStatusFilter}) => {
-    const state = useGlobalStore();
-    const {title, description, time, date} = state;
-    const setGlobalStore = useSetGlobalStore();
+    const dispatch = useDispatch();
+    const title = useSelector((state) => state.tasks.title);
+    const description = useSelector((state) => state.tasks.description);
+    const time = useSelector((state) => state.tasks.time);
+    const date = useSelector((state) => state.tasks.date);
     const navigate = useNavigate();
     const showNotification = useNotification();
 
@@ -20,12 +23,7 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
     }
 
     const resetGlobalStore = () => {
-        setGlobalStore({
-            title: '',
-            description: '',
-            time: '',
-            date: '',
-        });
+        dispatch(tasksActions.setInitialTasks());
     };
 
     const handleSubmit = () => {
@@ -41,14 +39,14 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
     };
 
     const handleClose = () => {
-        onClose();
         resetGlobalStore();
+        onClose();
     };
 
     const handleRemoveTask = () => {
         onRemove(task.id);
-        onClose();
         resetGlobalStore();
+        onClose();
     };
 
     const handleCloneTask = () => {
@@ -65,14 +63,11 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
 
     const handleDropFilter = () => {
         clearStatusFilter();
-        setGlobalStore({
-            ...state,
-            filterTo: {
-                search: '',
-                filterDate: undefined,
-                filterStatus: undefined,
-            }
-        });
+        dispatch(setFilterTo({
+            search: '',
+            filterDate: null,
+            filterStatus: TASK_STATUS.EMPTY,
+        }));    
         showNotification('Фильтры сброшены', 'info');
     }
 
