@@ -2,8 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {List} from 'react-virtualized';
 import {Task} from './Task';
 
-export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone, currentTaskId}) => {
-
+export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone}) => {
     const listRef = useRef();
     const [listWidth, setListWidth] = useState(0);
     const [listHeight, setListHeight] = useState(0);
@@ -38,7 +37,6 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone, current
                     onView={onView}
                     onRemove={onRemove}
                     onClone={onClone}
-                    currentTaskId={currentTaskId}
                 />
             </div>
         );

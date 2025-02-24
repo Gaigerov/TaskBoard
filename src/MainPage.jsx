@@ -4,6 +4,7 @@ import {useNotification} from './components/Notification/NotificationContext';
 import {useSelector, useDispatch} from 'react-redux';
 import {useBreakpoint} from './breakpoints/useBreakpoint';
 import './config/App.css';
+import {TASK_STATUS} from './constant';
 
 import {Menu} from './components/Menu/Menu';
 import {DesktopMenu} from './components/DesktopMenu/DesktopMenu';
@@ -21,25 +22,15 @@ import filter from './image/filter.svg';
 
 export const MainPage = () => {
     const dispatch = useDispatch();
-    const tasks = useSelector((state) => state.tasks.tasks);
-    const activePage = useSelector((state) => state.tasks.activePage);
-    const filterTo = useSelector((state) => state.tasks.filterTo);
-
-    const [currentTaskId, setCurrentTaskId] = useState(null);
-    const [isOpenMenu, setIsOpenMenu] = useState(false);
-    const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
     const navigate = useNavigate();
     const breakpoint = useBreakpoint();
     const showNotification = useNotification();
     const {mode} = useParams();
-
-    // // Загрузка задач из localStorage при монтировании
-    // useEffect(() => {
-    //     const storedTasks = localStorage.getItem('tasks');
-    //     if (storedTasks) {
-    //         dispatch(tasksActions.setInitialTasks(JSON.parse(storedTasks)));
-    //     }
-    // }, [dispatch]);
+    const tasks = useSelector((state) => state.tasks.tasks);
+    const activePage = useSelector((state) => state.tasks.activePage);
+    const filterTo = useSelector((state) => state.tasks.filterTo);
+    const [isOpenMenu, setIsOpenMenu] = useState(false);
+    const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
 
     // Фильтрация задач
     const filteredTasks = tasks.filter(task => {
@@ -51,12 +42,6 @@ export const MainPage = () => {
     const searchedTasks = filteredTasks.filter(task =>
         task.title.toLowerCase().includes(filterTo.search.toLowerCase())
     );
-
-    // Открытие модального окна фильтрации
-    const openFilterModal = () => {
-        dispatch(modalActions.openFilterModal());
-        navigate('/filter');
-    };
 
     // Обработчик клика вне элемента
     const handleClickOutside = event => {
@@ -97,9 +82,10 @@ export const MainPage = () => {
 
     // Открытие модальных окон для создания, редактирования, просмотра и удаления задач
     const openCreateModal = () => {
-        setCurrentTaskId(null);
-        dispatch(modalActions.openCreateModal({title: '', description: '', time: '', date: ''}));
+        // setCurrentTaskId(null);
         navigate('/create');
+        dispatch(modalActions.openCreateModal({title: '', description: '', time: '', date: ''}));
+
     };
 
     const openEditModal = (task) => {
@@ -112,6 +98,11 @@ export const MainPage = () => {
 
     const openRemoveModal = (task) => {
         dispatch(modalActions.openRemoveModal(task));
+    };
+
+    const openFilterModal = () => {
+        dispatch(modalActions.openFilterModal());
+        navigate('/filter');
     };
 
     // Обработчики создания, редактирования, удаления и клонирования задач
@@ -160,13 +151,11 @@ export const MainPage = () => {
                     openViewModal={openViewModal}
                     openRemoveModal={openRemoveModal}
                     cloneTask={cloneTask}
-                    currentTaskId={currentTaskId}
                     deleteMode={handleDeleteTask}
                 />;
             case 'calendar':
                 return <Calendar
                     searchedTasks={searchedTasks}
-                    currentTaskId={currentTaskId}
                     onView={openViewModal}
                     onEdit={openEditModal}
                     onClone={cloneTask}

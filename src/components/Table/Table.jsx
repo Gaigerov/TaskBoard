@@ -7,7 +7,7 @@ import {TaskRow} from '../TaskRow/TaskRow';
 import {VALID_MODE} from '../../constant';
 import {Pagination} from '../Pagination/Pagination';
 
-export const Table = ({searchedTasks, onView, onEdit, onClone, currentTaskId, deleteMode}) => {
+export const Table = ({searchedTasks, onView, onEdit, onClone, deleteMode}) => {
     const navigate = useNavigate();
     const tasksPerPage = useSelector((state) => state.tasks.tasksPerPage);
     const [currentPage, setCurrentPage] = useState(1);
@@ -46,21 +46,20 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, currentTaskId, de
                     </tr>
                 </thead>
                 <tbody>
-                {currentTasks.map((task) => {
-                    const isPastDue = new Date(task.date) < new Date(); // Пример проверки на просроченность
-                    return (
-                        <TaskRow 
-                            key={task.id} 
-                            task={task} 
-                            isPastDue={isPastDue}
-                            onNavigateToView={handleNavigateToView}
-                            onNavigateToEdit={handleNavigateToEdit}
-                            onClone={onClone}
-                            onDelete={deleteMode}
-                            currentTaskId={currentTaskId}
-                        />
-                    );
-                })}
+                    {currentTasks.map((task) => {
+                        const isPastDue = new Date(task.date) < new Date(); // Пример проверки на просроченность
+                        return (
+                            <TaskRow
+                                key={task.id}
+                                task={task}
+                                isPastDue={isPastDue}
+                                onNavigateToView={handleNavigateToView}
+                                onNavigateToEdit={handleNavigateToEdit}
+                                onClone={onClone}
+                                onDelete={deleteMode}
+                            />
+                        );
+                    })}
                 </tbody>
             </table>
             <Pagination

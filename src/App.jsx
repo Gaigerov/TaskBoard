@@ -22,9 +22,7 @@ const router = createHashRouter([
 const App = () => (
     <AppLifecycleProvider>
         <NotificationProvider>
-            <Provider store={store}>
-                <RouterProvider router={router} />
-            </Provider>
+            <RouterProvider router={router} />
         </NotificationProvider>
     </AppLifecycleProvider >
 );
@@ -33,7 +31,9 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
     ReactDOM.createRoot(rootElement).render(
         <React.StrictMode>
+            <Provider store={store}>
                 <App />
+            </Provider>
         </React.StrictMode>
     );
 } else {

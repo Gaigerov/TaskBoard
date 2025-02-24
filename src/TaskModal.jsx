@@ -7,29 +7,32 @@ import {VALID_MODE, VALID_MODES} from './constant';
 import {ModalForm} from './components/ModalForm/ModalForm';
 import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
-
 import {tasksActions} from './redux/tasksStore';
+import {modalActions} from './redux/modalStore';
 
 export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter}) => {
     const dispatch = useDispatch();
     const tasks = useSelector((state) => state.tasks.tasks);
+    const title = useSelector((state) => state.tasks.title);
+    const description = useSelector((state) => state.tasks.description);
+    const time = useSelector((state) => state.tasks.time);
+    const date = useSelector((state) => state.tasks.date);
     const modalRef = useRef(null);
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
 
     const task = tasks?.find(task => task.id === Number(id));
-console.log('TaskModal', task)
 
     const handleClickOutside = (event) => {
         if (modalRef.current && !modalRef.current.contains(event.target)) {
-            dispatch(tasksActions.setInitialTasks());
+            dispatch(modalActions.setDefaultModal());
             onClose();
         }
     };
 
     const handleKeyDown = (event) => {
         if (event.key === 'Escape') {
-            dispatch(tasksActions.setInitialTasks());
+            dispatch(modalActions.setDefaultModal());
             onClose();
         }
     };
@@ -46,18 +49,18 @@ console.log('TaskModal', task)
         };
     }, [mode]);
 
-    useEffect(() => {
-        if (task) {
-            dispatch(tasksActions.updateTask({
-                title: task.title,
-                description: task.description,
-                time: task.time,
-                date: task.date,
-            }));
-        } else {
-            dispatch(tasksActions.setInitialTasks());
-        }
-    }, [task]);
+    // useEffect(() => {
+    //     if (task) {
+    //         dispatch(tasksActions.updateTask({
+    //             title: task.title,
+    //             description: task.description,
+    //             time: task.time,
+    //             date: task.date,
+    //         }));
+    //     } else {
+    //         dispatch(modalActions.setDefaultModal());
+    //     }
+    // }, [task]);
 
     const isValidId = () => {
         const valid = tasks?.some(t => t.id.toString() === id);
@@ -94,14 +97,14 @@ console.log('TaskModal', task)
             date: date ? validateDate(date) : 'Enter date'
         };
         const isValid = Object.values(newErrors).every(error => !error);
-        dispatch(tasksActions.setErrors(newErrors));
+        dispatch(modalActions.setErrors(newErrors));
         return isValid;
     };
 
     const isShow = (() => {
-        if (tasks.length === 0) return true; 
-        return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER) || 
-               (VALID_MODES.includes(mode) && isValidId());
+        if (tasks.length === 0) return true;
+        return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER) ||
+            (VALID_MODES.includes(mode) && isValidId());
     })();
 
     if (!isShow) {

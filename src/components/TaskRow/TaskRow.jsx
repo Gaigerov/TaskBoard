@@ -1,12 +1,13 @@
 import React from 'react';
-
+import {useSelector} from 'react-redux';
 import {Popover} from '../Popover/Popover';
 import {PopoverRemove} from '../PopoverRemove/PopoverRemove';
 import editButton from '../../image/edit.svg'
 import deleteButton from '../../image/delete.svg';
 import cloneButton from '../../image/clone.svg';
 
-export const TaskRow = ({ task, isPastDue, onNavigateToView, onNavigateToEdit, onClone, onDelete, currentTaskId}) => {
+export const TaskRow = ({ task, isPastDue, onNavigateToView, onNavigateToEdit, onClone, onDelete}) => {
+    const currentTaskId = useSelector((state) => state.modal.currentTaskId);
 
     return (
         <tr

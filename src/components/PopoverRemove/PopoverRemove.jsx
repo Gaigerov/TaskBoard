@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Button} from '../Button/Button';
-import {tasksActions} from '../../redux/tasksStore';
+import {modalActions} from '../../redux/modalStore';
 
 export const PopoverRemove = ({children, task, onRemove}) => {
     const [isShow, setIsShow] = useState(false);
@@ -11,7 +11,7 @@ export const PopoverRemove = ({children, task, onRemove}) => {
 
     const handleRemoveTask = (task) => {
         onRemove(task);
-        dispatch(tasksActions.setInitialTasks());
+        dispatch(modalActions.setDefaultModal());
         setIsShow(false);
     }
 

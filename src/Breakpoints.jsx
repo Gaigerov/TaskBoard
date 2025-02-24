@@ -5,7 +5,7 @@ import {Tablet} from './breakpoints/Tablet';
 import {Mobile} from './breakpoints/Mobile';
 import {useBreakpoint} from './breakpoints/useBreakpoint';
 
-export const Breakpoints = ({searchedTasks, onView, onEdit, onClone, onRemove, currentTaskId, deleteMode}) => {
+export const Breakpoints = ({searchedTasks, onView, onEdit, onClone, onRemove, deleteMode}) => {
     const breakpoint = useBreakpoint();
 
     return (
@@ -17,7 +17,6 @@ export const Breakpoints = ({searchedTasks, onView, onEdit, onClone, onRemove, c
             onEdit={onEdit}
             onClone={onClone}
             onRemove={onRemove}
-            currentTaskId={currentTaskId}
             />}
             {breakpoint === 'tablet' && 
             <Tablet
@@ -26,7 +25,6 @@ export const Breakpoints = ({searchedTasks, onView, onEdit, onClone, onRemove, c
             onEdit={onEdit}
             onClone={onClone}
             onRemove={onRemove}
-            currentTaskId={currentTaskId}
             />}
             {breakpoint === 'desktop' && 
             <Desktop 
@@ -35,7 +33,6 @@ export const Breakpoints = ({searchedTasks, onView, onEdit, onClone, onRemove, c
             onEdit={onEdit}
             onClone={onClone}
             onRemove={onRemove}
-            currentTaskId={currentTaskId}
             deleteMode= {deleteMode}
             />}
         </>

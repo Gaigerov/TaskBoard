@@ -6,6 +6,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNotification} from '../Notification/NotificationContext';
 import {Button} from '../Button/Button';
 import {VALID_MODE, TASK_STATUS} from '../../constant';
+import {modalActions} from '../../redux/modalStore';
 import {tasksActions} from '../../redux/tasksStore';
 
 export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onClone, onClose, onFilter, validate, clearStatusFilter}) => {
@@ -23,7 +24,7 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
     }
 
     const resetGlobalStore = () => {
-        dispatch(tasksActions.setInitialTasks());
+        dispatch(modalActions.setDefaultModal());
     };
 
     const handleSubmit = () => {
@@ -37,6 +38,7 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
             onClose();
         }
     };
+
 
     const handleClose = () => {
         resetGlobalStore();
@@ -63,7 +65,7 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
 
     const handleDropFilter = () => {
         clearStatusFilter();
-        dispatch(setFilterTo({
+        dispatch(tasksActions.setFilterTo({
             search: '',
             filterDate: null,
             filterStatus: TASK_STATUS.EMPTY,

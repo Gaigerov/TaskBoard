@@ -9,16 +9,19 @@ export const Datepicker = ({onChangeDate}) => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [displayDate, setDisplayDate] = useState(new Date());
     const [isTodaySelected, setIsTodaySelected] = useState(true);
+
     const getDaysInMonth = (date) => {
         const month = date.getMonth();
         const year = date.getFullYear();
         return new Date(year, month + 1, 0).getDate();
     };
+
     const changeMonth = (increment) => {
         const newDate = new Date(displayDate);
         newDate.setMonth(displayDate.getMonth() + increment);
         setDisplayDate(newDate);
     };
+
     const selectDate = (day) => {
         const newDate = new Date(displayDate.getFullYear(), displayDate.getMonth(), day);
         setSelectedDate(newDate);
@@ -26,6 +29,7 @@ export const Datepicker = ({onChangeDate}) => {
         document.getElementById('date').value = newDate.toLocaleDateString();
         onChangeDate(newDate.toLocaleDateString());
     };
+
     const resetToToday = () => {
         const today = new Date();
         setDisplayDate(today);
@@ -34,6 +38,7 @@ export const Datepicker = ({onChangeDate}) => {
         document.getElementById('date').value = today.toLocaleDateString();
         dispatch(tasksActions.setDate(today.toLocaleDateString()));
     };
+    
     const renderDays = () => {
         const daysInMonth = getDaysInMonth(displayDate);
         const startDay = (new Date(displayDate.getFullYear(), displayDate.getMonth(), 1).getDay()) - 1;

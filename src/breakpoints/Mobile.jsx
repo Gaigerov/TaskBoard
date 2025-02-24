@@ -1,7 +1,7 @@
 import React from 'react';
 import {Tasks} from '../Tasks';
 
-export const Mobile = ({searchedTasks, onView, onEdit, onClone, onRemove, currentTaskId}) => {
+export const Mobile = ({searchedTasks, onView, onEdit, onClone, onRemove}) => {
     return (
         <Tasks
             searchedTasks={searchedTasks}
@@ -9,7 +9,6 @@ export const Mobile = ({searchedTasks, onView, onEdit, onClone, onRemove, curren
             onEdit={onEdit}
             onClone={onClone}
             onRemove={onRemove}
-            currentTaskId={currentTaskId}
         />
     );
 }

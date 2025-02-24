@@ -10,6 +10,7 @@ import {TextInput} from '../Inputs/TextInput/TextInput';
 import {TextArea} from '../Inputs/TextArea/TextArea';
 import {TimeInput} from '../Inputs/TimeInput/TimeInput';
 import {DateInput} from '../Inputs/DateInput/DateInput';
+import {modalActions} from '../../redux/modalStore';
 import {tasksActions} from '../../redux/tasksStore';
 
 export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClose, onClone, onFilter, validate}) => {
@@ -18,7 +19,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
     const description = useSelector((state) => state.tasks.description);
     const time = useSelector((state) => state.tasks.time);
     const date = useSelector((state) => state.tasks.date);
-    const errors = useSelector((state) => state.tasks.errors);
+    const errors = useSelector((state) => state.modal.errors);
     const isDirty = useSelector((state) => state.tasks.isDirty);
     const filterTo = useSelector((state) => state.tasks.filterTo);
     const [isOpen, setIsOpen] = useState(false);
@@ -43,10 +44,6 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
         setIsOpen(false);
     };
 
-    const clearField = (field) => {
-        dispatch(tasksActions.clearFields(field)); 
-    };
-
     const clearStatusFilter = () => {
         setSelectedStatus(TASK_STATUS.EMPTY);
     };
@@ -65,24 +62,24 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                         <TextInput
                             label="Title"
                             value={title}
-                            onChange={(title) => dispatch(tasksActions.setTitle(title))}
+                            onChange={(event) => dispatch(tasksActions.setTitle(event.target.value))}
                             error={errors.title}
                             placeholder="Enter title"
-                            clearField={() => clearField('title')}
+                            clearField={() => modalActions.setField('title')}
                         />
                         <TextArea
                             label="Description"
                             value={description}
-                            onChange={(description) => dispatch(tasksActions.setDescription(description))}
+                            onChange={(event) => dispatch(tasksActions.setDescription(event.target.value))}
                             error={errors.description}
                             placeholder="Enter description"
-                            clearField={() => clearField('description')}
+                            clearField={() => modalActions.setField('description')}
                         />
                         <div className="taskDateAndTimeContainer">
                             <label className="modalContainer__time">Time
                                 <TimeInput
                                     value={time}
-                                    onChange={(time) => dispatch(tasksActions.setTime(time))}
+                                    onChange={(event) => dispatch(tasksActions.setTime(event.target.value))}
                                     error={errors.time}
                                 />
                             </label>
@@ -91,7 +88,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                                     value={date}
                                     error={errors.date}
                                     onChangeDate={onChangeDate}
-                                    onChange={(date) => dispatch(tasksActions.setDate(date))}
+                                    onChange={(event) => dispatch(tasksActions.setDate(event.target.value))}
                                 />
                             </label>
                         </div>
@@ -124,7 +121,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                                 value={date}
                                 error={errors.date}
                                 onChangeDate={onChangeDate}
-                                onChange={(date) => dispatch(tasksActions.setDate(date))}
+                                onChange={(event) => dispatch(tasksActions.setDate(event.target.value))}
                             />
                         </label>
                     </>

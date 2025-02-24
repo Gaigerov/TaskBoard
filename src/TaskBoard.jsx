@@ -2,7 +2,7 @@ import React from 'react';
 import './config/App.css';
 import {Breakpoints} from './Breakpoints';
 
-export const TaskBoard = ({searchedTasks, openEditModal, openViewModal, openRemoveModal, cloneTask, deleteMode, currentTaskId}) => {
+export const TaskBoard = ({searchedTasks, openEditModal, openViewModal, openRemoveModal, cloneTask, deleteMode}) => {
 
     return (
         <>
@@ -14,7 +14,6 @@ export const TaskBoard = ({searchedTasks, openEditModal, openViewModal, openRemo
                         onEdit={openEditModal}
                         onClone={cloneTask}
                         onRemove={openRemoveModal}
-                        currentTaskId={currentTaskId}
                         deleteMode={deleteMode}
                     />
                 </div>
