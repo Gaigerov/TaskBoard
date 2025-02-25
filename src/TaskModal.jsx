@@ -49,18 +49,18 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
         };
     }, [mode]);
 
-    // useEffect(() => {
-    //     if (task) {
-    //         dispatch(tasksActions.updateTask({
-    //             title: task.title,
-    //             description: task.description,
-    //             time: task.time,
-    //             date: task.date,
-    //         }));
-    //     } else {
-    //         dispatch(modalActions.setDefaultModal());
-    //     }
-    // }, [task]);
+    useEffect(() => {
+        if (task) {
+            dispatch(tasksActions.updateTask({
+                title: task.title,
+                description: task.description,
+                time: task.time,
+                date: task.date,
+            }));
+        } else {
+            dispatch(modalActions.setDefaultModal());
+        }
+    }, [task]);
 
     const isValidId = () => {
         const valid = tasks?.some(t => t.id.toString() === id);

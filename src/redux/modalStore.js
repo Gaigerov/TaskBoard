@@ -78,18 +78,6 @@ const modalSlice = createSlice({
             const {field, value} = action.payload;
             state[field] = value;
         },
-        setFilter: (state, action) => {
-            const {filterDate, filterStatus} = action.payload;
-            if (filterDate !== undefined) {
-                state.filterTo.filterDate = filterDate;
-            }
-            if (filterStatus !== undefined) {
-                state.filterTo.filterStatus = filterStatus;
-            }
-        },
-        setFilterTo: (state, action) => {
-            state.filterTo = action.payload;
-        },
         clearFields(state, action) {
             switch (action.payload) {
                 case 'title':

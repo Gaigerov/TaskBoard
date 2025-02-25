@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {TASK_STATUS} from '../constant';
+import { v4 as uuidv4 } from 'uuid';
 
 const loadTasksFromLocalStorage = () => {
     const tasks = localStorage.getItem('tasks');
@@ -43,7 +44,7 @@ export const tasksSlice = createSlice({
     initialState,
     reducers: {
         addTask: (state, action) => {
-            const taskWithId = {...action.payload, id: Date.now()};
+            const taskWithId = {...action.payload, id: uuidv4()};
             state.tasks.push(taskWithId);
             saveTasksToLocalStorage(state.tasks);
         },
@@ -67,7 +68,7 @@ export const tasksSlice = createSlice({
                 const newTask = {
                     ...taskToClone,
                     title: 'Copy ' + taskToClone.title,
-                    id: Date.now(),
+                    id: uuidv4(),
                 };
                 state.tasks.push(newTask);
                 saveTasksToLocalStorage(state.tasks);
@@ -102,6 +103,18 @@ export const tasksSlice = createSlice({
         setDate(state, action) {
             state.date = action.payload;
             state.isDirty = true; 
+        },
+        setFilter: (state, action) => {
+            const {filterDate, filterStatus} = action.payload || {};
+            if (filterDate !== undefined) {
+                state.filterTo.filterDate = filterDate;
+            }
+            if (filterStatus !== undefined) {
+                state.filterTo.filterStatus = filterStatus;
+            }
+        },
+        setFilterTo: (state, action) => {
+            state.filterTo = action.payload;
         },
     },
 });

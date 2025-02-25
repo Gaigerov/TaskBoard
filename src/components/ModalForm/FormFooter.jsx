@@ -39,7 +39,6 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
         }
     };
 
-
     const handleClose = () => {
         resetGlobalStore();
         onClose();
