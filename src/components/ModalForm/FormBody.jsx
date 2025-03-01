@@ -54,6 +54,15 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
         }
     }, [title, description, time, selectedDate]);
 
+    useEffect(() => {
+        if (mode === VALID_MODE.EDIT && task) {
+            dispatch(tasksActions.setTitle(task.title));
+            dispatch(tasksActions.setDescription(task.description));
+            dispatch(tasksActions.setTime(task.time));
+            dispatch(tasksActions.setDate(task.date));
+        }
+    }, [mode, task, dispatch]);
+ 
     return (
         <Fragment>
             <div className="modalTaskContent">
@@ -65,7 +74,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                             onChange={(event) => dispatch(tasksActions.setTitle(event.target.value))}
                             error={errors.title}
                             placeholder="Enter title"
-                            clearField={() => modalActions.setField('title')}
+                            clearField={() => dispatch(modalActions.setField('title'))}
                         />
                         <TextArea
                             label="Description"
@@ -73,7 +82,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                             onChange={(event) => dispatch(tasksActions.setDescription(event.target.value))}
                             error={errors.description}
                             placeholder="Enter description"
-                            clearField={() => modalActions.setField('description')}
+                            clearField={() => dispatch(modalActions.setField('description'))}
                         />
                         <div className="taskDateAndTimeContainer">
                             <label className="modalContainer__time">Time
@@ -88,7 +97,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                                     value={date}
                                     error={errors.date}
                                     onChangeDate={onChangeDate}
-                                    onChange={(event) => dispatch(tasksActions.setDate(event.target.value))}
+                                    onChange={(event) => dispatch(tasksActions.setDate(event.currentTarget.value))}
                                 />
                             </label>
                         </div>

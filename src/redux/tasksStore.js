@@ -44,15 +44,17 @@ export const tasksSlice = createSlice({
     initialState,
     reducers: {
         addTask: (state, action) => {
-            const taskWithId = {...action.payload, id: uuidv4()};
+            const taskWithId = {...action.payload, id: Date.now()};
             state.tasks.push(taskWithId);
             saveTasksToLocalStorage(state.tasks);
         },
         editTask: (state, action) => {
             const foundedTaskIndex = state.tasks.findIndex(task => task.id === action.payload.id);
             if (foundedTaskIndex >= 0) {
-                state.tasks[foundedTaskIndex] = { ...state.tasks[foundedTaskIndex], ...action.payload.task };
+                state.tasks[foundedTaskIndex] = {...state.tasks[foundedTaskIndex], ...action.payload.task};
                 saveTasksToLocalStorage(state.tasks); 
+            } else {
+                console.warn(`Task with id ${action.payload.id} not found.`);
             }
         },
         removeTask: (state, action) => {
@@ -68,19 +70,20 @@ export const tasksSlice = createSlice({
                 const newTask = {
                     ...taskToClone,
                     title: 'Copy ' + taskToClone.title,
-                    id: uuidv4(),
+                    id: Date.now(),
                 };
                 state.tasks.push(newTask);
                 saveTasksToLocalStorage(state.tasks);
             }
         },
         updateTask: (state, action) => {
-            const {title, description, time, date} = action.payload;
-            state.title = title;
-            state.description = description;
-            state.time = time;
-            state.date = date;
-        },
+            const {id, title, description, time, date, status} = action.payload;
+            const taskIndex = state.tasks.findIndex(task => task.id === id);
+            if (taskIndex >= 0) {
+                state.tasks[taskIndex] = {...state.tasks[taskIndex], title, description, time, date, status};
+                saveTasksToLocalStorage(state.tasks);
+            }
+        },   
         clearTasks(state) {
             state.tasks = [];
             saveTasksToLocalStorage(state.tasks); 

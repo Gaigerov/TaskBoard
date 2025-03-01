@@ -13,7 +13,6 @@ export const Calendar = ({searchedTasks, currentTaskId, onView, onEdit, onClone,
         tomorrow.setDate(tomorrow.getDate() + 1);
         return tomorrow;
     });
-
     const breakpoint = useBreakpoint();
 
     const sortedTasks = searchedTasks.sort((a, b) => {
@@ -46,6 +45,9 @@ export const Calendar = ({searchedTasks, currentTaskId, onView, onEdit, onClone,
         return taskDate.toDateString() === currentDateMobile.toDateString();
     });
 
+    const previousDate = new Date(currentDateTablet);
+    previousDate.setDate(previousDate.getDate() - 1);
+
     return (
         <>
             <div className='dateInCalendarChanger'>
@@ -62,7 +64,7 @@ export const Calendar = ({searchedTasks, currentTaskId, onView, onEdit, onClone,
                             changeTabletDate(-1);
                             setCurrentDateMobile(new Date(currentDateTablet));
                         }} />
-                        <p className='dateInCalendar'>{formatDate(new Date(currentDateTablet.getTime() - 86400000))}</p>
+                        <p className='dateInCalendar'>{formatDate(previousDate)}</p>
                         <p className='dateInCalendar'>{formatDate(currentDateTablet)}</p>
                         <img src={chevronRight} className='chevronButton' onClick={() => {
                             changeTabletDate(1);

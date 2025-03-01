@@ -46,10 +46,9 @@ export const MainPage = () => {
     const handleFilterChange = (newDate, newStatus) => {
         dispatch(tasksActions.setFilterTo({
             ...filterTo,
-            filterDate: newDate,
+            filterDate: newDate + 1,
             filterStatus: newStatus,
         }));
-        console.log('handleFilterChange:', filterTo.filterDate, filterTo.filterStatus)
     };
 
     // Обработчик клика вне элемента
@@ -79,7 +78,7 @@ export const MainPage = () => {
 
     // Обработчик изменения значения поиска
     const handleChange = (event) => {
-        const value = event.target.value;
+        const value = event.currentTarget.value;
         dispatch(tasksActions.setFilterTo({
             ...filterTo,
             search: value,
@@ -96,7 +95,6 @@ export const MainPage = () => {
     const openCreateModal = () => {
         navigate('/create');
         dispatch(modalActions.openCreateModal({title: '', description: '', time: '', date: ''}));
-
     };
 
     const openEditModal = (task) => {
@@ -148,7 +146,7 @@ export const MainPage = () => {
     const countChangedFields = () => {
         const initialFilterTo = {
             filterDate: null,
-            filterStatus: null,
+            filterStatus: TASK_STATUS.EMPTY,
         };
 
         return Object.keys(initialFilterTo).reduce((count, key) => {
@@ -208,11 +206,15 @@ export const MainPage = () => {
                                 <div className="filterButtonContainer">
                                     <div onClick={openFilterModal}>
                                         <img className="menuButton" src={filter} alt="Filter" />
-                                        {(filterTo.filterDate !== undefined || filterTo.filterStatus !== undefined) && (
-                                            <div className="filterStatus">
-                                                <span className="filterCounter">{changedFieldsCount}</span>
-                                            </div>
-                                        )}
+                                        {changedFieldsCount > 0 &&
+                                            (filterTo.filterDate !== undefined || filterTo.filterStatus !== undefined) && (
+                                                <div className='filterStatusContainer'>
+                                                    <div className="filterStatus">
+                                                        <div className="filterCounter">{changedFieldsCount}</div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                 </div>
                             </div>

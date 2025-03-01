@@ -30,6 +30,7 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone}) => {
         const task = searchedTasks[index];
         return (
             <div key={key} style={{...style, height: '100%'}}>
+                <div style={{padding: '0 32px', height: '100%'}}>
                 <Task
                     searchedTasks={searchedTasks}
                     task={task}
@@ -38,6 +39,7 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone}) => {
                     onRemove={onRemove}
                     onClone={onClone}
                 />
+                </div>
             </div>
         );
     }
