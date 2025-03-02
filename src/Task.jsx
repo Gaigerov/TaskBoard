@@ -2,21 +2,23 @@ import React from 'react';
 import {
     useNavigate,
 } from "react-router-dom";
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {Popover} from './components/Popover/Popover';
 import editButton from './image/edit.svg';
 import deleteButton from './image/delete.svg';
 import cloneButton from './image/clone.svg';
 import {VALID_MODE} from './constant';
+import {modalActions} from './redux/modalStore';
 
 export const Task = ({task, onEdit, onView, onRemove, onClone}) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const currentTaskId = useSelector((state) => state.modal.currentTaskId);
 
     const handleNavigateToEdit = () => {
             navigate('/');
             navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
-            onEdit(task);
+            dispatch(modalActions.openEditModal(task));
     }
 
     const handleNavigateToDelete = () => {

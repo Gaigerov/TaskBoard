@@ -278,6 +278,11 @@ padding: 0;
 .headerContainer {
     display: flex;
     width: 100%;
+    padding-bottom: 2px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 32px;
+    position: relative;
 }
 
 .toDoButton {
@@ -328,14 +333,6 @@ padding: 0;
     line-height: 15px;
     letter-spacing: 0%;
     text-align: left;
-}
-
-.headerContainer {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 32px;
-    position: relative;
 }
 
 .searchStatus {
@@ -468,7 +465,6 @@ padding: 0;
         overflow-y: scroll;
         width: auto;
         height: 100%;
-        padding: 0 8px;
     }
 
     .taskContainer {
@@ -701,7 +697,6 @@ padding: 0;
         overflow-y: scroll;
         width: auto;
         height: 100%;
-        padding: 0 32px;
     }
 
     .tasksContainer .taskContainer:first-child {

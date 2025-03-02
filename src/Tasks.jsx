@@ -16,7 +16,7 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone}) => {
                 setListHeight(listRef.current.offsetHeight); // Устанавливаем высоту родительского контейнера
             }
         };
-        
+
         window.addEventListener('resize', updateDimensions);
         updateDimensions(); // Устанавливаем начальные размеры
 
@@ -25,35 +25,35 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone}) => {
         };
     }, []);
 
-    
+
     const rowRenderer = ({key, index, style}) => {
         const task = searchedTasks[index];
         return (
             <div key={key} style={{...style, height: '100%'}}>
                 <div style={{padding: '0 32px', height: '100%'}}>
-                <Task
-                    searchedTasks={searchedTasks}
-                    task={task}
-                    onEdit={onEdit}
-                    onView={onView}
-                    onRemove={onRemove}
-                    onClone={onClone}
-                />
+                    <Task
+                        searchedTasks={searchedTasks}
+                        task={task}
+                        onEdit={onEdit}
+                        onView={onView}
+                        onRemove={onRemove}
+                        onClone={onClone}
+                    />
                 </div>
             </div>
         );
     }
 
-const calculatedHeight = listHeight > 0 ? listHeight : 800;
+    const calculatedHeight = listHeight > 0 ? listHeight : 700;
     return (
-        <div ref={listRef} style={{ height: '100%', overflow: 'hidden' }}>
+        <div ref={listRef} style={{height: '100%', overflow: 'hidden', padding: '0 0 50px 0'}}>
             <List
                 width={listWidth}
                 height={calculatedHeight}
                 rowCount={searchedTasks.length}
                 rowHeight={rowHeight}
                 rowRenderer={rowRenderer}
-                style={{ overflowY: 'auto', overflowX: 'hidden' }}
+                style={{overflowY: 'auto', overflowX: 'hidden'}}
             />
         </div>
     );
