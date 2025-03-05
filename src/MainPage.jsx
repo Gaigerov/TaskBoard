@@ -11,7 +11,7 @@ import {DesktopMenu} from './components/DesktopMenu/DesktopMenu';
 import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
 import {TaskBoard} from './TaskBoard';
-import {Calendar} from './Calendar';
+import {TasksCalendar} from './TasksCalendar';
 
 import {tasksActions} from './redux/tasksStore';
 import {modalActions} from './redux/modalStore';
@@ -169,8 +169,8 @@ export const MainPage = () => {
                     deleteMode={handleDeleteTask}
                 />;
             case 'calendar':
-                return <Calendar
-                    searchedTasks={searchedTasks}
+                return <TasksCalendar
+                    // searchedTasks={searchedTasks}
                     onView={openViewModal}
                     onEdit={openEditModal}
                     onClone={cloneTask}

@@ -30,7 +30,8 @@
     display: none;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -72,8 +73,8 @@ textarea {
 }
 
 input {
-margin: 0;
-padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .pageContainer {
@@ -375,7 +376,7 @@ padding: 0;
     padding: 0;
     width: 100%;
     justify-content: left;
-    align-items: center; 
+    align-items: center;
 }
 
 @media screen and (max-width: 769px) {
@@ -404,7 +405,25 @@ padding: 0;
         justify-content: center;
         align-items: center;
         margin: 0;
-        padding: 0 24px;  
+        padding: 0 24px;
+    }
+
+    .timeInCalendar {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 0px;
+        color: rgb(108, 117, 125);
+        font-family: Montserrat;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 15px;
+        letter-spacing: 0%;
+        text-align: left;
+        margin-top: 16px;
+        margin-bottom: 0;
     }
 
     .dateInCalendarChanger {
@@ -414,6 +433,15 @@ padding: 0;
         margin: 0 8px;
     }
 
+    .listOfTasks {
+        padding: 0 8px;
+    }
+
+    .tasksInCalendar {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
     .rectangle {
         width: 40px;
         height: 2px;
@@ -713,9 +741,9 @@ padding: 0;
         align-items: center;
         margin: 0;
         width: 100%;
-        padding: 10px;  
+        padding: 10px;
     }
-    
+
     .dateInCalendarChanger {
         display: flex;
         justify-content: space-between;
@@ -1218,5 +1246,4 @@ padding: 0;
         padding: 0 16px 0 0;
         margin-left: 32px;
     }
-
 }

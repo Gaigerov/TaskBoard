@@ -47,6 +47,10 @@ export const tasksSlice = createSlice({
             const taskWithId = {...action.payload, id: Date.now()};
             state.tasks.push(taskWithId);
             saveTasksToLocalStorage(state.tasks);
+            state.title = '';
+            state.description = '';
+            state.time = '';
+            state.date = '';
         },
         editTask: (state, action) => {
             const foundedTaskIndex = state.tasks.findIndex(task => task.id === action.payload.id);
