@@ -282,7 +282,7 @@ input {
     padding-bottom: 2px;
     display: flex;
     justify-content: space-between;
-    margin-top: 32px;
+    margin-top: 16px;
     position: relative;
 }
 
@@ -415,8 +415,7 @@ input {
         align-items: flex-start;
         gap: 10px;
         padding: 0px;
-        color: rgb(108, 117, 125);
-        font-family: Montserrat;
+        color: var(--grey);
         font-size: 12px;
         font-weight: 400;
         line-height: 15px;
@@ -430,7 +429,7 @@ input {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0 8px;
+        margin: 32px 0 8px 0;
     }
 
     .listOfTasks {
@@ -442,6 +441,7 @@ input {
         flex-direction: column;
         gap: 16px;
     }
+
     .rectangle {
         width: 40px;
         height: 2px;
@@ -501,6 +501,7 @@ input {
         flex-direction: column;
         justify-content: space-between;
         width: 100%;
+        box-sizing: border-box;
         height: auto;
         border-radius: 10px;
         background-color: var(--light);
@@ -751,6 +752,41 @@ input {
         margin: 0 32px;
     }
 
+    .listOfTasks {
+        padding: 0 32px;
+    }
+
+    .tasksInCalendar {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .dateInCalendar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0 24px;
+    }
+
+    .timeInCalendar {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 0px;
+        color: var(--grey);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 15px;
+        letter-spacing: 0%;
+        text-align: left;
+        margin-top: 16px;
+        margin-bottom: 0;
+    }
+
     .taskContent {
         display: flex;
         flex-direction: column;
@@ -769,14 +805,23 @@ input {
         flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        width: auto;
+        width: 100%;
+        box-sizing: border-box;
         height: auto;
         border-radius: 10px;
         background-color: var(--light);
         box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
     }
 
+    .first-date {
+        width: 48%;
+        margin-left: 0;
+    }
+
+    .second-date {
+        width: 48%;
+        margin-left: auto; 
+    }
     .textOfTask {
         display: flex;
         white-space: nowrap;

@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     isCreateModalOpen: false,
@@ -28,12 +28,7 @@ const modalSlice = createSlice({
         openCreateModal: (state) => {
             state.isCreateModalOpen = true;
             state.currentTaskId = null;
-            state.modalData = {
-                title: '',
-                description: '',
-                time: '',
-                date: ''
-            };
+            state.modalData = initialState.modalData; // Сброс данных модала
         },
         openFilterModal: (state) => {
             state.isFilterModalOpen = true;
@@ -59,50 +54,46 @@ const modalSlice = createSlice({
             state.isViewModalOpen = false;
             state.isRemoveModalOpen = false;
             state.currentTaskId = null;
-            state.modalData = {title: '', description: '', time: '', date: ''};
+            state.modalData = initialState.modalData; // Сброс данных модала
+            state.errors = initialState.errors; // Сброс ошибок
         },
-        setDefaultModal: (state) => {
-            state.title = '';
-            state.description = '';
-            state.time = '';
-            state.date = '';
+        resetModalData: (state) => {
+            state.modalData = initialState.modalData; // Сброс данных модала
         },
         setErrors(state, action) {
-            const {title, description, time, date} = action.payload;
+            const { title, description, time, date } = action.payload;
             state.errors.title = title || '';
             state.errors.description = description || '';
             state.errors.time = time || '';
             state.errors.date = date || '';
         },
         setField: (state, action) => {
-            const {field, value} = action.payload;
-            state[field] = value;
+            const { field, value } = action.payload;
+            if (state.modalData.hasOwnProperty(field)) {
+                state.modalData[field] = value;
+            }
         },
         clearFields(state, action) {
             switch (action.payload) {
                 case 'title':
-                    state.title = '';
+                    state.modalData.title = ''; 
                     break;
                 case 'description':
-                    state.description = '';
+                    state.modalData.description = ''; 
                     break;
-                case 'time':
-                    state.time = '';
-                    break;
-                case 'date':
-                    state.date = '';
-                    break;
-                default:
-                    state.title = '';
-                    state.description = '';
-                    state.time = '';
-                    state.date = '';
-                    break;
-            }
-            state.isDirty = false;
+                    case 'time':
+                        state.modalData.time = ''; 
+                        break;
+                    case 'date':
+                        state.modalData.date = ''; 
+                        break;
+                    default:
+                        state.modalData = initialState.modalData; 
+                        break;
+                }
+            },
         },
-    },
-});
-
-export const modalActions = modalSlice.actions;
-export const modalReducer = modalSlice.reducer;
+    });
+    
+    export const modalActions = modalSlice.actions;
+    export const modalReducer = modalSlice.reducer;

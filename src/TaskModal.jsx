@@ -25,14 +25,14 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
 
     const handleClickOutside = (event) => {
         if (modalRef.current && !modalRef.current.contains(event.target)) {
-            dispatch(modalActions.setDefaultModal());
+            dispatch(modalActions.resetModalData());
             onClose();
         }
     };
 
     const handleKeyDown = (event) => {
         if (event.key === 'Escape') {
-            dispatch(modalActions.setDefaultModal());
+            dispatch(modalActions.resetModalData());
             onClose();
         }
     };
@@ -51,14 +51,14 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
 
     useEffect(() => {
         if (task) {
-            dispatch(tasksActions.updateTask({
+            dispatch(tasksActions.editTask({
                 title: task.title,
                 description: task.description,
                 time: task.time,
                 date: task.date,
             }));
         } else {
-            dispatch(modalActions.setDefaultModal());
+            dispatch(modalActions.resetModalData());
         }
     }, [task]);
 

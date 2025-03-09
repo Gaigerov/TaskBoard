@@ -10,7 +10,7 @@ import cloneButton from './image/clone.svg';
 import {VALID_MODE} from './constant';
 import {modalActions} from './redux/modalStore';
 
-export const Task = ({task, onEdit, onView, onRemove, onClone}) => {
+export const Task = ({task, onEdit, onView, onRemove, onClone, taskClass}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const currentTaskId = useSelector((state) => state.modal.currentTaskId);
@@ -36,10 +36,10 @@ export const Task = ({task, onEdit, onView, onRemove, onClone}) => {
     const taskDate = new Date(task.date.split('.').reverse().join('-'));
     const currentDate = new Date();
     const isPastDue = taskDate < currentDate && task.status !== 'Done';
-
+    
     return (
         <div 
-            className="taskContainer"
+            className={`taskContainer ${taskClass}`}
             onClick={() => handleNavigateToView(task)}
             style={{
                 backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '',

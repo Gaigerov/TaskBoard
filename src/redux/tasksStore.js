@@ -53,12 +53,11 @@ export const tasksSlice = createSlice({
             state.date = '';
         },
         editTask: (state, action) => {
-            const foundedTaskIndex = state.tasks.findIndex(task => task.id === action.payload.id);
-            if (foundedTaskIndex >= 0) {
-                state.tasks[foundedTaskIndex] = {...state.tasks[foundedTaskIndex], ...action.payload.task};
-                saveTasksToLocalStorage(state.tasks); 
-            } else {
-                console.warn(`Task with id ${action.payload.id} not found.`);
+            const {id, title, description, time, date, status} = action.payload;
+            const taskIndex = state.tasks.findIndex(task => task.id === id);
+            if (taskIndex >= 0) {
+                state.tasks[taskIndex] = {...state.tasks[taskIndex], title, description, time, date, status};
+                saveTasksToLocalStorage(state.tasks);
             }
         },
         removeTask: (state, action) => {
@@ -80,14 +79,6 @@ export const tasksSlice = createSlice({
                 saveTasksToLocalStorage(state.tasks);
             }
         },
-        updateTask: (state, action) => {
-            const {id, title, description, time, date, status} = action.payload;
-            const taskIndex = state.tasks.findIndex(task => task.id === id);
-            if (taskIndex >= 0) {
-                state.tasks[taskIndex] = {...state.tasks[taskIndex], title, description, time, date, status};
-                saveTasksToLocalStorage(state.tasks);
-            }
-        },   
         clearTasks(state) {
             state.tasks = [];
             saveTasksToLocalStorage(state.tasks); 

@@ -24,7 +24,7 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
     }
 
     const resetGlobalStore = () => {
-        dispatch(modalActions.setDefaultModal());
+        dispatch(modalActions.resetModalData());
     };
 
     const handleSubmit = () => {

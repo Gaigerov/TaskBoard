@@ -170,7 +170,6 @@ export const MainPage = () => {
                 />;
             case 'calendar':
                 return <TasksCalendar
-                    // searchedTasks={searchedTasks}
                     onView={openViewModal}
                     onEdit={openEditModal}
                     onClone={cloneTask}

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo, useCallback, useRef} from 'react';
 import {TASK_STATUS, TASK_STATUSES} from '../../constant';
 import {useSearchParams} from "react-router-dom";
 import {useNotification} from '../Notification/NotificationContext';
@@ -11,17 +11,22 @@ export const Popover = ({tableTask}) => {
     const showNotification = useNotification();
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
-    const currentTask = tasks?.find(task => task.id === Number(tableTask?.id || id));
+
+    const currentTask = useMemo(() => {
+        return tasks?.find(task => task.id === Number(tableTask?.id || id));
+    }, [tasks, tableTask, id]);
+
     const initialStatus = currentTask ? currentTask.status : TASK_STATUS.TO_DO;
     const [isOpen, setIsOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(initialStatus);
+    const dropdownRef = useRef(null);
 
     const toggleDropdown = () => {
         setIsOpen(prev => !prev);
     };
 
     const handleClickOutside = (event) => {
-        if (event.target.closest('.customSelect') === null) {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
             setIsOpen(false);
         }
     };
@@ -37,59 +42,38 @@ export const Popover = ({tableTask}) => {
         };
     }, []);
 
-    function updateTaskStatus(taskId, newStatus) {
-        const taskToUpdate = tasks.find(task => task.id === taskId);
-        if (taskToUpdate) {
-            dispatch(tasksActions.editTask({ id: taskId, task: {status: newStatus} }));
-            showNotification(`Статус задачи '${taskToUpdate.title}' обновлён на '${newStatus}'`, 'info');
+    const updateTaskStatus = useCallback((taskId, newStatus) => {
+        if (currentTask) {
+            dispatch(tasksActions.editTask({id: taskId, task: {status: newStatus}}));
+            showNotification(`Статус задачи '${currentTask.title}' обновлён на '${newStatus}'`, 'info');
         } else {
             showNotification(`Задача с ID ${taskId} не найдена`, 'error');
         }
-    }
+    }, [dispatch, currentTask, showNotification]);
 
     const handleStatusClick = (status) => {
         setSelectedStatus(status);
-        updateTaskStatus(Number(tableTask?.id || id), status); 
+        updateTaskStatus(Number(tableTask?.id || id), status);
         setIsOpen(false);
     };
 
-    const getButtonClassName = (status) => {
-        switch (status) {
-            case TASK_STATUS.TO_DO:
-                return 'toDoButton';
-            case TASK_STATUS.INPROGRESS:
-                return 'inProgressButton';
-            case TASK_STATUS.DONE:
-                return 'doneButton';
-            default:
-                return 'toDoButton';
-        }
-    }
-
-    const getStatusClassName = (status) => {
-        switch (status) {
-            case TASK_STATUS.TO_DO:
-                return 'customStatus toDoButton';
-            case TASK_STATUS.INPROGRESS:
-                return 'customStatus inProgressButton';
-            case TASK_STATUS.DONE:
-                return 'customStatus doneButton';
-            default:
-                return '';
-        }
+    const statusClassMap = {
+        [TASK_STATUS.TO_DO]: 'customStatus toDoButton',
+        [TASK_STATUS.INPROGRESS]: 'customStatus inProgressButton',
+        [TASK_STATUS.DONE]: 'customStatus doneButton',
     };
 
     return (
-        <div className="customSelector" onClick={(e) => e.stopPropagation()}>
-            <div onClick={toggleDropdown} className={getButtonClassName(selectedStatus)}>
+        <div className="customSelector" ref={dropdownRef} onClick={(e) => e.stopPropagation()}>
+            <div onClick={toggleDropdown} className={statusClassMap[selectedStatus]}>
                 {selectedStatus}
             </div>
             {isOpen && (
                 <div className="statuses">
-                    {TASK_STATUSES.map((status, index) => (
+                    {TASK_STATUSES.map((status) => (
                         <div
-                            key={`${status}-${index}`}
-                            className={getStatusClassName(status)}
+                            key={status}
+                            className={statusClassMap[status]}
                             onClick={() => handleStatusClick(status)}
                         >
                             {status}

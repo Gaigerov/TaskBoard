@@ -11,7 +11,7 @@ export const PopoverRemove = ({children, task, onRemove}) => {
 
     const handleRemoveTask = (task) => {
         onRemove(task);
-        dispatch(modalActions.setDefaultModal());
+        dispatch(modalActions.resetModalData());
         setIsShow(false);
     }
 
