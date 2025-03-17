@@ -51,6 +51,12 @@ export const getSimpleData = async () => {
         throw new Error('Ошибка получения данных из хранилища: ' + responseStorage.statusText);
     }
 
+    // // Запрос на получение списка хранилищ
+    // const putDataToStorage = await fetch('https://simple-storage.vigdorov.ru/storages/${storageId}', {
+    //     method: 'PUT',
+    //     headers: authHeaders,
+    // });
+
     const {data} = await responseStorage.json();
 
     console.log('Токен авторизации:', authToken);

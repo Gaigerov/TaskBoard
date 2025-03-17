@@ -28,24 +28,24 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, deleteMode}) => {
     return (
         <div className='tablePageContainer'>
             <table className='tableContainer'>
-                <thead>
+                <thead className='tableHeadContainer'>
                     <tr className='trTitles'>
-                        <th>
+                        <th className='thContainer'>
                             Status
                         </th>
-                        <th>
+                        <th className='thContainer'>
                             Title
                         </th>
-                        <th>
+                        <th className='thContainer'>
                             Description
                         </th>
-                        <th>
+                        <th className='thContainer'>
                             Date
                         </th>
-                        <th></th>
+                        <th className='thContainer'></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='tableBodyContainer'>
                     {currentTasks.map((task) => {
                         const isPastDue = new Date(task.date) < new Date(); // Пример проверки на просроченность
                         return (

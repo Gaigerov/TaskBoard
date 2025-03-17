@@ -573,8 +573,6 @@ input {
 
     .textOfTask {
         display: flex;
-        overflow: hidden;
-        text-overflow: ellipsis;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
@@ -833,12 +831,11 @@ input {
         border-radius: 10px;
         background-color: var(--light);
         box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+        margin-bottom: 16px;
     }
 
     .textOfTask {
         display: flex;
-        overflow: hidden;
-        text-overflow: ellipsis;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
@@ -851,12 +848,9 @@ input {
         justify-content: flex-start;
         font-size: 24px;
         font-weight: 400;
-        line-height: 29.26px;
         text-align: left;
         margin: 0 0 10px 0;
         color: var(--dark-grey);
-        overflow: hidden;
-        text-overflow: ellipsis;
         width: 100%;
     }
 
@@ -869,8 +863,6 @@ input {
         text-align: left;
         margin: 0 0 10px 0;
         color: var(--dark-grey);
-        overflow: hidden;
-        text-overflow: ellipsis;
         width: 100%;
     }
 
@@ -971,17 +963,17 @@ input {
 }
 
 @media screen and (min-width: 1200px) {
-    thead {
+    .tableheadContainer {
         display: flex;
         flex-direction: row;
     }
 
-    tbody {
+    .tableBodyContainer {
         display: flex;
         flex-direction: column;
     }
 
-    th {
+    .thContainer {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -990,7 +982,7 @@ input {
         padding: 11px 8px 11px 8px;
     }
 
-    td {
+    .tdContainer {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -999,30 +991,43 @@ input {
         padding: 0px 8px 0px 8px;
     }
 
-    th:nth-child(1),
-    td:nth-child(1) {
+    .thContainer:nth-child(1),
+    .tdContainer:nth-child(1) {
         width: 84px;
     }
 
-    th:nth-child(2),
-    td:nth-child(2) {
+    .thContainer:nth-child(2),
+    .tdContainer:nth-child(2) {
         width: 184px;
         margin-right: auto;
     }
 
-    th:nth-child(3),
-    td:nth-child(3) {
+    .thContainer:nth-child(3),
+    .tdContainer:nth-child(3) {
         width: calc(50%);
         margin-right: auto;
     }
 
-    th:nth-child(4) {
+    .thContainer:nth-child(4) {
         width: 104px;
     }
 
-    th:nth-child(5),
-    td:nth-child(5) {
+    .thContainer:nth-child(5),
+    .tdContainer:nth-child(5) {
         width: 124px;
+    }
+
+    .dateTableCalendar {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 7%;
+        width: 100%;
+        color: var(--grey);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: 0%;
     }
 
     .taskContent {
@@ -1042,9 +1047,15 @@ input {
 
     .dateInCalendarChanger {
         display: flex;
-        justify-content: center;
         align-items: center;
-        margin: 0 32px;
+        margin: 32px 32px 0 32px;
+    }
+
+    .calendarTableHead {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
     }
 
     .taskName {
@@ -1186,20 +1197,14 @@ input {
         box-sizing: border-box;
     }
 
-    table {
-        width: 100%;
-        height: 80%;
-        border-collapse: collapse;
-    }
-
-    thead {
+    .tableHeadContainer {
         position: sticky;
         top: 0;
         background-color: white;
         z-index: 1;
     }
 
-    tbody {
+    .tableBodyContainer {
         display: block;
         overflow-y: auto;
         height: 80%;
@@ -1209,7 +1214,7 @@ input {
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: auto;
+        height: 100%;
         border-collapse: collapse;
         position: relative;
         overflow: hidden;
@@ -1266,6 +1271,137 @@ input {
         background-color: var(--light-grey);
     }
 
+    .calendarTableBody {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+    }
+
+    .taskContainerDesktopCalendar {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        box-sizing: border-box;
+        height: auto;
+        border-radius: 10px;
+        background-color: var(--light);
+    }
+
+    .taskContentDesktopCalendar {
+        width: 110px;
+        padding: 8px;
+    }
+
+    .textOfTaskCalendar {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 0px;
+    }
+
+    .taskNameCalendar {
+        display: flex;
+        justify-content: flex-start;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 29.26px;
+        text-align: left;
+        color: var(--dark-grey);
+        width: 100%;
+        margin: 0;
+    }
+
+    .datesInCalendar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .dateInCalendar {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        color: var(--grey);
+        font-family: Montserrat;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: 0%;
+    }
+
+    .tasksOfCalendarDate {
+        display: flex;
+        flex-direction: column;
+        margin: 0 76px;
+    }
+
+    .taskOfCalendarDate {
+        width: 100%;
+    }
+
+    .tasksForTime {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .taskDescriptionCalendar {
+        display: flex;
+        justify-content: flex-start;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 19.5px;
+        text-align: left;
+        color: var(--dark-grey);
+        width: 100%;
+        margin: 0;
+    }
+
+    .timeInCalendar {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 10;
+        padding: 0px;
+        color: var(--grey);
+        font-family: Montserrat;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 15px;
+        letter-spacing: 0%;
+        text-align: left;
+        margin: 0;
+    }
+
+    .trContainerToTime {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .calendarTableTrContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 50px;
+        width: auto;
+    }
+
+    .tasksColumn {
+        width: auto;
+        margin: 0;
+        padding: 0;
+    }
+
     .popper {
         position: absolute;
         right: 0px;
@@ -1299,5 +1435,11 @@ input {
         align-items: flex-end;
         padding: 0 16px 0 0;
         margin-left: 32px;
+    }
+
+    .emptyTaskContainer {
+        width: 125px;
+        min-height: 80px;
+        border: 1px dashed #ccc;
     }
 }

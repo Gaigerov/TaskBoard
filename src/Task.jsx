@@ -36,10 +36,10 @@ export const Task = ({task, onEdit, onView, onRemove, onClone, taskClass}) => {
     const taskDate = new Date(task.date.split('.').reverse().join('-'));
     const currentDate = new Date();
     const isPastDue = taskDate < currentDate && task.status !== 'Done';
-    
+
     return (
         <div 
-            className={`taskContainer ${taskClass}`}
+            className='taskContainer'
             onClick={() => handleNavigateToView(task)}
             style={{
                 backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '',

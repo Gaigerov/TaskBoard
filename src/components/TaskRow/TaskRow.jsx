@@ -17,12 +17,12 @@ export const TaskRow = ({ task, isPastDue, onNavigateToView, onNavigateToEdit, o
                 backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '',
             }}
         >
-            <td>
+            <td className='tdContainer'>
                 <Popover tableTask={task} />
             </td>
-            <td>{task.title}</td>
-            <td>{task.description}</td>
-            <td className='taskDateContainer'>
+            <td className='tdContainer'>{task.title}</td>
+            <td className='tdContainer'>{task.description}</td>
+            <td className='tdContainer taskDateContainer'>
                 <div className='taskDateContainer_spanTime' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>
                     {task.time}
                 </div>
@@ -30,7 +30,7 @@ export const TaskRow = ({ task, isPastDue, onNavigateToView, onNavigateToEdit, o
                     {task.date}
                 </div>
             </td>
-            <td>
+            <td className='tdContainer'>
                 <div className="controls" onClick={(e) => e.stopPropagation()}>
                     <div onClick={() => onNavigateToEdit(task)} className='iconButton'>
                         <img className="icon editButton" src={editButton} alt="Edit" />
