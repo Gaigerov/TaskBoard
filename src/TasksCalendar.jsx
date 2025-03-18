@@ -169,7 +169,7 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
                                                     />
                                                 ))
                                             ) : (
-                                                <div style={{height: '50px', border: '1px dashed #ccc'}}></div> // Пустой контейнер
+                                                <div style={{height: '50px'}}></div> // Пустой контейнер
                                             )}
                                         </div>
                                         <div className='flexContainer'>
@@ -185,7 +185,7 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
                                                     />
                                                 ))
                                             ) : (
-                                                <div style={{height: '50px', border: '1px dashed #ccc'}}></div> // Пустой контейнер
+                                                <div style={{height: '50px'}}></div> // Пустой контейнер
                                             )}
                                         </div>
                                     </div>
@@ -236,7 +236,7 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
                                             />
                                         ))
                                     ) : (
-                                        <div style={{ height: '50px', border: '1px dashed #ccc' }}></div> // Пустой контейнер
+                                        <div style={{ height: '50px'}}></div> // Пустой контейнер
                                     )}
                                 </div>
                             );
