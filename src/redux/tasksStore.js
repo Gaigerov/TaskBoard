@@ -1,6 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {TASK_STATUS} from '../constant';
-import { v4 as uuidv4 } from 'uuid';
 
 const loadTasksFromLocalStorage = () => {
     const tasks = localStorage.getItem('tasks');

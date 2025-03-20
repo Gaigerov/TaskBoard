@@ -4,35 +4,6 @@ import {Task} from '../../Task';
 import {Loader} from '../Loader/Loader';
 
 
-// Компонент Modal для ввода имени
-const authModal = ({ isOpen, onClose, onSubmit }) => {
-    const [name, setName] = useState('');
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit(name);
-        setName('');
-    };
-
-    if (!isOpen) return null;
-
-    return (
-        <div className="modal">
-            <form onSubmit={handleSubmit}>
-                <h2>Введите ваше имя</h2>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                />
-                <button type="submit">Отправить</button>
-                <button type="button" onClick={onClose}>Закрыть</button>
-            </form>
-        </div>
-    );
-};
-
 // Основной компонент ApiRoot
 export const ApiRoot = ({ searchedTasks }) => {
     const [state, setState] = useState({
@@ -75,7 +46,7 @@ export const ApiRoot = ({ searchedTasks }) => {
 
     return (
         <div>
-            <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} onSubmit={handleNameSubmit} />
+            <authModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} onSubmit={handleNameSubmit} />
             {state.tasks.map(task => (
                 <Task
                     key={task.id}

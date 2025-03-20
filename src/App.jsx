@@ -11,11 +11,12 @@ import store from './redux/globalStore';
 
 import './config/App.css';
 import {MainPage} from './MainPage';
+import { AuthPage } from './AuthPage';
 
 const router = createHashRouter([
     {
         path: "/:mode?",
-        element: <MainPage />,
+        element: <AuthPage />,
     },
 ]);
 

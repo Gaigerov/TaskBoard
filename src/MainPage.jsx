@@ -12,7 +12,7 @@ import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
 import {TaskBoard} from './TaskBoard';
 import {TasksCalendar} from './TasksCalendar';
-
+import { AuthPage } from './AuthPage';
 import {tasksActions} from './redux/tasksStore';
 import {modalActions} from './redux/modalStore';
 
