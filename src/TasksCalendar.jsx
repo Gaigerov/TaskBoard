@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {Task} from './Task';
-import {DesktopTask} from './desktopTask';
+import {DesktopTask} from './DesktopTask';
 import {useBreakpoint} from './breakpoints/useBreakpoint';
 import chevronRight from "./image/ChevronRight.svg";
 import chevronLeft from "./image/ChevronLeft.svg";
