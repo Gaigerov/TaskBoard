@@ -49,7 +49,7 @@ export const DesktopTask = ({task, onView}) => {
                     <div className='textOfTaskCalendar'>
                         <p className="taskNameCalendar">{task.title}</p>
                         <p className="taskDescriptionCalendar">{task.description}</p>
-                        <p className="taskTimeCalendar" style={{color: isPastDue ? 'red' : 'var(--dark)'}}>
+                        <p className="taskTimeCalendar">
                             {task.time}
                         </p>
                     </div>

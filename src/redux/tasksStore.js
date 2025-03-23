@@ -53,10 +53,17 @@ export const tasksSlice = createSlice({
             state.date = '';
         },
         editTask: (state, action) => {
-            const {id, title, description, time, date, status} = action.payload;
+            const { id, title, description, time, date, status } = action.payload;
             const taskIndex = state.tasks.findIndex(task => task.id === id);
             if (taskIndex >= 0) {
-                state.tasks[taskIndex] = {...state.tasks[taskIndex], title, description, time, date, status};
+                state.tasks[taskIndex] = {
+                    ...state.tasks[taskIndex],
+                    title: title !== undefined ? title : state.tasks[taskIndex].title,
+                    description: description !== undefined ? description : state.tasks[taskIndex].description,
+                    time: time !== undefined ? time : state.tasks[taskIndex].time,
+                    date: date !== undefined ? date : state.tasks[taskIndex].date,
+                    status: status !== undefined ? status : state.tasks[taskIndex].status
+                };
                 saveTasksToLocalStorage(state.tasks);
             }
         },

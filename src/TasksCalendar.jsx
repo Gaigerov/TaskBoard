@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
-import {Task} from './Task';
+import {MobileTask} from './MobileTask';
+import {TabletTask} from './TabletTask';
 import {DesktopTask} from './DesktopTask';
 import {useBreakpoint} from './breakpoints/useBreakpoint';
 import chevronRight from "./image/ChevronRight.svg";
 import chevronLeft from "./image/ChevronLeft.svg";
+
 
 const parseDate = (dateString) => {
     const parts = dateString.split('.');
@@ -122,13 +124,10 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
                                     <div key={time} className='tasksContainerMobile'>
                                         {tasksForTimeCurrent.length > 0 && (
                                             tasksForTimeCurrent.map(task => (
-                                                <Task
+                                                <MobileTask
                                                     key={task.id}
                                                     task={task}
                                                     onView={onView}
-                                                    onEdit={onEdit}
-                                                    onClone={onClone}
-                                                    onRemove={onRemove}
                                                 />
                                             ))
                                         )}
@@ -159,13 +158,10 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
                                         <div className='flexContainer'>
                                             {tasksForTimeCurrent.length > 0 ? (
                                                 tasksForTimeCurrent.map(task => (
-                                                    <Task
+                                                    <TabletTask
                                                         key={task.id}
                                                         task={task}
                                                         onView={onView}
-                                                        onEdit={onEdit}
-                                                        onClone={onClone}
-                                                        onRemove={onRemove}
                                                     />
                                                 ))
                                             ) : (
@@ -175,13 +171,10 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
                                         <div className='flexContainer'>
                                             {tasksForTimeSecond.length > 0 ? (
                                                 tasksForTimeSecond.map(task => (
-                                                    <Task
+                                                    <TabletTask
                                                         key={task.id}
                                                         task={task}
                                                         onView={onView}
-                                                        onEdit={onEdit}
-                                                        onClone={onClone}
-                                                        onRemove={onRemove}
                                                     />
                                                 ))
                                             ) : (

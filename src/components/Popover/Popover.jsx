@@ -43,13 +43,14 @@ export const Popover = ({tableTask}) => {
     }, []);
 
     const updateTaskStatus = useCallback((taskId, newStatus) => {
+        const currentTask = tasks.find(task => task.id === taskId); // Получаем текущую задачу из состояния
         if (currentTask) {
-            dispatch(tasksActions.editTask({id: taskId, task: {status: newStatus}}));
+            dispatch(tasksActions.editTask({ id: taskId, status: newStatus })); // Передаем только id и новый статус
             showNotification(`Статус задачи '${currentTask.title}' обновлён на '${newStatus}'`, 'info');
         } else {
             showNotification(`Задача с ID ${taskId} не найдена`, 'error');
         }
-    }, [dispatch, currentTask, showNotification]);
+    }, [dispatch, tasks, showNotification]);
 
     const handleStatusClick = (status) => {
         setSelectedStatus(status);

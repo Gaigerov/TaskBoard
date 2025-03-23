@@ -581,7 +581,7 @@ input {
     }
 
     .taskName {
-        display: flex;
+        display: block;
         justify-content: flex-start;
         font-size: 24px;
         font-weight: 400;
@@ -590,8 +590,9 @@ input {
         margin: 0 0 10px 0;
         color: var(--dark-grey);
         overflow: hidden;
+        white-space: nowrap;
         text-overflow: ellipsis;
-        width: 100%;
+        max-width: 150px;
     }
 
     .taskDescription {
@@ -1333,7 +1334,7 @@ input {
         font-weight: 400;
         text-align: left;
         color: var(--dark-grey);
-        width: 140px;
+        width: 120px;
         margin: 0;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -1374,13 +1375,27 @@ input {
     .taskOfCalendarDate {
         display: flex;
         flex-direction: column;
-        width: 100%;
+        width: 150px;
         gap: 16px;
     }
 
     .tasksForTime {
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .taskDesktopTime {
+        text-align: left;
+        align-self: center;
+        flex-direction: row;
+        order: -1;
+        margin: 0;
+        width: 40px;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 19.5px;
+        color: var(--white);
     }
 
     .taskDescriptionCalendar {
@@ -1392,7 +1407,7 @@ input {
         letter-spacing: 0%;
         text-align: left;
         color: var(--dark-grey);
-        width: 140px;
+        width: 120px;
         margin: 0;
         text-overflow: ellipsis;
         white-space: nowrap;
