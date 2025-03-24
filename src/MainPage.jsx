@@ -12,7 +12,6 @@ import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
 import {TaskBoard} from './TaskBoard';
 import {TasksCalendar} from './TasksCalendar';
-import { AuthPage } from './AuthPage';
 import {tasksActions} from './redux/tasksStore';
 import {modalActions} from './redux/modalStore';
 
@@ -94,23 +93,23 @@ export const MainPage = () => {
     // Открытие модальных окон для создания, редактирования, просмотра и удаления задач
     const openCreateModal = () => {
         navigate('/create');
-        dispatch(modalActions.openCreateModal({title: '', description: '', time: '', date: ''}));
+        dispatch(modalActions.openModal({ modalType: 'create' }));
     };
 
     const openEditModal = (task) => {
-        dispatch(modalActions.openEditModal(task));
+        dispatch(modalActions.openModal({ modalType: 'edit', payload: task }));
     };
 
     const openViewModal = (task) => {
-        dispatch(modalActions.openViewModal(task));
+        dispatch(modalActions.openModal({ modalType: 'view', payload: task }));
     };
 
     const openRemoveModal = (task) => {
-        dispatch(modalActions.openRemoveModal(task));
+        dispatch(modalActions.openModal({ modalType: 'remove', payload: { id: task.id } }));
     };
 
     const openFilterModal = () => {
-        dispatch(modalActions.openFilterModal());
+        dispatch(modalActions.openModal({ modalType: 'filter' }));
         navigate('/filter');
     };
 

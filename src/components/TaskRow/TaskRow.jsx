@@ -22,11 +22,11 @@ export const TaskRow = ({ task, isPastDue, onNavigateToView, onNavigateToEdit, o
             </td>
             <td className='tdContainer'>{task.title}</td>
             <td className='tdContainer'>{task.description}</td>
-            <td className='tdContainer taskDateContainer'>
-                <div className='taskDateContainer_spanTime' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>
+            <td className='tdContainer taskDateContainer' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>
+                <div className='taskDateContainer_spanTime'>
                     {task.time}
                 </div>
-                <div className='taskDateContainer_spanDate' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>
+                <div className='taskDateContainer_spanDate'>
                     {task.date}
                 </div>
             </td>

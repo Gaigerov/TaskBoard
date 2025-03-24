@@ -1,6 +1,32 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-const initialState = {
+interface ModalData {
+    title: string,
+    description: string,
+    time: string,
+    date: string,
+}
+
+interface Errors {
+    title: string,
+    description: string,
+    time: string,
+    date: string,
+}
+
+interface ModalState {
+    isCreateModalOpen: boolean,
+    isFilterModalOpen: boolean,
+    isEditModalOpen: boolean,
+    isViewModalOpen: boolean,
+    isRemoveModalOpen: boolean,
+    currentTaskId: number | null,
+    modalData: ModalData,
+    errors: Errors,
+}
+
+// Начальное состояние
+const initialState: ModalState = {
     isCreateModalOpen: false,
     isFilterModalOpen: false,
     isEditModalOpen: false,
@@ -21,11 +47,16 @@ const initialState = {
     },
 };
 
+interface OpenModalPayload {
+    modalType: 'create' | 'filter' | 'edit' | 'view' | 'remove';
+    payload?: any;
+}
+
 const modalSlice = createSlice({
     name: 'modal',
     initialState,
     reducers: {
-        openModal: (state, action) => {
+        openModal: (state, action: PayloadAction<OpenModalPayload>) => {
             const {modalType, payload} = action.payload;
             state.isCreateModalOpen = false;
             state.isFilterModalOpen = false;
@@ -36,7 +67,7 @@ const modalSlice = createSlice({
                 case 'create':
                     state.isCreateModalOpen = true;
                     state.currentTaskId = null;
-                    state.modalData = initialState.modalData; // Сброс данных модала
+                    state.modalData = initialState.modalData; 
                     break;
                 case 'filter':
                     state.isFilterModalOpen = true;
@@ -44,16 +75,16 @@ const modalSlice = createSlice({
                     break;
                 case 'edit':
                     state.isEditModalOpen = true;
-                    state.currentTaskId = payload.id;
+                    state.currentTaskId = payload?.id || null;
                     state.modalData = payload; 
                     break;
                 case 'view':
                     state.isViewModalOpen = true;
-                    state.currentTaskId = payload.id;
+                    state.currentTaskId = payload?.id || null;
                     break;
                 case 'remove':
                     state.isRemoveModalOpen = true;
-                    state.currentTaskId = payload.id;
+                    state.currentTaskId = payload?.id || null;
                     break;
                 default:
                     break;
@@ -72,20 +103,20 @@ const modalSlice = createSlice({
         resetModalData: (state) => {
             state.modalData = initialState.modalData; 
         },
-        setErrors(state, action) {
+        setErrors(state, action: PayloadAction<Errors>) {
             const {title, description, time, date} = action.payload;
             state.errors.title = title || '';
             state.errors.description = description || '';
             state.errors.time = time || '';
             state.errors.date = date || '';
         },
-        setField: (state, action) => {
+        setField: (state, action: PayloadAction<{field: keyof ModalData; value: string}>) => {
             const {field, value} = action.payload;
             if (state.modalData.hasOwnProperty(field)) {
                 state.modalData[field] = value;
             }
         },
-        clearFields(state, action) {
+        clearFields(state, action: PayloadAction<'title' | 'description' | 'time' | 'date' | 'all'>) {
             switch (action.payload) {
                 case 'title':
                     state.modalData.title = '';
@@ -99,6 +130,7 @@ const modalSlice = createSlice({
                 case 'date':
                     state.modalData.date = '';
                     break;
+                case 'all':
                 default:
                     state.modalData = initialState.modalData;
                     break;

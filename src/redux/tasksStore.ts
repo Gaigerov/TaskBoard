@@ -1,48 +1,55 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {TASK_STATUS} from '../constant';
-import { getSimpleData } from '../components/api/getStorage';
+interface Task {
+    id: number;
+    title: string;
+    description: string;
+    time: string;
+    date: string;
+    status: string;
+}
 
-const loadTasksFromLocalStorage = () => {
-    const tasks = localStorage.getItem('tasks');
-    if (tasks) {
-        try {
-            return JSON.parse(tasks);
-        } catch (error) {
-            console.error('Error parsing JSON from localStorage:', error);
-            return []; 
-        }
-    }
-    return []; 
-};
+interface TasksState {
+    tasks: Task[];
+    title: string;
+    description: string;
+    time: string;
+    date: string;
+    activePage: string;
+    isDirty: boolean;
+    filterTo: {
+        search?: string;
+        filterDate?: string;
+        filterStatus?: string;
+    };
+}
 
-const saveTasksToLocalStorage = (tasks) => {
-    if (Array.isArray(tasks)) {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    } 
-};
-
-const initialState = {
-    tasks: loadTasksFromLocalStorage() || [],
+// Начальное состояние
+const initialState: TasksState = {
+    tasks: [],
     title: '',
     description: '',
     time: '',
     date: '',
+    activePage: 'taskBoard',
     isDirty: false,
     filterTo: {
         search: '',
-        filterDate: null,
-        filterStatus: TASK_STATUS.EMPTY,
+        filterDate: '',
+        filterStatus: TASK_STATUS.EMPTY,   
     },
-    tasksPerPage: 10,
-    activePage: 'taskBoard',
+};
+
+const saveTasksToLocalStorage = (tasks: Task[]) => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
 };
 
 export const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        addTask: (state, action) => {
-            const taskWithId = {...action.payload, id: Date.now()};
+        addTask: (state, action: PayloadAction<Omit<Task, 'id'>>) => {
+            const taskWithId = { ...action.payload, id: Date.now() };
             state.tasks.push(taskWithId);
             saveTasksToLocalStorage(state.tasks);
             state.title = '';
@@ -50,7 +57,7 @@ export const tasksSlice = createSlice({
             state.time = '';
             state.date = '';
         },
-        editTask: (state, action) => {
+        editTask: (state, action: PayloadAction<Task>) => {
             const { id, title, description, time, date, status } = action.payload;
             const taskIndex = state.tasks.findIndex(task => task.id === id);
             if (taskIndex >= 0) {
@@ -60,19 +67,19 @@ export const tasksSlice = createSlice({
                     description: description !== undefined ? description : state.tasks[taskIndex].description,
                     time: time !== undefined ? time : state.tasks[taskIndex].time,
                     date: date !== undefined ? date : state.tasks[taskIndex].date,
-                    status: status !== undefined ? status : state.tasks[taskIndex].status
+                    status: status !== undefined ? status : state.tasks[taskIndex].status,
                 };
                 saveTasksToLocalStorage(state.tasks);
             }
         },
-        removeTask: (state, action) => {
+        removeTask: (state, action: PayloadAction<{ id: number }>) => {
             const indexToRemove = state.tasks.findIndex(task => task.id === action.payload.id);
             if (indexToRemove >= 0) {
                 state.tasks.splice(indexToRemove, 1);
                 saveTasksToLocalStorage(state.tasks);
             }
         },
-        cloneTask: (state, action) => {
+        cloneTask: (state, action: PayloadAction<{ id: number }>) => {
             const taskToClone = state.tasks.find(task => task.id === action.payload.id);
             if (taskToClone) {
                 const newTask = {
@@ -88,27 +95,27 @@ export const tasksSlice = createSlice({
             state.tasks = [];
             saveTasksToLocalStorage(state.tasks); 
         },
-        setActivePage(state, action) {
+        setActivePage(state, action: PayloadAction<string>) {
             state.activePage = action.payload;
         },
-        setTitle(state, action) {
+        setTitle(state, action: PayloadAction<string>) {
             state.title = action.payload;
             state.isDirty = true;
         },
-        setDescription(state, action) {
+        setDescription(state, action: PayloadAction<string>) {
             state.description = action.payload;
             state.isDirty = true; 
         },
-        setTime(state, action) {
+        setTime(state, action: PayloadAction<string>) {
             state.time = action.payload;
             state.isDirty = true;
         },
-        setDate(state, action) {
+        setDate(state, action: PayloadAction<string>) {
             state.date = action.payload;
             state.isDirty = true; 
         },
-        setFilter: (state, action) => {
-            const {filterDate, filterStatus} = action.payload || {};
+        setFilter: (state, action: PayloadAction<{ filterDate?: string; filterStatus?: string }>) => {
+            const { filterDate, filterStatus } = action.payload || {};
             if (filterDate !== undefined) {
                 state.filterTo.filterDate = filterDate;
             }
@@ -116,7 +123,7 @@ export const tasksSlice = createSlice({
                 state.filterTo.filterStatus = filterStatus;
             }
         },
-        setFilterTo: (state, action) => {
+        setFilterTo: (state, action: PayloadAction<{ filterDate?: string; filterStatus?: string }>) => {
             state.filterTo = action.payload;
         },
     },

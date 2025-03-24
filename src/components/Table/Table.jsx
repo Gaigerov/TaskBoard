@@ -15,6 +15,13 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, deleteMode}) => {
     const indexOfFirstTask = indexOfLastTask - tasksPerPage;
     const currentTasks = searchedTasks.slice(indexOfFirstTask, indexOfLastTask);
 
+    const parseDDMMYYYY = (dateString) => {
+        const [day, month, year] = dateString.split('.').map(Number);
+        return new Date(year, month - 1, day); 
+    };
+    
+    const currentDate = new Date();
+
     const handleNavigateToEdit = (task) => {
         navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
         onEdit(task);
@@ -47,7 +54,9 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, deleteMode}) => {
                 </thead>
                 <tbody className='tableBodyContainer'>
                     {currentTasks.map((task) => {
-                        const isPastDue = new Date(task.date) < new Date(); // Пример проверки на просроченность
+                        const taskDate = parseDDMMYYYY(task.date);
+                        const isPastDue = taskDate < currentDate;
+                        console.log(`Task Date: ${taskDate}, Current Date: ${currentDate}, Is Past Due: ${isPastDue}`);
                         return (
                             <TaskRow
                                 key={task.id}

@@ -152,9 +152,9 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
                             const tasksForTimeSecond = groupedTasksByTime[time].filter(task => parseDate(task.date).toDateString() === secondDate.toDateString());
 
                             return (
-                                <>
+                                <div key={time}>
                                     <span className='timeInCalendar'>{time}</span>
-                                    <div key={time} className='tasksContainerTablet'>
+                                    <div className='tasksContainerTablet'>
                                         <div className='flexContainer'>
                                             {tasksForTimeCurrent.length > 0 ? (
                                                 tasksForTimeCurrent.map(task => (
@@ -182,7 +182,7 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
                                             )}
                                         </div>
                                     </div>
-                                </>
+                                </div>
                             );
                         })}
                     </div>
