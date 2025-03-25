@@ -45,7 +45,7 @@ export const MainPage = () => {
     const handleFilterChange = (newDate, newStatus) => {
         dispatch(tasksActions.setFilterTo({
             ...filterTo,
-            filterDate: newDate + 1,
+            filterDate: newDate,
             filterStatus: newStatus,
         }));
     };
