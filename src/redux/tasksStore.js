@@ -1,6 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {TASK_STATUS} from '../constant';
-import { getSimpleData } from '../components/api/getStorage';
 
 const loadTasksFromLocalStorage = () => {
     const tasks = localStorage.getItem('tasks');

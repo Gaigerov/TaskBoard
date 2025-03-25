@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, {useState, useEffect} from 'react';
 import './AuthPage.css';
-import { MainPage } from './MainPage';
-import { getSimpleData } from './components/api/getStorage';
+import {MainPage} from './MainPage';
+import {getSimpleData} from './components/api/getStorage';
+import Cookies from 'js-cookie';
 
 export const AuthPage = () => {
     const [name, setName] = useState('');
@@ -21,40 +22,34 @@ export const AuthPage = () => {
         setName(e.currentTarget.value);
     };
 
-    const fetchData = async (name) => {
-        try {
-            const data = await getSimpleData(name);
-            return data;
-        } catch (error) {
-            console.error('Ошибка при получении данных:', error);
-            throw new Error('Не удалось получить данные для указанного хранилища.'); // Бросаем ошибку для обработки в handleSubmit
-        }
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setState({...state, isLoading: true });
+        setState({ ...state, isLoading: true });
         try {
             const encodedName = encodeURIComponent(name);
-            
+    
             const responseAuth = await fetch('https://simple-storage.vigdorov.ru/auth', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ login: encodedName }), // Используем закодированное имя
+                body: JSON.stringify({ login: encodedName }),
             });
     
             if (responseAuth.ok) {
-                await fetchData(encodedName); // Передаем закодированное имя для получения данных
+                const authToken = await responseAuth.text(); // Получаем токен
+                Cookies.set('authToken', authToken, { expires: 3 });
                 setIsAuthenticated(true);
-                closeAuthModal(); // Закрываем модальное окно только при успешной авторизации
+                closeAuthModal();
+    
+                // Получаем данные из хранилища
+                await getSimpleData(authToken, name); // Передаем токен и имя
             } else {
                 throw new Error('Ошибка авторизации: ' + responseAuth.statusText);
             }
         } catch (error) {
             console.error('Ошибка при авторизации или получении данных:', error);
-            setState({ tasks: [], isLoading: false, error: error.message }); // Используем сообщение ошибки
+            setState({ tasks: [], isLoading: false, error: error.message });
         } finally {
-            setState((prevState) => ({ ...prevState, isLoading: false })); // Обновляем состояние загрузки
+            setState((prevState) => ({ ...prevState, isLoading: false }));
         }
     };
 

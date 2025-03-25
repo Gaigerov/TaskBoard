@@ -56,7 +56,6 @@ export const Table = ({searchedTasks, onView, onEdit, onClone, deleteMode}) => {
                     {currentTasks.map((task) => {
                         const taskDate = parseDDMMYYYY(task.date);
                         const isPastDue = taskDate < currentDate;
-                        console.log(`Task Date: ${taskDate}, Current Date: ${currentDate}, Is Past Due: ${isPastDue}`);
                         return (
                             <TaskRow
                                 key={task.id}
