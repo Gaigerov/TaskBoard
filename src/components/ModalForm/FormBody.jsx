@@ -10,7 +10,6 @@ import {TextInput} from '../Inputs/TextInput/TextInput';
 import {TextArea} from '../Inputs/TextArea/TextArea';
 import {TimeInput} from '../Inputs/TimeInput/TimeInput';
 import {DateInput} from '../Inputs/DateInput/DateInput';
-import {modalActions} from '../../redux/modalStore';
 import {tasksActions} from '../../redux/tasksStore';
 
 export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClose, onClone, onFilter, validate}) => {
@@ -48,6 +47,16 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
         setSelectedStatus(TASK_STATUS.EMPTY);
     };
 
+    const clearTitle = () => {
+        dispatch(tasksActions.setTitle(''));
+        setTitleError('');
+    };
+
+    const clearDescription = () => {
+        dispatch(tasksActions.setDescription(''));
+        setDescriptionError('');
+    };
+
     useEffect(() => {
         if (mode === VALID_MODE.CREATE && isDirty === true) {
             validate();
@@ -74,7 +83,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                             onChange={(event) => dispatch(tasksActions.setTitle(event.target.value))}
                             error={errors.title}
                             placeholder="Enter title"
-                            clearField={() => dispatch(modalActions.setField('title'))}
+                            clearField={clearTitle}
                         />
                         <TextArea
                             label="Description"
@@ -82,7 +91,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                             onChange={(event) => dispatch(tasksActions.setDescription(event.target.value))}
                             error={errors.description}
                             placeholder="Enter description"
-                            clearField={() => dispatch(modalActions.setField('description'))}
+                            clearField={clearDescription}
                         />
                         <div className="taskDateAndTimeContainer">
                             <label className="modalContainer__time">Time

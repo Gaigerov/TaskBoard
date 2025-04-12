@@ -13,7 +13,7 @@ import {TaskModal} from './TaskModal';
 import {TaskBoard} from './TaskBoard';
 import {TasksCalendar} from './TasksCalendar';
 import {tasksActions} from './redux/tasksStore';
-import {modalActions} from './redux/modalStore';
+import {modalActions} from './redux/_modalStore';
 
 import desktopMenu from './image/desktop-menu.svg';
 import loop from './image/search.svg';
@@ -50,7 +50,6 @@ export const MainPage = () => {
         }));
     };
 
-    // Обработчик клика вне элемента
     const handleClickOutside = event => {
         if (!event.target.closest('.headerFinderInput')) {
             setIsOpenSearchInput(false);
@@ -65,12 +64,10 @@ export const MainPage = () => {
         };
     }, []);
 
-    // Обработчик открытия поля поиска
     const handleOpenSearchInput = () => {
         setIsOpenSearchInput(true);
     };
 
-    // Переключение меню
     const handleToggleMenu = () => {
         setIsOpenMenu(!isOpenMenu);
     };
@@ -84,7 +81,6 @@ export const MainPage = () => {
         }));
     };
 
-    // Закрытие модального окна
     const closeModal = () => {
         dispatch(modalActions.closeAllModals());
         navigate('/');
@@ -113,7 +109,6 @@ export const MainPage = () => {
         navigate('/filter');
     };
 
-    // Универсальная функция для обработки действий с задачами
     const handleTaskAction = async (action, successMessage, errorMessage, params) => {
         try {
             await dispatch(action(params));
@@ -254,6 +249,7 @@ export const MainPage = () => {
                     <Menu
                         goToTaskBoard={() => dispatch(tasksActions.setActivePage('taskBoard'))}
                         goToCalendar={() => dispatch(tasksActions.setActivePage('calendar'))}
+                        goToBoard={() => dispatch(tasksActions.setActivePage('board'))}
                     />
                 }
 

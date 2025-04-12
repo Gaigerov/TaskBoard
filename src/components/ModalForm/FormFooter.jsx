@@ -6,7 +6,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNotification} from '../Notification/NotificationContext';
 import {Button} from '../Button/Button';
 import {VALID_MODE, TASK_STATUS} from '../../constant';
-import {modalActions} from '../../redux/modalStore';
+import {modalActions} from '../../redux/_modalStore';
 import {tasksActions} from '../../redux/tasksStore';
 
 export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onClone, onClose, onFilter, validate, clearStatusFilter}) => {
@@ -66,7 +66,7 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
         clearStatusFilter();
         dispatch(tasksActions.setFilterTo({
             search: '',
-            filterDate: null,
+            filterDate: undefined,
             filterStatus: TASK_STATUS.EMPTY,
         }));    
         showNotification('Фильтры сброшены', 'info');

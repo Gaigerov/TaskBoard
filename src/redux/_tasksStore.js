@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {TASK_STATUS} from '../constant';
+import {getSimpleData} from '../components/api/getStorage';
 
 const loadTasksFromLocalStorage = () => {
     const tasks = localStorage.getItem('tasks');
@@ -117,6 +118,9 @@ export const tasksSlice = createSlice({
         },
         setFilterTo: (state, action) => {
             state.filterTo = action.payload;
+        },
+        setTasksPerPage: (state, action) => {
+            state.tasksPerPage = action.payload;
         },
     },
 });

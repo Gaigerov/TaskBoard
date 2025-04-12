@@ -7,11 +7,10 @@ import {
 import {AppLifecycleProvider} from './AppLifeCycleContext';
 import {NotificationProvider} from './components/Notification/NotificationContext';
 import {Provider} from 'react-redux';
-import store from './redux/globalStore';
+import store from './redux/_globalStore';
 
 import './config/App.css';
-import {MainPage} from './MainPage';
-import { AuthPage } from './AuthPage';
+import {AuthPage} from './AuthPage';
 
 const router = createHashRouter([
     {

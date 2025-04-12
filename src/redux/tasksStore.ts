@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {TASK_STATUS} from '../constant';
+
 interface Task {
     id: number;
     title: string;

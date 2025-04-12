@@ -1,11 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {List} from 'react-virtualized';
 import {Task} from './Task';
+import {useBreakpoint} from './breakpoints/useBreakpoint';
 
 export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone}) => {
     const listRef = useRef();
     const [listWidth, setListWidth] = useState(0);
     const [listHeight, setListHeight] = useState(0);
+    const breakpoint = useBreakpoint();
 
     const rowHeight = 130;
 
@@ -30,7 +32,7 @@ export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone}) => {
         const task = searchedTasks[index];
         return (
             <div key={key} style={{...style, height: '100%'}}>
-                <div style={{padding: '0 8px', height: '100%'}}>
+                <div style={{padding: breakpoint === 'mobile' ? '0 8px 50px' : '0 32px 50px', height: '100%'}}>
                     <Task
                         searchedTasks={searchedTasks}
                         task={task}

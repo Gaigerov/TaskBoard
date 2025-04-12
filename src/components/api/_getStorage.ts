@@ -1,4 +1,22 @@
-export const getSimpleData = async (authToken) => {
+interface Storage {
+    id: string;
+    storageName: string;
+}
+
+interface Task {
+    id: string;
+    title: string;
+    description: string;
+    time: string;
+    date: string;
+    status: string;
+}
+
+interface StorageResponse {
+    data: Task[];
+}
+
+export const getSimpleData = async (authToken: string): Promise<Task[]> => {
     const headers = new Headers({
         'content-type': 'application/json',
         Authorization: authToken,
@@ -13,7 +31,7 @@ export const getSimpleData = async (authToken) => {
         throw new Error('Ошибка получения списка хранилищ: ' + responseStorageList.statusText);
     }
 
-    const storageList = await responseStorageList.json();
+    const storageList: Storage[] = await responseStorageList.json();
 
     const storage = storageList.find(storage => storage.storageName === 'tasks');
     if (!storage) {
@@ -31,7 +49,7 @@ export const getSimpleData = async (authToken) => {
         throw new Error('Ошибка получения данных из хранилища: ' + responseStorage.statusText);
     }
 
-    const {data} = await responseStorage.json();
+    const {data}: StorageResponse = await responseStorage.json();
 
     console.log('Список хранилищ:', storageList);
     console.log('ID хранилища:', storageId);

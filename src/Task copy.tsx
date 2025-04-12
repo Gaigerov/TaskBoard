@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {
     useNavigate,
 } from "react-router-dom";
@@ -9,9 +9,30 @@ import deleteButton from './image/delete.svg';
 import cloneButton from './image/clone.svg';
 import {VALID_MODE} from './constant';
 
-export const Task = ({task, onEdit, onView, onRemove, onClone}) => {
+interface Task {
+        id: number;
+        title: string;
+        description: string;
+        date: string;
+        time: string;
+        status: string;
+}
+
+interface ModalState {
+    currentTaskId: number | null,
+}
+
+interface TaskProps {
+    task: Task;
+    onEdit: () => void;
+    onView: (task: Task) => void; 
+    onRemove: (id: number) => void;
+    onClone: (id: number) => void;
+}
+
+export const Task: FC<TaskProps> = ({task, onEdit, onView, onRemove, onClone}) => {
     const navigate = useNavigate();
-    const currentTaskId = useSelector((state) => state.modal.currentTaskId);
+    const currentTaskId = useSelector((state: {modal: ModalState}) => state.modal.currentTaskId);
 
     const handleNavigateToEdit = () => {
             navigate('/');
@@ -38,7 +59,7 @@ export const Task = ({task, onEdit, onView, onRemove, onClone}) => {
     return (
         <div 
             className='taskContainer'
-            onClick={() => handleNavigateToView(task)}
+            onClick={handleNavigateToView}
             style={{
                 backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '',
             }}
@@ -50,13 +71,13 @@ export const Task = ({task, onEdit, onView, onRemove, onClone}) => {
                         <p className="taskDescription">{task.description}</p>
                     </div>
                     <span className="controls" onClick={(e) => e.stopPropagation()}>
-                        <div onClick={() => handleNavigateToEdit(task)} className='iconButton'>
+                        <div onClick={handleNavigateToEdit} className='iconButton'>
                             <img className="icon editButton" src={editButton} />
                         </div>
                         <div onClick={() => onClone(task.id)} className='iconButton'>
                             <img className="icon cloneButton" src={cloneButton} />
                         </div>
-                        <div onClick={() => handleNavigateToDelete(task)} className='iconButton'>
+                        <div onClick={handleNavigateToDelete} className='iconButton'>
                             <img className="icon deleteButton" src={deleteButton} />
                         </div>
                     </span>

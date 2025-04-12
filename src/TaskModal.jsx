@@ -8,9 +8,9 @@ import {ModalForm} from './components/ModalForm/ModalForm';
 import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
 import {tasksActions} from './redux/tasksStore';
-import {modalActions} from './redux/modalStore';
+import {modalActions} from './redux/_modalStore';
 
-export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, onClone, onFilter}) => {
+export const TaskModal = ({mode, onClose, openEditModal, onCreate, onSave, onRemove, onClone, onFilter}) => {
     const dispatch = useDispatch();
     const tasks = useSelector((state) => state.tasks.tasks);
     const title = useSelector((state) => state.tasks.title);
@@ -120,7 +120,7 @@ export const TaskModal = ({mode, onClose, onEdit, onCreate, onSave, onRemove, on
                     mode={mode}
                     onCreate={onCreate}
                     onSave={onSave}
-                    onEdit={onEdit}
+                    onEdit={openEditModal}
                     onRemove={onRemove}
                     onClose={onClose}
                     onClone={onClone}

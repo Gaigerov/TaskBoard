@@ -79,31 +79,6 @@ const modalSlice = createSlice({
             state.errors.time = time || '';
             state.errors.date = date || '';
         },
-        setField: (state, action) => {
-            const {field, value} = action.payload;
-            if (state.modalData.hasOwnProperty(field)) {
-                state.modalData[field] = value;
-            }
-        },
-        clearFields(state, action) {
-            switch (action.payload) {
-                case 'title':
-                    state.modalData.title = '';
-                    break;
-                case 'description':
-                    state.modalData.description = '';
-                    break;
-                case 'time':
-                    state.modalData.time = '';
-                    break;
-                case 'date':
-                    state.modalData.date = '';
-                    break;
-                default:
-                    state.modalData = initialState.modalData;
-                    break;
-            }
-        },
     },
 });
 

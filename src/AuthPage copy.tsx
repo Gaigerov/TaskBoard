@@ -1,15 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, FC, ChangeEvent, FormEvent} from 'react';
 import './AuthPage.css';
 import {MainPage} from './MainPage';
 import {getSimpleData} from './components/api/getStorage';
 import Cookies from 'js-cookie';
 import {Loader} from './components/Loader/_Loader';
 
-export const AuthPage = () => {
-    const [name, setName] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [state, setState] = useState({
+interface State {
+    isLoading: boolean;
+    error: string | null;
+}
+
+export const AuthPage: FC = () => {
+    const [name, setName] = useState<string>('');
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [state, setState] = useState<State>({
         isLoading: false,
         error: null,
     });
@@ -18,11 +23,11 @@ export const AuthPage = () => {
         setIsModalOpen(false);
     };
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setName(e.currentTarget.value);
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setState(prevState => ({ ...prevState, isLoading: true }));
         try {

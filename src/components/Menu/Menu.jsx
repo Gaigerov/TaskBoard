@@ -16,14 +16,15 @@ const MenuButton = ({src, title, isActive, onClick}) => (
     </div>
 );
 
-export const Menu = ({goToTaskBoard, goToCalendar}) => {
+export const Menu = ({goToTaskBoard, goToCalendar, goToBoard}) => {
     const [activeItem, setActiveItem] = useState('Tasks');
 
     const handleButtonClick = (title) => {
         setActiveItem(title);
         if (title === 'Tasks') {
             goToTaskBoard();
-        } else {
+        } 
+        else {
             goToCalendar();
         }
     };

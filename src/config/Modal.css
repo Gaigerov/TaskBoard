@@ -112,7 +112,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     word-break: break-all;
     width: 100%;
     height: auto;
@@ -156,6 +156,7 @@
     padding: 2px;
     width: 16px;
     height: 16px;
+    margin-right: 6px;
 }
 
 .modalCloneButton {

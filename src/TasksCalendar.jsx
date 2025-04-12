@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {MobileTask} from './MobileTask';
 import {TabletTask} from './TabletTask';
@@ -7,13 +7,12 @@ import {useBreakpoint} from './breakpoints/useBreakpoint';
 import chevronRight from "./image/ChevronRight.svg";
 import chevronLeft from "./image/ChevronLeft.svg";
 
-
 const parseDate = (dateString) => {
     const parts = dateString.split('.');
     return new Date(parts[2], parts[1] - 1, parts[0]);
 };
 
-export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
+export const TasksCalendar = ({onView}) => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [secondDate, setSecondDate] = useState(new Date(new Date().setDate(new Date().getDate() + 1)));
     const breakpoint = useBreakpoint();
@@ -53,7 +52,6 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
         setSecondDate(new Date(newCurrentDate.getTime() + 24 * 60 * 60 * 1000));
     };
 
-
     // Фильтрация задач в зависимости от breakpoint
     const filteredTasks = tasks.filter(task => {
         const taskDate = parseDate(task.date);
@@ -70,24 +68,28 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
         return false;
     });
 
-    // Сортировка задач по времени
-    const sortedTasks = filteredTasks.sort((a, b) => {
-        const [aHours, aMinutes] = a.time.split(':').map(Number);
-        const [bHours, bMinutes] = b.time.split(':').map(Number);
-        return aHours !== bHours ? aHours - bHours : aMinutes - bMinutes;
-    });
+    const sortedTasks = useMemo(() => {
+        return filteredTasks.sort((a, b) => {
+            const [aHours, aMinutes] = a.time.split(':').map(Number);
+            const [bHours, bMinutes] = b.time.split(':').map(Number);
+            return aHours !== bHours ? aHours - bHours : aMinutes - bMinutes;
+        });
+    }, [filteredTasks]);
 
-    // Группировка задач по времени
-    const groupedTasksByTime = sortedTasks.reduce((acc, task) => {
-        if (!acc[task.time]) {
-            acc[task.time] = [];
-        }
-        acc[task.time].push(task);
-        return acc;
-    }, {});
+    // Группировка задач по часам
+    const groupedTasksByTime = useMemo(() => {
+        return sortedTasks.reduce((acc, task) => {
+            const hourKey = task.time.split(':')[0];
 
-    // Получаем все уникальные временные метки
-    const uniqueTimes = Object.keys(groupedTasksByTime);
+            if (!acc[hourKey]) {
+                acc[hourKey] = [];
+            }
+            acc[hourKey].push(task);
+            return acc;
+        }, {});
+    }, [sortedTasks]);
+
+    const uniqueTimes = Object.keys(groupedTasksByTime).sort();
 
     const getWeekDates = (startDate) => {
         const daysOfWeek = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
@@ -119,9 +121,9 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
                         {uniqueTimes.map(time => {
                             const tasksForTimeCurrent = groupedTasksByTime[time].filter(task => parseDate(task.date).toDateString() === currentDate.toDateString());
                             return (
-                                <>
-                                    <span className='timeInCalendar'>{time}</span>
-                                    <div key={time} className='tasksContainerMobile'>
+                                <div key={time}>
+                                    <span className='timeInCalendar'>{time}:00</span>
+                                    <div className='tasksContainerMobile'>
                                         {tasksForTimeCurrent.length > 0 && (
                                             tasksForTimeCurrent.map(task => (
                                                 <MobileTask
@@ -132,7 +134,7 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
                                             ))
                                         )}
                                     </div>
-                                </>
+                                </div>
                             );
                         })}
                     </div>
@@ -153,7 +155,7 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
 
                             return (
                                 <div key={time}>
-                                    <span className='timeInCalendar'>{time}</span>
+                                    <span className='timeInCalendar'>{time}:00</span>
                                     <div className='tasksContainerTablet'>
                                         <div className='flexContainer'>
                                             {tasksForTimeCurrent.length > 0 ? (
@@ -189,57 +191,55 @@ export const TasksCalendar = ({onView, onEdit, onClone, onRemove}) => {
                 </>
             )}
 
-{breakpoint === 'desktop' && (
-    <>
-        <div className="dateInCalendarChanger">
-            <img src={chevronLeft} className='chevronButton' onClick={() => changeDate('prev')} />
-            <div className='datesInCalendar'>
-                {weekDates.map((dateObj, index) => (
-                    <div key={index} className='dateInCalendar'>
-                        <span>{`${formatDateToDDMMYYYY(dateObj.date)}`}</span>
-                        <span>{`${dateObj.day}`}</span>
-                    </div>
-                ))}
-            </div>
-            <img src={chevronRight} className='chevronButton' onClick={() => changeDate('next')} />
-        </div>
-
-        <div className='tasksOfCalendarDate'>
-            {uniqueTimes.map(time => (
-                <div key={time} className='timeSlot'>
-                    <span className='timeInCalendar'>{time}</span>
-                    <div className='tasksForTime'>
-                        {Array.from({ length: 7 }, (_, index) => {
-                            const date = new Date(currentDate);
-                            date.setDate(currentDate.getDate() + index); // Увеличиваем дату на индекс
-                            
-                            // Фильтрация задач для текущей даты и времени
-                            const tasksForTime = groupedTasksByTime[time].filter(task =>
-                                parseDate(task.date).toDateString() === date.toDateString()
-                            );
-
-                            return (
-                                <div key={index} className='taskOfCalendarDate'>
-                                    {tasksForTime.length > 0 ? (
-                                        tasksForTime.map(task => (
-                                            <DesktopTask
-                                                key={task.id}
-                                                task={task}
-                                                onView={onView}
-                                            />
-                                        ))
-                                    ) : (
-                                        <div style={{ height: '50px'}}></div> // Пустой контейнер
-                                    )}
+            {breakpoint === 'desktop' && (
+                <>
+                    <div className="dateInCalendarChanger">
+                        <img src={chevronLeft} className='chevronButton' onClick={() => changeDate('prev')} />
+                        <div className='datesInCalendar'>
+                            {weekDates.map((dateObj, index) => (
+                                <div key={index} className='dateInCalendar'>
+                                    <span>{`${formatDateToDDMMYYYY(dateObj.date)}`}</span>
+                                    <span>{`${dateObj.day}`}</span>
                                 </div>
-                            );
-                        })}
+                            ))}
+                        </div>
+                        <img src={chevronRight} className='chevronButton' onClick={() => changeDate('next')} />
                     </div>
-                </div>
-            ))}
-        </div>
-    </>
-)}
+
+                    <div className='tasksOfCalendarDate'>
+                        {uniqueTimes.map(time => (
+                            <div key={time} className='timeSlot'>
+                                <span className='timeInCalendar'>{time}:00</span>
+                                <div className='tasksForTime'>
+                                    {Array.from({length: 7}, (_, index) => {
+                                        const date = new Date(currentDate);
+                                        date.setDate(currentDate.getDate() + index);
+                                        const tasksForTime = groupedTasksByTime[time].filter(task =>
+                                            parseDate(task.date).toDateString() === date.toDateString()
+                                        );
+
+                                        return (
+                                            <div key={index} className='taskOfCalendarDate'>
+                                                {tasksForTime.length > 0 ? (
+                                                    tasksForTime.map(task => (
+                                                        <DesktopTask
+                                                            key={task.id}
+                                                            task={task}
+                                                            onView={onView}
+                                                        />
+                                                    ))
+                                                ) : (
+                                                    <div style={{height: '50px'}}></div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
         </>
     );
 };
