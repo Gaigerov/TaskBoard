@@ -24,7 +24,7 @@ export const AuthPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setState(prevState => ({ ...prevState, isLoading: true }));
+        setState(prevState => ({...prevState, isLoading: true}));
         try {
             const encodedName = encodeURIComponent(name);
             const responseAuth = await fetch('https://simple-storage.vigdorov.ru/auth', {
@@ -36,6 +36,7 @@ export const AuthPage = () => {
             if (responseAuth.ok) {
                 const authToken = await responseAuth.text();
                 Cookies.set('authToken', authToken, {expires: 3}); // Срок хранения токена 3 дня
+                Cookies.set('name', encodedName, {expires: 3});
                 setIsAuthenticated(true);
                 closeAuthModal();
             } else {
@@ -48,6 +49,18 @@ export const AuthPage = () => {
             setState((prevState) => ({...prevState, isLoading: false}));
         }
     };
+
+    // Проверка наличия authToken в cookies
+    useEffect(() => {
+        const authToken = Cookies.get('authToken');
+        const name = Cookies.get('name');
+
+        if (authToken && name) {
+            setIsAuthenticated(true)
+            closeAuthModal();
+        }
+    }, [closeAuthModal]);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -70,7 +83,7 @@ export const AuthPage = () => {
 
     return (
         <>
-             {isModalOpen && (
+            {isModalOpen && (
                 <div className="modal">
                     <div className="modal-content">
                         <h2 className='modal-title'>Введите ваше имя</h2>

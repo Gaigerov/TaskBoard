@@ -7,7 +7,7 @@ import {
 import {AppLifecycleProvider} from './AppLifeCycleContext';
 import {NotificationProvider} from './components/Notification/NotificationContext';
 import {Provider} from 'react-redux';
-import store from './redux/_globalStore';
+import store from './redux/globalStore';
 
 import './config/App.css';
 import {AuthPage} from './AuthPage';

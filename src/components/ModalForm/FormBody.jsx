@@ -10,7 +10,7 @@ import {TextInput} from '../Inputs/TextInput/TextInput';
 import {TextArea} from '../Inputs/TextArea/TextArea';
 import {TimeInput} from '../Inputs/TimeInput/TimeInput';
 import {DateInput} from '../Inputs/DateInput/DateInput';
-import {tasksActions} from '../../redux/tasksStore';
+import {tasksActions} from '../../redux/_tasksStore';
 
 export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClose, onClone, onFilter, validate}) => {
     const dispatch = useDispatch();

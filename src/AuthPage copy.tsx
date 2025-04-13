@@ -1,4 +1,4 @@
-import React, {useState, useEffect, FC, ChangeEvent, FormEvent} from 'react';
+import React, {useState, useEffect, ChangeEvent, FormEvent} from 'react';
 import './AuthPage.css';
 import {MainPage} from './MainPage';
 import {getSimpleData} from './components/api/getStorage';
@@ -10,7 +10,7 @@ interface State {
     error: string | null;
 }
 
-export const AuthPage: FC = () => {
+export const AuthPage: React.FC = () => {
     const [name, setName] = useState<string>('');
     const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -48,7 +48,7 @@ export const AuthPage: FC = () => {
             }
         } catch (error) {
             console.error('Ошибка при авторизации:', error);
-            setState({isLoading: false, error: error.message});
+            setState({isLoading: false, error: (error as Error).message});
         } finally {
             setState((prevState) => ({...prevState, isLoading: false}));
         }
@@ -61,7 +61,7 @@ export const AuthPage: FC = () => {
                     const authToken = Cookies.get('authToken');
                     await getSimpleData(authToken);
                 } catch (error) {
-                    setState({isLoading: false, error: error.message});
+                    setState({isLoading: false, error: (error as Error).message});
                 }
             }
         };

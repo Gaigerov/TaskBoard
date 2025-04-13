@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, FC, ChangeEvent, MouseEvent} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 import {useNotification} from './components/Notification/NotificationContext';
 import {useSelector, useDispatch} from 'react-redux';
@@ -19,17 +19,55 @@ import desktopMenu from './image/desktop-menu.svg';
 import loop from './image/search.svg';
 import filter from './image/filter.svg';
 
-export const MainPage = () => {
+interface FilterTo {
+    search: string;
+    filterDate?: string;
+    filterStatus?: string;
+}
+
+interface Task {
+    id: number;
+    title: string;
+    status: string;
+    date: string;
+}
+
+interface RootState {
+    tasks: {
+        tasks: Task[];
+        activePage: string;
+        filterTo: FilterTo;
+    };
+}
+
+interface Props {
+    activePage: string;
+    isOpenSearchInput: boolean;
+    isOpenMenu: boolean;
+    breakpoint: string;
+    filterTo: {
+        search: string;
+        filterDate?: string;
+        filterStatus?: string;
+    };
+    changedFieldsCount: number;
+    handleToggleMenu: () => void;
+    handleOpenSearchInput: () => void;
+    openFilterModal: () => void;
+    handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const MainPage: FC<Props> = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const breakpoint = useBreakpoint();
     const showNotification = useNotification();
-    const {mode} = useParams();
-    const tasks = useSelector((state) => state.tasks.tasks);
-    const activePage = useSelector((state) => state.tasks.activePage);
-    const filterTo = useSelector((state) => state.tasks.filterTo);
-    const [isOpenMenu, setIsOpenMenu] = useState(false);
-    const [isOpenSearchInput, setIsOpenSearchInput] = useState(false);
+    const {mode} = useParams<{mode?: string}>();
+    const tasks = useSelector((state: any) => state.tasks.tasks) as Task[];
+    const activePage = useSelector((state: any) => state.tasks.activePage);
+    const filterTo = useSelector((state: any) => state.tasks.filterTo) as FilterTo;
+    const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
+    const [isOpenSearchInput, setIsOpenSearchInput] = useState<boolean>(false);
 
     // Фильтрация задач
     const filteredTasks = tasks.filter(task => {
@@ -42,7 +80,7 @@ export const MainPage = () => {
         task.title.toLowerCase().includes(filterTo.search.toLowerCase())
     );
 
-    const handleFilterChange = (newDate, newStatus) => {
+    const handleFilterChange = (newDate?: string, newStatus?: string) => {
         dispatch(tasksActions.setFilterTo({
             ...filterTo,
             filterDate: newDate,
@@ -50,19 +88,18 @@ export const MainPage = () => {
         }));
     };
 
-    const handleClickOutside = event => {
-        if (!event.target.closest('.headerFinderInput')) {
-            setIsOpenSearchInput(false);
-        }
-    };
+    // const handleClickOutside = (event: MouseEvent) => {
+    //     if (event && !(event.target as HTMLElement).closest('.headerFinderInput')) {
+    //         setIsOpenSearchInput(false);
+    //     }
+    // };
 
-    // Эффект для добавления слушателя события клика
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
+    // useEffect(() => {
+    //     document.addEventListener('mousedown', handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener('mousedown', handleClickOutside);
+    //     };
+    // }, []);
 
     const handleOpenSearchInput = () => {
         setIsOpenSearchInput(true);
@@ -73,7 +110,7 @@ export const MainPage = () => {
     };
 
     // Обработчик изменения значения поиска
-    const handleChange = (event) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.currentTarget.value;
         dispatch(tasksActions.setFilterTo({
             ...filterTo,
@@ -92,15 +129,15 @@ export const MainPage = () => {
         dispatch(modalActions.openModal({ modalType: 'create' }));
     };
 
-    const openEditModal = (task) => {
+    const openEditModal = (task: Task) => {
         dispatch(modalActions.openModal({ modalType: 'edit', payload: task }));
     };
 
-    const openViewModal = (task) => {
+    const openViewModal = (task: Task) => {
         dispatch(modalActions.openModal({ modalType: 'view', payload: task }));
     };
 
-    const openRemoveModal = (task) => {
+    const openRemoveModal = (task: Task) => {
         dispatch(modalActions.openModal({ modalType: 'remove', payload: { id: task.id } }));
     };
 
@@ -109,7 +146,7 @@ export const MainPage = () => {
         navigate('/filter');
     };
 
-    const handleTaskAction = async (action, successMessage, errorMessage, params) => {
+    const handleTaskAction = async (action: any, successMessage: string, errorMessage: string, params: string) => {
         try {
             await dispatch(action(params));
             showNotification(successMessage, 'success');
@@ -121,19 +158,19 @@ export const MainPage = () => {
     };
 
     // Обработчики создания, редактирования, удаления и клонирования задач
-    const handleCreateTask = (newTask) => {
+    const handleCreateTask = (newTask: Task) => {
         handleTaskAction(tasksActions.addTask, 'Задача создана успешно', 'Ошибка при создании задачи', newTask);
     };
 
-    const handleEditTask = (task) => {
+    const handleEditTask = (task: Task) => {
         handleTaskAction(tasksActions.editTask, 'Задача отредактирована', 'Ошибка при редактировании задачи', task);
     };
 
-    const handleDeleteTask = (id) => {
+    const handleDeleteTask = (id: number) => {
         handleTaskAction(tasksActions.removeTask, 'Задача удалена', 'Ошибка при удалении задачи', {id});
     };
 
-    const cloneTask = (id) => {
+    const cloneTask = (id: number) => {
         handleTaskAction(tasksActions.cloneTask, 'Задача скопирована в конец списка', 'Ошибка при клонировании задачи', {id});
     };
 
@@ -165,9 +202,6 @@ export const MainPage = () => {
             case 'calendar':
                 return <TasksCalendar
                     onView={openViewModal}
-                    onEdit={openEditModal}
-                    onClone={cloneTask}
-                    onRemove={openRemoveModal}
                 />;
             default:
                 return null;
@@ -249,7 +283,6 @@ export const MainPage = () => {
                     <Menu
                         goToTaskBoard={() => dispatch(tasksActions.setActivePage('taskBoard'))}
                         goToCalendar={() => dispatch(tasksActions.setActivePage('calendar'))}
-                        goToBoard={() => dispatch(tasksActions.setActivePage('board'))}
                     />
                 }
 
@@ -258,7 +291,7 @@ export const MainPage = () => {
                         mode={mode}
                         onCreate={handleCreateTask}
                         onSave={handleEditTask}
-                        onEdit={openEditModal}
+                        openEditModal={openEditModal}
                         onRemove={handleDeleteTask}
                         onClose={closeModal}
                         onClone={cloneTask}

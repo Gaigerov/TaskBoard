@@ -23,6 +23,7 @@ interface TasksState {
         filterDate?: string;
         filterStatus?: string;
     };
+    tasksPerPage: number;
 }
 
 // Начальное состояние
@@ -39,6 +40,7 @@ const initialState: TasksState = {
         filterDate: '',
         filterStatus: TASK_STATUS.EMPTY,   
     },
+    tasksPerPage: 10,
 };
 
 const saveTasksToLocalStorage = (tasks: Task[]) => {
@@ -115,7 +117,7 @@ export const tasksSlice = createSlice({
             state.date = action.payload;
             state.isDirty = true; 
         },
-        setFilter: (state, action: PayloadAction<{ filterDate?: string; filterStatus?: string }>) => {
+        setFilter: (state, action: PayloadAction<{ filterDate?: string; filterStatus?: string; search?: string }>) => {
             const { filterDate, filterStatus } = action.payload || {};
             if (filterDate !== undefined) {
                 state.filterTo.filterDate = filterDate;
@@ -124,8 +126,11 @@ export const tasksSlice = createSlice({
                 state.filterTo.filterStatus = filterStatus;
             }
         },
-        setFilterTo: (state, action: PayloadAction<{ filterDate?: string; filterStatus?: string }>) => {
+        setFilterTo: (state, action: PayloadAction<{ filterDate?: string; filterStatus?: string; search?: string }>) => {
             state.filterTo = action.payload;
+        },
+        setTasksPerPage: (state, action) => {
+            state.tasksPerPage = action.payload;
         },
     },
 });

@@ -7,7 +7,7 @@ import {useNotification} from '../Notification/NotificationContext';
 import {Button} from '../Button/Button';
 import {VALID_MODE, TASK_STATUS} from '../../constant';
 import {modalActions} from '../../redux/_modalStore';
-import {tasksActions} from '../../redux/tasksStore';
+import {tasksActions} from '../../redux/_tasksStore';
 
 export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onClone, onClose, onFilter, validate, clearStatusFilter}) => {
     const dispatch = useDispatch();

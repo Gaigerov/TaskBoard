@@ -1,5 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {tasksReducer} from './tasksStore';
+import {tasksReducer} from './_tasksStore';
 import {modalReducer} from './_modalStore';
 
 export default configureStore({

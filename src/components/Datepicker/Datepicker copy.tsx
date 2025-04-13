@@ -1,50 +1,52 @@
-import React, {useState} from 'react';
+import React, {JSX, useState} from 'react';
 import chevronRight from "../../image/ChevronRight.svg"
 import chevronLeft from "../../image/ChevronLeft.svg"
 import {useDispatch} from 'react-redux';
 import {tasksActions} from '../../redux/_tasksStore';
 
-export const Datepicker = ({onChangeDate}) => {
-    const dispatch = useDispatch();
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    const [displayDate, setDisplayDate] = useState(new Date());
-    const [isTodaySelected, setIsTodaySelected] = useState(true);
+type Props = {
+    onChangeDate: (date: string) => void;
+}
 
-    const getDaysInMonth = (date) => {
+export const Datepicker: React.FC<Props> = ({onChangeDate}) => {
+    const dispatch = useDispatch();
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+    const [displayDate, setDisplayDate] = useState<Date>(new Date());
+    const [isTodaySelected, setIsTodaySelected] = useState<boolean>(true);
+
+    const getDaysInMonth = (date: Date): number => {
         const month = date.getMonth();
         const year = date.getFullYear();
         return new Date(year, month + 1, 0).getDate();
     };
 
-    const changeMonth = (increment) => {
+    const changeMonth = (increment: number): void => {
         const newDate = new Date(displayDate);
         newDate.setMonth(displayDate.getMonth() + increment);
         setDisplayDate(newDate);
     };
 
-    const selectDate = (day) => {
+    const selectDate = (day: number): void => {
         const newDate = new Date(displayDate.getFullYear(), displayDate.getMonth(), day);
         setSelectedDate(newDate);
         setIsTodaySelected(false);
-        document.getElementById('date').value = newDate.toLocaleDateString();
         onChangeDate(newDate.toLocaleDateString());
     };
 
-    const resetToToday = () => {
+    const resetToToday = (): void => {
         const today = new Date();
         setDisplayDate(today);
         setSelectedDate(today);
         setIsTodaySelected(true);
-        document.getElementById('date').value = today.toLocaleDateString();
         dispatch(tasksActions.setDate(today.toLocaleDateString()));
+        onChangeDate(today.toLocaleDateString());
     };
     
-    const renderDays = () => {
+    const renderDays = (): JSX.Element[] => {
         const daysInMonth = getDaysInMonth(displayDate);
         const startDay = (new Date(displayDate.getFullYear(), displayDate.getMonth(), 1).getDay()) - 1;
-        // Приводим startDay к понедельнику
         const adjustedStartDay = (startDay === 0) ? 6 : startDay - 1; // 0 (воскресенье) становится 6 (суббота)
-        const days = [];
+        const days: JSX.Element[] = [];
         const prevMonthDays = new Date(displayDate.getFullYear(), displayDate.getMonth(), 0).getDate();
         // Добавляем дни предыдущего месяца
         for (let i = adjustedStartDay; i >= 0; i--) {
