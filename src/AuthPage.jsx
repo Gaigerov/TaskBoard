@@ -3,7 +3,7 @@ import './AuthPage.css';
 import {MainPage} from './MainPage';
 import {getSimpleData} from './components/api/getStorage';
 import Cookies from 'js-cookie';
-import {Loader} from './components/Loader/_Loader';
+import {Loader} from './components/Loader/Loader';
 
 export const AuthPage = () => {
     const [name, setName] = useState('');

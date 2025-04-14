@@ -1,6 +1,5 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {APP_LIFECYCLE_STATUS} from './constant';
-import {Loader} from './components/Loader/_Loader';
 
 export const AppLifecycleContext = createContext();
 

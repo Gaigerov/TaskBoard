@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, MouseEvent} from 'react';
+import {useState, useEffect, useRef, FC} from 'react';
 import chevronDown from "../../image/ChevronDown.svg";
 import {useDispatch} from 'react-redux';
 import {tasksActions} from '../../redux/_tasksStore';
@@ -8,7 +8,7 @@ type Props = {
     value: string;
 }
 
-export const CustomSelect: React.FC<Props> = ({options, value}) => {
+export const CustomSelect: FC<Props> = ({options, value}) => {
     const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const selectRef = useRef<HTMLDivElement | null>(null);
@@ -18,18 +18,18 @@ export const CustomSelect: React.FC<Props> = ({options, value}) => {
         setIsOpen(false);
     };
 
-    // const handleClickOutside = (event: MouseEvent) => {
-    //     if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
-    //         setIsOpen(false);
-    //     }
-    // };
+    const handleClickOutside = (event: MouseEvent) => {
+        if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+            setIsOpen(false);
+        }
+    };
 
-    // useEffect(() => {
-    //     document.addEventListener('mousedown', handleClickOutside);
-    //     return () => {
-    //         document.removeEventListener('mousedown', handleClickOutside);
-    //     };
-    // }, []);
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <div className="customSelect" ref={selectRef}>

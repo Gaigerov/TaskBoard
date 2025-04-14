@@ -39,3 +39,4 @@ export const getSimpleData = async (authToken) => {
 
     return data;
 };
+

@@ -1,4 +1,4 @@
-import React from 'react';
+import {FC} from 'react';
 import {
     useNavigate,
 } from "react-router-dom";
@@ -6,20 +6,56 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNotification} from '../Notification/NotificationContext';
 import {Button} from '../Button/Button';
 import {VALID_MODE, TASK_STATUS} from '../../constant';
-import {modalActions} from '../../redux/modalStore';
-import {tasksActions} from '../../redux/tasksStore';
+import {modalActions} from '../../redux/_modalStore';
+import {tasksActions} from '../../redux/_tasksStore';
 
+interface Task {
+    id: string;
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    status: string;
+}
 
-export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onClone, onClose, onFilter, validate, clearStatusFilter}) => {
+interface TaskState {
+    title: string;
+    description: string;
+    time: string;
+    date: string;
+    isDirty: boolean;
+    filterTo: {
+        search: string,
+        filterDate: string,
+        filterStatus: string,
+    },
+}
+
+interface Props {
+    mode: string;
+    task: Task;
+    onEdit: (task: Task) => void;
+    onCreate: (task: Task) => void;
+    onSave: (task: Task) => void;
+    onRemove: (taskId: string) => void;
+    onClose: () => void;
+    onClone: (taskId: string) => void;
+    onFilter: () => void;
+    validate: () => boolean;
+    clearStatusFilter: () => void;
+    onClick: () => void;
+}
+
+export const FormFooter: FC<Props> = ({task, mode, onCreate, onSave, onEdit, onFilter, onRemove, onClone, onClose, validate, clearStatusFilter}) => {
     const dispatch = useDispatch();
-    const title = useSelector((state) => state.tasks.title);
-    const description = useSelector((state) => state.tasks.description);
-    const time = useSelector((state) => state.tasks.time);
-    const date = useSelector((state) => state.tasks.date);
+    const title = useSelector((state: {tasks: TaskState}) => state.tasks.title);
+    const description = useSelector((state: {tasks: TaskState}) => state.tasks.description);
+    const time = useSelector((state: {tasks: TaskState}) => state.tasks.time);
+    const date = useSelector((state: {tasks: TaskState}) => state.tasks.date);
     const navigate = useNavigate();
     const showNotification = useNotification();
 
-    const handleNavigateToDelete = (task) => {
+    const handleNavigateToDelete = (task: Task) => {
         navigate('/');
         navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
     }
@@ -31,7 +67,7 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
     const handleSubmit = () => {
         if (validate()) {
             if (mode === VALID_MODE.CREATE) {
-                onCreate({title, description, time, date, status: TASK_STATUS.TO_DO});
+                onCreate({id: Date.now().toString(), title, description, time, date, status: TASK_STATUS.TO_DO});
             } else if (mode === VALID_MODE.EDIT) {
                 onSave({...task, title, description, time, date});
             }
@@ -56,7 +92,7 @@ export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onCl
         onClose();
     }
 
-    const handleNavigateToEdit = (task) => {
+    const handleNavigateToEdit = (task: Task) => {
         navigate('/');
         navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
         onEdit(task);

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Button} from '../Button/Button';
-import {modalActions} from '../../redux/_modalStore';
+import {modalActions} from '../../redux/modalStore';
 
 export const PopoverRemove = ({children, task, onRemove}) => {
     const [isShow, setIsShow] = useState(false);

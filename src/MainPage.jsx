@@ -12,8 +12,8 @@ import {Button} from './components/Button/Button';
 import {TaskModal} from './TaskModal';
 import {TaskBoard} from './TaskBoard';
 import {TasksCalendar} from './TasksCalendar';
-import {tasksActions} from './redux/_tasksStore';
-import {modalActions} from './redux/_modalStore';
+import {tasksActions} from './redux/tasksStore';
+import {modalActions} from './redux/modalStore';
 
 import desktopMenu from './image/desktop-menu.svg';
 import loop from './image/search.svg';

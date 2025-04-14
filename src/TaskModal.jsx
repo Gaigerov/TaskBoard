@@ -7,8 +7,8 @@ import {VALID_MODE, VALID_MODES} from './constant';
 import {ModalForm} from './components/ModalForm/ModalForm';
 import {FormHeader} from './components/ModalForm/FormHeader';
 import {FormBody} from './components/ModalForm/FormBody';
-import {tasksActions} from './redux/_tasksStore';
-import {modalActions} from './redux/_modalStore';
+import {tasksActions} from './redux/tasksStore';
+import {modalActions} from './redux/modalStore';
 
 export const TaskModal = ({mode, onClose, openEditModal, onCreate, onSave, onRemove, onClone, onFilter}) => {
     const dispatch = useDispatch();

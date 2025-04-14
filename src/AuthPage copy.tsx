@@ -1,4 +1,4 @@
-import React, {useState, useEffect, ChangeEvent, FormEvent} from 'react';
+import {useState, useEffect, ChangeEvent, FormEvent, FC} from 'react';
 import './AuthPage.css';
 import {MainPage} from './MainPage';
 import {getSimpleData} from './components/api/getStorage';
@@ -10,7 +10,7 @@ interface State {
     error: string | null;
 }
 
-export const AuthPage: React.FC = () => {
+export const AuthPage: FC = () => {
     const [name, setName] = useState<string>('');
     const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);

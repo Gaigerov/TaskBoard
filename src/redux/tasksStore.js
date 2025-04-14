@@ -1,9 +1,13 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {TASK_STATUS} from '../constant';
+import Cookies from 'js-cookie';
 import {getSimpleData} from '../components/api/getStorage';
+
+const authToken = Cookies.get('authToken');
 
 const loadTasksFromLocalStorage = () => {
     const tasks = localStorage.getItem('tasks');
+    console.log(tasks)
     if (tasks) {
         try {
             return JSON.parse(tasks);
@@ -21,12 +25,53 @@ const saveTasksToLocalStorage = (tasks) => {
     } 
 };
 
+// // Создаем асинхронный thunk для загрузки задач
+// export const fetchTasks = createAsyncThunk(
+//     'tasks/fetchTasks',
+//     async () => {
+//         const data = await getSimpleData(authToken); 
+//         return data; 
+//     }
+// );
+
+// export const sendDataToBackend = async (authToken, jsonData) => {
+//     const headers = new Headers({
+//         'Content-Type': 'application/json',
+//         Authorization: authToken,
+//     });
+//     const response = await fetch('https://simple-storage.vigdorov.ru/storages', {
+//         method: 'PUT', 
+//         headers,
+//         body: jsonData, 
+//     });
+//     if (!response.ok) {
+//         throw new Error('Ошибка отправки данных: ' + response.statusText);
+//     }
+//     const responseData = await response.json();
+//     console.log('Ответ от сервера:', responseData);
+//     return responseData; 
+// };
+
+// // Создаем асинхронный thunk для отправки задач на бэкенд
+// export const updateTasksOnServer = createAsyncThunk(
+//     'tasks/updateTasksOnServer',
+
+//     async (tasks, { getState }) => {
+//         const state = getState();
+//         const authToken = Cookies.get('authToken');
+//         const jsonData = JSON.stringify(tasks);
+
+//         const response = await sendDataToBackend(authToken, jsonData);
+//         return response; 
+//     }
+// );
+
 const initialState = {
     tasks: loadTasksFromLocalStorage() || [],
     title: '',
     description: '',
     time: '',
-    date: '',
+    date: '', 
     isDirty: false,
     filterTo: {
         search: '',
@@ -42,7 +87,7 @@ export const tasksSlice = createSlice({
     initialState,
     reducers: {
         addTask: (state, action) => {
-            const taskWithId = {...action.payload, id: Date.now()};
+            const taskWithId = { ...action.payload, id: Date.now() };
             state.tasks.push(taskWithId);
             saveTasksToLocalStorage(state.tasks);
             state.title = '';

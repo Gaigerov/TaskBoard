@@ -1,4 +1,4 @@
-import React, {JSX, useState} from 'react';
+import {FC, JSX, useState} from 'react';
 import chevronRight from "../../image/ChevronRight.svg"
 import chevronLeft from "../../image/ChevronLeft.svg"
 import {useDispatch} from 'react-redux';
@@ -8,7 +8,7 @@ type Props = {
     onChangeDate: (date: string) => void;
 }
 
-export const Datepicker: React.FC<Props> = ({onChangeDate}) => {
+export const Datepicker: FC<Props> = ({onChangeDate}) => {
     const dispatch = useDispatch();
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [displayDate, setDisplayDate] = useState<Date>(new Date());
