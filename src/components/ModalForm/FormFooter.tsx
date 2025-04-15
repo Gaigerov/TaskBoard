@@ -3,14 +3,14 @@ import {
     useNavigate,
 } from "react-router-dom";
 import {useSelector, useDispatch} from 'react-redux';
-import {useNotification} from '../Notification/_NotificationContext';
+import {useNotification} from '../Notification/NotificationContext';
 import {Button} from '../Button/Button';
 import {VALID_MODE, TASK_STATUS} from '../../constant';
-import {modalActions} from '../../redux/_modalStore';
-import {tasksActions} from '../../redux/_tasksStore';
+import {modalActions} from '../../redux/modalStore';
+import {tasksActions} from '../../redux/tasksStore';
 
 interface Task {
-    id: string;
+    id: number;
     title: string;
     description: string;
     date: string;
@@ -37,13 +37,12 @@ interface Props {
     onEdit: (task: Task) => void;
     onCreate: (task: Task) => void;
     onSave: (task: Task) => void;
-    onRemove: (taskId: string) => void;
+    onRemove: (taskId: number) => void;
     onClose: () => void;
-    onClone: (taskId: string) => void;
-    onFilter: () => void;
+    onClone: (taskId: number) => void;
+    onFilter: (selectedDate?:string | undefined, selectedStatus?: string | undefined) => void;
     validate: () => boolean;
     clearStatusFilter: () => void;
-    onClick: () => void;
 }
 
 export const FormFooter: FC<Props> = ({task, mode, onCreate, onSave, onEdit, onFilter, onRemove, onClone, onClose, validate, clearStatusFilter}) => {
@@ -67,7 +66,7 @@ export const FormFooter: FC<Props> = ({task, mode, onCreate, onSave, onEdit, onF
     const handleSubmit = () => {
         if (validate()) {
             if (mode === VALID_MODE.CREATE) {
-                onCreate({id: Date.now().toString(), title, description, time, date, status: TASK_STATUS.TO_DO});
+                onCreate({id: Date.now(), title, description, time, date, status: TASK_STATUS.TO_DO});
             } else if (mode === VALID_MODE.EDIT) {
                 onSave({...task, title, description, time, date});
             }

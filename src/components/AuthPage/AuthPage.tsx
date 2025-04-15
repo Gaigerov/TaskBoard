@@ -3,6 +3,7 @@ import {MainPage} from '../MainPage/MainPage';
 import {getSimpleData} from '../api/getStorage';
 import Cookies from 'js-cookie';
 import {Loader} from '../Loader/Loader';
+import '../../config/App.css';
 
 interface State {
     isLoading: boolean;

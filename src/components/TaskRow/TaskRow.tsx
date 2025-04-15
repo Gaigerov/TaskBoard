@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {useSelector} from 'react-redux';
-import {Popover} from '../Popover/_Popover';
+import {Popover} from '../Popover/Popover';
 import {PopoverRemove} from '../PopoverRemove/PopoverRemove';
 import editButton from '../../image/edit.svg'
 import deleteButton from '../../image/delete.svg';
@@ -25,7 +25,7 @@ interface Props {
     onNavigateToView: (task: Task) => void;
     onNavigateToEdit: (task: Task) => void;
     onClone: (taskId: number) => void;
-    onDelete: () => void;
+    onDelete: (id: number) => void;
 }
 
 export const TaskRow: FC<Props> = ({ task, isPastDue, onNavigateToView, onNavigateToEdit, onClone, onDelete}) => {

@@ -1,7 +1,7 @@
 import React, {useState, useRef} from 'react';
 import InputMask from 'react-input-mask';
 import chevronDown from '../../../image/ChevronDown.svg';
-import {Datepicker} from '../../Datepicker/Datepicker';
+import {Datepicker} from '../../Datepicker/_Datepicker';
 
 export const DateInput = ({value, onChange, error, onChangeDate}) => {
     const inputRef = useRef(null);

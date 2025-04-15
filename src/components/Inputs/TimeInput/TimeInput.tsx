@@ -1,9 +1,9 @@
-import {useRef, FC} from 'react';
+import {useRef, FC, ChangeEvent} from 'react';
 import InputMask from 'react-input-mask';
 
 interface Props {
     value: string;
-    onChange: () => void;
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     error: string;
 }
 

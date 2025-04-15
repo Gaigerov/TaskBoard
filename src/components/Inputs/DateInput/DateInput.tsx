@@ -1,21 +1,22 @@
-import {useState, useRef, FC} from 'react';
+import {useState, useRef, FC, ChangeEvent} from 'react';
 import InputMask from 'react-input-mask';
 import chevronDown from '../../../image/ChevronDown.svg';
 import {Datepicker} from '../../Datepicker/Datepicker';
 
 interface Props {
     value: string;
-    onChange: () => void;
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     error: string;
-    onChangeDate: () => void;
+    onChangeDate: (date: string) => void;
 }
 
 export const DateInput: FC<Props> = ({value, onChange, error, onChangeDate}) => {
     const inputRef = useRef(null);
-    const [isDatepicker, setIsDatepicker] = useState(false);
+    const [isDatepicker, setIsDatepicker] = useState<boolean>(false);
     const toggleDatepicker = () => {
         setIsDatepicker(!isDatepicker);
     };
+
     return (
         <>
             <div className="inputContainer">

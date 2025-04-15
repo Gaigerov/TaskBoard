@@ -41,7 +41,7 @@ interface Props {
     onSave: (task: Task) => void;
     onClone: (id: number) => void;
     onRemove: (id: number) => void;
-    onFilter: (key: keyof FilterTo, value: string) => void;
+    onFilter: (filter: FilterTo) => void;
 }
 
 export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, onSave, onRemove, onClone, onFilter}) => {
@@ -137,9 +137,9 @@ export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, on
 
     const isShow = (() => {
         if (tasks.length === 0) return true;
-        return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER) 
+        return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER)
             || (VALID_MODES.includes(mode) && isValidId());
-    })();    
+    })();
 
     if (!isShow) {
         return null;
@@ -147,21 +147,23 @@ export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, on
 
     return (
         <div className="modalOverlay" ref={modalRef}>
-            <ModalForm>
-                <FormHeader task={task} mode={mode} onClose={onClose} />
-                <FormBody
-                    task={task}
-                    mode={mode}
-                    onCreate={onCreate}
-                    onSave={onSave}
-                    onEdit={openEditModal}
-                    onRemove={onRemove}
-                    onClose={onClose}
-                    onClone={onClone}
-                    onFilter={onFilter}
-                    validate={validate}
-                />
-            </ModalForm>
+            {task && (
+                <ModalForm>
+                    <FormHeader task={task} mode={mode} onClose={onClose} />
+                    <FormBody
+                        task={task}
+                        mode={mode}
+                        onCreate={onCreate}
+                        onSave={onSave}
+                        onEdit={openEditModal}
+                        onRemove={onRemove}
+                        onClose={onClose}
+                        onClone={onClone}
+                        onFilter={onFilter}
+                        validate={validate}
+                    />
+                </ModalForm>
+            )}
         </div>
     );
 };

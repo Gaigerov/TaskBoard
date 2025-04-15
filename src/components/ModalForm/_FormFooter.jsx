@@ -4,7 +4,7 @@ import {
 } from "react-router-dom";
 import {useSelector, useDispatch} from 'react-redux';
 import {useNotification} from '../Notification/_NotificationContext';
-import {Button} from '../Button/Button';
+import {Button} from '../Button/_Button';
 import {VALID_MODE, TASK_STATUS} from '../../constant';
 import {modalActions} from '../../redux/modalStore';
 import {tasksActions} from '../../redux/tasksStore';

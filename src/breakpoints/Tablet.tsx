@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {Tasks} from '../_Tasks';
+import {Tasks} from '../components/Tasks/Tasks';
 
 interface Task {
     id: number;

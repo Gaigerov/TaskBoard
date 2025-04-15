@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Button} from '../Button/Button';
+import {Button} from '../Button/_Button';
 import {modalActions} from '../../redux/modalStore';
 
 export const PopoverRemove = ({children, task, onRemove}) => {

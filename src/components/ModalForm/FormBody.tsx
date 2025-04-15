@@ -1,35 +1,86 @@
-import React, {useState, useEffect, Fragment} from 'react';
+import {useState, useEffect, Fragment, FC, ChangeEvent} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import xButton from '../../image/xButton.svg';
 import chevronDown from '../../image/ChevronDown.svg';
 import {VALID_MODE} from '../../constant';
 import {TASK_STATUS, TASK_STATUSES} from '../../constant';
-import {Popover} from '../Popover/_Popover';
+import {Popover} from '../Popover/Popover';
 import {FormFooter} from './FormFooter';
 import {TextInput} from '../Inputs/TextInput/TextInput';
 import {TextArea} from '../Inputs/TextArea/TextArea';
 import {TimeInput} from '../Inputs/TimeInput/TimeInput';
 import {DateInput} from '../Inputs/DateInput/DateInput';
 import {tasksActions} from '../../redux/tasksStore';
+import {modalActions} from '../../redux/modalStore';
 
-export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClose, onClone, onFilter, validate}) => {
+interface FilterTo {
+    search: string;
+    filterDate?: string;
+    filterStatus?: string;
+}
+
+interface Task {
+    id: number;
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    status: string;
+}
+
+interface TaskState {
+    title: string;
+    description: string;
+    time: string;
+    date: string;
+    isDirty: boolean;
+    filterTo: {
+        search: string,
+        filterDate: string,
+        filterStatus: string,
+    },
+}
+
+interface ModalState {
+    errors: {
+        title: string,
+        description: string,
+        time: string,
+        date: string,
+    };
+}
+
+interface Props {
+    mode: string;
+    task: Task;
+    onEdit: (task: Task) => void;
+    onCreate: (task: Task) => void;
+    onSave: (task: Task) => void;
+    onRemove: (id: number) => void;
+    onClose: () => void;
+    onClone: (id: number) => void;
+    onFilter: (date: string, status: string) => void;
+    validate: () => boolean;
+}
+
+export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRemove, onClose, onClone, onFilter, validate}) => {
     const dispatch = useDispatch();
-    const title = useSelector((state) => state.tasks.title);
-    const description = useSelector((state) => state.tasks.description);
-    const time = useSelector((state) => state.tasks.time);
-    const date = useSelector((state) => state.tasks.date);
-    const errors = useSelector((state) => state.modal.errors);
-    const isDirty = useSelector((state) => state.tasks.isDirty);
-    const filterTo = useSelector((state) => state.tasks.filterTo);
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedStatus, setSelectedStatus] = useState(filterTo.filterStatus);
-    const [selectedDate, setSelectedDate] = useState(mode === VALID_MODE.EDIT ? task.date : filterTo.filterDate);
+    const title = useSelector((state: {tasks: TaskState}) => state.tasks.title);
+    const description = useSelector((state: {tasks: TaskState}) => state.tasks.description);
+    const time = useSelector((state: {tasks: TaskState}) => state.tasks.time);
+    const date = useSelector((state: {tasks: TaskState}) => state.tasks.date);
+    const errors = useSelector((state: {modal: ModalState}) => state.modal.errors);
+    const isDirty = useSelector((state: {tasks: TaskState}) => state.tasks.isDirty);
+    const filterTo = useSelector((state: {tasks: TaskState}) => state.tasks.filterTo);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [selectedStatus, setSelectedStatus] = useState<string>(filterTo.filterStatus);
+    const [selectedDate, setSelectedDate] = useState<string>(mode === VALID_MODE.EDIT ? task.date : filterTo.filterDate);
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
 
-    const onChangeDate = (date) => {
+    const onChangeDate = (date: string) => {
         setSelectedDate(date);
         dispatch(tasksActions.setDate(date));
     }
@@ -38,7 +89,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
         onFilter(selectedDate, selectedStatus);
     }
 
-    const handleStatusClick = status => {
+    const handleStatusClick = (status: string) => {
         setSelectedStatus(status);
         setIsOpen(false);
     };
@@ -57,6 +108,23 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
         dispatch(modalActions.setErrors(''));
     };
 
+        const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+            dispatch(tasksActions.setTitle(event.target.value));
+        };
+    
+        const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+            dispatch(tasksActions.setDescription(event.target.value));
+        };
+    
+        const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
+            dispatch(tasksActions.setTime(event.target.value));
+        };
+    
+        const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
+            dispatch(tasksActions.setDate(event.target.value));
+            onChangeDate(event.target.value);
+        };
+
     useEffect(() => {
         if (mode === VALID_MODE.CREATE && isDirty === true) {
             validate();
@@ -71,7 +139,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
             dispatch(tasksActions.setDate(task.date));
         }
     }, [mode, task, dispatch]);
- 
+
     return (
         <Fragment>
             <div className="modalTaskContent">
@@ -80,7 +148,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                         <TextInput
                             label="Title"
                             value={title}
-                            onChange={(event) => dispatch(tasksActions.setTitle(event.target.value))}
+                            onChange={handleTitleChange}
                             error={errors.title}
                             placeholder="Enter title"
                             clearField={clearTitle}
@@ -88,7 +156,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                         <TextArea
                             label="Description"
                             value={description}
-                            onChange={(event) => dispatch(tasksActions.setDescription(event.target.value))}
+                            onChange={handleDescriptionChange}
                             error={errors.description}
                             placeholder="Enter description"
                             clearField={clearDescription}
@@ -97,7 +165,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                             <label className="modalContainer__time">Time
                                 <TimeInput
                                     value={time}
-                                    onChange={(event) => dispatch(tasksActions.setTime(event.target.value))}
+                                    onChange={handleTimeChange}
                                     error={errors.time}
                                 />
                             </label>
@@ -106,7 +174,7 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                                     value={date}
                                     error={errors.date}
                                     onChangeDate={onChangeDate}
-                                    onChange={(event) => dispatch(tasksActions.setDate(event.currentTarget.value))}
+                                    onChange={handleDateChange}
                                 />
                             </label>
                         </div>
@@ -139,14 +207,14 @@ export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClos
                                 value={date}
                                 error={errors.date}
                                 onChangeDate={onChangeDate}
-                                onChange={(event) => dispatch(tasksActions.setDate(event.target.value))}
+                                onChange={handleDateChange}
                             />
                         </label>
                     </>
                 )}
                 {mode === VALID_MODE.VIEW && (
                     <div>
-                        <Popover />
+                        <Popover tableTask={task} />
                         <p className="taskDescriptionViewMode">{task.description}</p>
                         <div className="frameOfTaskDateViewMode">
                             <p className="taskTimeViewMode">{task.time}</p>

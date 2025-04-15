@@ -3,7 +3,7 @@ import chevronRight from "../../image/ChevronRight.svg";
 import chevronLeft from "../../image/ChevronLeft.svg";
 import chevronsRight from "../../image/ChevronsRight.svg";
 import chevronsLeft from "../../image/ChevronsLeft.svg";
-import {CustomSelect} from '../CustomSelect/CustomSelect';
+import {CustomSelect} from '../CustomSelect/_CustomSelect';
 
 export const Pagination = ({searchedTasks, tasksPerPage, currentPage, setCurrentPage}) => {
     const [pageInput, setPageInput] = useState('');

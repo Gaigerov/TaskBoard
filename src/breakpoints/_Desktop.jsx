@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table} from '../components/Table/Table';
+import {Table} from '../components/Table/_Table';
 
 export const Desktop = ({searchedTasks, onView, onEdit, onClone, onRemove, deleteMode}) => {
 

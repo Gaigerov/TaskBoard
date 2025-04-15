@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState, FC} from 'react';
 import {
     useNavigate,
 } from "react-router-dom";
@@ -7,27 +7,48 @@ import {TaskRow} from '../TaskRow/TaskRow';
 import {VALID_MODE} from '../../constant';
 import {Pagination} from '../Pagination/Pagination';
 
-export const Table = ({searchedTasks, onView, onEdit, onClone, deleteMode}) => {
+interface Task {
+    id: number;
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    status: string;
+}
+
+interface TaskState {
+    tasksPerPage: number;
+}
+
+interface Props {
+    searchedTasks: Task[];
+    onView: (task: Task) => void;
+    onEdit: (task: Task) => void;
+    onClone: (id: number) => void;
+    deleteMode: (id: number) => void;
+}
+
+export const Table: FC<Props> = ({searchedTasks, onView, onEdit, onClone, deleteMode}) => {
     const navigate = useNavigate();
-    const tasksPerPage = useSelector((state) => state.tasks.tasksPerPage);
+    const tasksPerPage = useSelector((state: {tasks: TaskState}) => state.tasks.tasksPerPage);
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastTask = currentPage * tasksPerPage;
     const indexOfFirstTask = indexOfLastTask - tasksPerPage;
     const currentTasks = searchedTasks.slice(indexOfFirstTask, indexOfLastTask);
 
-    const parseDDMMYYYY = (dateString) => {
+    const parseDDMMYYYY = (dateString: string) => {
         const [day, month, year] = dateString.split('.').map(Number);
         return new Date(year, month - 1, day); 
     };
     
     const currentDate = new Date();
 
-    const handleNavigateToEdit = (task) => {
+    const handleNavigateToEdit = (task: Task) => {
         navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
         onEdit(task);
     }
 
-    const handleNavigateToView = (task) => {
+    const handleNavigateToView = (task: Task) => {
         navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
         onView(task);
     }

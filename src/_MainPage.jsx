@@ -8,10 +8,10 @@ import {TASK_STATUS} from './constant';
 
 import {Menu} from './components/Menu/Menu';
 import {DesktopMenu} from './components/DesktopMenu/DesktopMenu';
-import {Button} from './components/Button/Button';
+import {Button} from './components/Button/_Button';
 import {TaskModal} from './components/TaskModal/TaskModal'; 
 import {TaskBoard} from './components/TaskBoard/TaskBoard';
-import {TasksCalendar} from './components/TaskCalendar/TasksCalendar';
+import {TasksCalendar} from './components/TasksCalendar/TasksCalendar';
 import {tasksActions} from './redux/tasksStore';
 import {modalActions} from './redux/modalStore';
 

@@ -1,10 +1,10 @@
-import {FC} from 'react';
+import {FC, ChangeEvent} from 'react';
 import xButton from '../../../image/xButton.svg';
 
 interface Props {
     label: string;
     value: string;
-    onChange: () => void;
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     error: string;
     placeholder: string;
     clearField: () => void;

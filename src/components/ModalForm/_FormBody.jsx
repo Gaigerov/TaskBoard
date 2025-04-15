@@ -1,4 +1,4 @@
-import {useState, useEffect, Fragment, FC, ChangeEvent} from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import xButton from '../../image/xButton.svg';
 import chevronDown from '../../image/ChevronDown.svg';
@@ -7,74 +7,29 @@ import {TASK_STATUS, TASK_STATUSES} from '../../constant';
 import {Popover} from '../Popover/_Popover';
 import {FormFooter} from './FormFooter';
 import {TextInput} from '../Inputs/TextInput/TextInput';
-import {TextArea} from '../Inputs/TextArea/TextArea';
+import {TextArea} from '../Inputs/TextArea/_TextArea';
 import {TimeInput} from '../Inputs/TimeInput/TimeInput';
 import {DateInput} from '../Inputs/DateInput/DateInput';
 import {tasksActions} from '../../redux/tasksStore';
-import {modalActions} from '../../redux/modalStore';
 
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
-
-interface TaskState {
-    title: string;
-    description: string;
-    time: string;
-    date: string;
-    isDirty: boolean;
-    filterTo: {
-        search: string,
-        filterDate: string,
-        filterStatus: string,
-    },
-}
-
-interface ModalState {
-    errors: {
-        title: string,
-        description: string,
-        time: string,
-        date: string,
-    };
-}
-
-interface Props {
-    mode: string;
-    task: Task;
-    onEdit: () => void;
-    onCreate: () => void;
-    onSave: () => void;
-    onRemove: () => void;
-    onClose: () => void;
-    onClone: () => void;
-    onFilter: (selectedDate:string, selectedStatus: string) => void;
-    validate: () => void;
-}
-
-export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRemove, onClose, onClone, onFilter, validate}) => {
+export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClose, onClone, onFilter, validate}) => {
     const dispatch = useDispatch();
-    const title = useSelector((state: {tasks: TaskState}) => state.tasks.title);
-    const description = useSelector((state: {tasks: TaskState}) => state.tasks.description);
-    const time = useSelector((state: {tasks: TaskState}) => state.tasks.time);
-    const date = useSelector((state: {tasks: TaskState}) => state.tasks.date);
-    const errors = useSelector((state: {modal: ModalState}) => state.modal.errors);
-    const isDirty = useSelector((state: {tasks: TaskState}) => state.tasks.isDirty);
-    const filterTo = useSelector((state: {tasks: TaskState}) => state.tasks.filterTo);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [selectedStatus, setSelectedStatus] = useState<string>(filterTo.filterStatus);
-    const [selectedDate, setSelectedDate] = useState<string>(mode === VALID_MODE.EDIT ? task.date : filterTo.filterDate);
+    const title = useSelector((state) => state.tasks.title);
+    const description = useSelector((state) => state.tasks.description);
+    const time = useSelector((state) => state.tasks.time);
+    const date = useSelector((state) => state.tasks.date);
+    const errors = useSelector((state) => state.modal.errors);
+    const isDirty = useSelector((state) => state.tasks.isDirty);
+    const filterTo = useSelector((state) => state.tasks.filterTo);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedStatus, setSelectedStatus] = useState(filterTo.filterStatus);
+    const [selectedDate, setSelectedDate] = useState(mode === VALID_MODE.EDIT ? task.date : filterTo.filterDate);
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
 
-    const onChangeDate = (date: string) => {
+    const onChangeDate = (date) => {
         setSelectedDate(date);
         dispatch(tasksActions.setDate(date));
     }
@@ -83,7 +38,7 @@ export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRem
         onFilter(selectedDate, selectedStatus);
     }
 
-    const handleStatusClick = (status: string) => {
+    const handleStatusClick = status => {
         setSelectedStatus(status);
         setIsOpen(false);
     };
@@ -116,7 +71,7 @@ export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRem
             dispatch(tasksActions.setDate(task.date));
         }
     }, [mode, task, dispatch]);
-
+ 
     return (
         <Fragment>
             <div className="modalTaskContent">
@@ -125,7 +80,7 @@ export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRem
                         <TextInput
                             label="Title"
                             value={title}
-                            onChange={(event: ChangeEvent<HTMLInputElement>) => dispatch(tasksActions.setTitle(event.target.value))}
+                            onChange={(event) => dispatch(tasksActions.setTitle(event.target.value))}
                             error={errors.title}
                             placeholder="Enter title"
                             clearField={clearTitle}
@@ -133,7 +88,7 @@ export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRem
                         <TextArea
                             label="Description"
                             value={description}
-                            onChange={(event: ChangeEvent<HTMLInputElement>) => dispatch(tasksActions.setDescription(event.target.value))}
+                            onChange={(event) => dispatch(tasksActions.setDescription(event.target.value))}
                             error={errors.description}
                             placeholder="Enter description"
                             clearField={clearDescription}
@@ -142,7 +97,7 @@ export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRem
                             <label className="modalContainer__time">Time
                                 <TimeInput
                                     value={time}
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => dispatch(tasksActions.setTime(event.target.value))}
+                                    onChange={(event) => dispatch(tasksActions.setTime(event.target.value))}
                                     error={errors.time}
                                 />
                             </label>
@@ -151,7 +106,7 @@ export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRem
                                     value={date}
                                     error={errors.date}
                                     onChangeDate={onChangeDate}
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => dispatch(tasksActions.setDate(event.currentTarget.value))}
+                                    onChange={(event) => dispatch(tasksActions.setDate(event.currentTarget.value))}
                                 />
                             </label>
                         </div>
@@ -184,14 +139,14 @@ export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRem
                                 value={date}
                                 error={errors.date}
                                 onChangeDate={onChangeDate}
-                                onChange={(event: ChangeEvent<HTMLInputElement>) => dispatch(tasksActions.setDate(event.target.value))}
+                                onChange={(event) => dispatch(tasksActions.setDate(event.target.value))}
                             />
                         </label>
                     </>
                 )}
                 {mode === VALID_MODE.VIEW && (
                     <div>
-                        <Popover tableTask />
+                        <Popover />
                         <p className="taskDescriptionViewMode">{task.description}</p>
                         <div className="frameOfTaskDateViewMode">
                             <p className="taskTimeViewMode">{task.time}</p>

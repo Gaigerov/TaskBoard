@@ -4,13 +4,13 @@ import {useNotification} from '../Notification/NotificationContext';
 import {useSelector, useDispatch} from 'react-redux';
 import {useBreakpoint} from '../../breakpoints/useBreakpoint';
 import {TASK_STATUS} from '../../constant';
-import '../../config/App.css';
+// import '../../config/App.css';
 import {Menu} from '../Menu/Menu';
 import {DesktopMenu} from '../DesktopMenu/DesktopMenu';
-import {Button} from '../Button/Button';
+import {Button} from '../Button/_Button';
 import {TaskModal} from '../TaskModal/TaskModal';
 import {TaskBoard} from '../TaskBoard/TaskBoard';
-import {TasksCalendar} from '../TaskCalendar/TasksCalendar';
+import {TasksCalendar} from '../TasksCalendar/TasksCalendar';
 import {tasksActions} from '../../redux/tasksStore';
 import {modalActions} from '../../redux/modalStore';
 
@@ -41,11 +41,15 @@ interface RootState {
     };
 }
 
+interface Props {
+    onFilter: (filter: FilterTo) => void;
+}
+
 const objectKeys = <T extends Record<string, unknown>>(
     obj: T,
   ): Array<keyof T> => Object.keys(obj);
 
-export const MainPage: FC = () => {
+export const MainPage: FC<Props> = ({onFilter}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const breakpoint = useBreakpoint();
@@ -72,10 +76,12 @@ export const MainPage: FC = () => {
     );
 
     const handleFilterChange = (key: FilterKeys, value: string) => {
-        dispatch(tasksActions.setFilterTo({
+        const newFilter: FilterTo = {
             ...filterTo,
             [key]: value,
-        }));
+        };
+        dispatch(tasksActions.setFilterTo(newFilter));
+        onFilter(newFilter); 
     };
 
     const handleClickOutside = (event: MouseEvent) => {

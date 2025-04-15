@@ -1,11 +1,11 @@
 import {useState, useEffect, useRef, FC} from 'react';
 import chevronDown from "../../image/ChevronDown.svg";
 import {useDispatch} from 'react-redux';
-import {tasksActions} from '../../redux/_tasksStore';
+import {tasksActions} from '../../redux/tasksStore';
 
 type Props = {
-    options: string[];
-    value: string;
+    options: number[];
+    value: number;
 }
 
 export const CustomSelect: FC<Props> = ({options, value}) => {
@@ -13,7 +13,7 @@ export const CustomSelect: FC<Props> = ({options, value}) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const selectRef = useRef<HTMLDivElement | null>(null);
 
-    const handleOptionClick = (option: string) => {
+    const handleOptionClick = (option: number) => {
         dispatch(tasksActions.setTasksPerPage(option));
         setIsOpen(false);
     };
