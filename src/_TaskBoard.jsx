@@ -1,6 +1,6 @@
 import React from 'react';
 import './config/App.css';
-import {Breakpoints} from './Breakpoints';
+import {Breakpoints} from './components/Breakpoints/Breakpoints';
 
 export const TaskBoard = ({searchedTasks, openEditModal, openViewModal, openRemoveModal, cloneTask, deleteMode}) => {
 

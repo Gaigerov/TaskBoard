@@ -3,11 +3,11 @@ import {
     useNavigate,
 } from "react-router-dom";
 import {useSelector} from 'react-redux';
-import {Popover} from './components/Popover/Popover';
-import editButton from './image/edit.svg';
-import deleteButton from './image/delete.svg';
-import cloneButton from './image/clone.svg';
-import {VALID_MODE} from './constant';
+import {Popover} from '../Popover/Popover';
+import editButton from '../../image/edit.svg';
+import deleteButton from '../../image/delete.svg';
+import cloneButton from '../../image/clone.svg';
+import {VALID_MODE} from '../../constant';
 
 interface Task {
         id: number;
@@ -24,9 +24,9 @@ interface ModalState {
 
 interface TaskProps {
     task: Task;
-    onEdit: () => void;
+    onEdit: (task: Task) => void;
     onView: (task: Task) => void; 
-    onRemove: (id: number) => void;
+    onRemove: (task: Task) => void;
     onClone: (id: number) => void;
 }
 
@@ -37,13 +37,13 @@ export const Task: FC<TaskProps> = ({task, onEdit, onView, onRemove, onClone}) =
     const handleNavigateToEdit = () => {
             navigate('/');
             navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
-            onEdit();
+            onEdit(task);
     }
 
     const handleNavigateToDelete = () => {
             navigate('/');
             navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
-            onRemove(task.id);
+            onRemove(task);
     }
 
     const handleNavigateToView = () => {

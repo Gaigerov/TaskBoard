@@ -4,7 +4,7 @@ import xButton from '../../image/xButton.svg';
 import chevronDown from '../../image/ChevronDown.svg';
 import {VALID_MODE} from '../../constant';
 import {TASK_STATUS, TASK_STATUSES} from '../../constant';
-import {Popover} from '../Popover/Popover';
+import {Popover} from '../Popover/_Popover';
 import {FormFooter} from './FormFooter';
 import {TextInput} from '../Inputs/TextInput/TextInput';
 import {TextArea} from '../Inputs/TextArea/TextArea';

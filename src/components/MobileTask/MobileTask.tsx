@@ -1,17 +1,34 @@
-import React from 'react';
+import {FC} from 'react';
 import {
     useNavigate,
 } from "react-router-dom";
 import {useSelector} from 'react-redux';
-import {Popover} from './components/Popover/_Popover';
-import {VALID_MODE} from './constant';
+import {Popover} from '../Popover/_Popover';
+import {VALID_MODE} from '../../constant';
 
-export const TabletTask = ({task, onView}) => {
+interface Task {
+    id: number;
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    status: string;
+}
+
+interface ModalState {
+    currentTaskId: number;
+}
+
+interface Props {
+    task: Task;
+    onView: (task: Task) => void;
+}
+
+export const MobileTask: FC<Props> = ({task, onView}) => {
     const navigate = useNavigate();
-    const currentTaskId = useSelector((state) => state.modal.currentTaskId);
+    const currentTaskId = useSelector((state: {modal: ModalState}) => state.modal.currentTaskId);
 
-
-    const handleNavigateToView = () => {
+    const handleNavigateToView = (task: Task) => {
             navigate('/');
             navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
             onView(task);

@@ -1,15 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import './AuthPage.css';
-import {MainPage} from './MainPage';
-import {getSimpleData} from './components/api/getStorage';
+import {useState, useEffect, ChangeEvent, FormEvent, FC} from 'react';
+import {MainPage} from '../MainPage/MainPage';
+import {getSimpleData} from '../api/getStorage';
 import Cookies from 'js-cookie';
-import {Loader} from './components/Loader/Loader';
+import {Loader} from '../Loader/Loader';
 
-export const AuthPage = () => {
-    const [name, setName] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [state, setState] = useState({
+interface State {
+    isLoading: boolean;
+    error: string | null;
+}
+
+export const AuthPage: FC = () => {
+    const [name, setName] = useState<string>('');
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [state, setState] = useState<State>({
         isLoading: false,
         error: null,
     });
@@ -18,11 +22,11 @@ export const AuthPage = () => {
         setIsModalOpen(false);
     };
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setName(e.currentTarget.value);
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setState(prevState => ({...prevState, isLoading: true}));
         try {
@@ -36,7 +40,6 @@ export const AuthPage = () => {
             if (responseAuth.ok) {
                 const authToken = await responseAuth.text();
                 Cookies.set('authToken', authToken, {expires: 3}); // Срок хранения токена 3 дня
-                Cookies.set('name', encodedName, {expires: 3});
                 setIsAuthenticated(true);
                 closeAuthModal();
             } else {
@@ -44,7 +47,7 @@ export const AuthPage = () => {
             }
         } catch (error) {
             console.error('Ошибка при авторизации:', error);
-            setState({isLoading: false, error: error.message});
+            setState({isLoading: false, error: (error as Error).message});
         } finally {
             setState((prevState) => ({...prevState, isLoading: false}));
         }
@@ -61,7 +64,6 @@ export const AuthPage = () => {
         }
     }, [closeAuthModal]);
 
-
     useEffect(() => {
         const fetchData = async () => {
             if (isAuthenticated) {
@@ -69,7 +71,7 @@ export const AuthPage = () => {
                     const authToken = Cookies.get('authToken');
                     await getSimpleData(authToken);
                 } catch (error) {
-                    setState({isLoading: false, error: error.message});
+                    setState({isLoading: false, error: (error as Error).message});
                 }
             }
         };

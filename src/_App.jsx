@@ -4,13 +4,13 @@ import {
     createHashRouter,
     RouterProvider,
 } from "react-router-dom";
-import {AppLifecycleProvider} from './AppLifeCycleContext';
-import {NotificationProvider} from './components/Notification/NotificationContext';
+import {AppLifecycleProvider} from './_AppLifeCycleContext';
+import {NotificationProvider} from './components/Notification/_NotificationContext';
 import {Provider} from 'react-redux';
 import store from './redux/globalStore';
 
 import './config/App.css';
-import {AuthPage} from './AuthPage';
+import {AuthPage} from './_AuthPage';
 
 const router = createHashRouter([
     {

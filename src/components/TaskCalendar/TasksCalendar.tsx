@@ -1,19 +1,16 @@
 import {useState, useMemo, FC} from 'react';
 import {useSelector} from 'react-redux';
-import {MobileTask} from './MobileTask';
-import {TabletTask} from './TabletTask';
-import {DesktopTask} from './DesktopTask';
-import {useBreakpoint} from './breakpoints/useBreakpoint';
-import chevronRight from "./image/ChevronRight.svg";
-import chevronLeft from "./image/ChevronLeft.svg";
-
-type Props = {
-    onView: () => void;
-}
+import {MobileTask} from '../MobileTask/MobileTask';
+import {TabletTask} from '../TabletTask/TabletTask';
+import {DesktopTask} from '../DesktopTask/DesktopTask';
+import {useBreakpoint} from '../../breakpoints/useBreakpoint';
+import chevronRight from "../../image/ChevronRight.svg";
+import chevronLeft from "../../image/ChevronLeft.svg";
 
 interface Task {
     id: number;
     title: string;
+    description: string;
     status: string;
     date: string;
     time: string;
@@ -23,6 +20,10 @@ interface RootState {
     tasks: {
         tasks: Task[];
     };
+}
+
+type Props = {
+    onView: (task: Task) => void;
 }
 
 const parseDate = (dateString: string) => {

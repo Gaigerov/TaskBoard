@@ -1,36 +1,70 @@
-import React, {useEffect, useRef} from 'react';
+import {useEffect, useRef, FC} from 'react';
 import {useSearchParams} from "react-router-dom";
 import {useSelector, useDispatch} from 'react-redux';
+import {VALID_MODE, VALID_MODES} from '../../constant';
+import {ModalForm} from '../ModalForm/ModalForm';
+import {FormHeader} from '../ModalForm/FormHeader';
+import {FormBody} from '../ModalForm/FormBody';
+import {tasksActions} from '../../redux/tasksStore';
+import {modalActions} from '../../redux/modalStore';
 
-import {VALID_MODE, VALID_MODES} from './constant';
+interface FilterTo {
+    search: string;
+    filterDate?: string;
+    filterStatus?: string;
+}
 
-import {ModalForm} from './components/ModalForm/ModalForm';
-import {FormHeader} from './components/ModalForm/FormHeader';
-import {FormBody} from './components/ModalForm/FormBody';
-import {tasksActions} from './redux/tasksStore';
-import {modalActions} from './redux/modalStore';
+interface Task {
+    id: number;
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    status: string;
+}
 
-export const TaskModal = ({mode, onClose, openEditModal, onCreate, onSave, onRemove, onClone, onFilter}) => {
+interface TaskState {
+    tasks: Task[],
+    id: number;
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    status: string;
+}
+
+interface Props {
+    mode: string;
+    onClose: () => void;
+    openEditModal: (newTask: Task) => void;
+    onCreate: (task: Task) => void;
+    onSave: (task: Task) => void;
+    onClone: (id: number) => void;
+    onRemove: (id: number) => void;
+    onFilter: (key: keyof FilterTo, value: string) => void;
+}
+
+export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, onSave, onRemove, onClone, onFilter}) => {
     const dispatch = useDispatch();
-    const tasks = useSelector((state) => state.tasks.tasks);
-    const title = useSelector((state) => state.tasks.title);
-    const description = useSelector((state) => state.tasks.description);
-    const time = useSelector((state) => state.tasks.time);
-    const date = useSelector((state) => state.tasks.date);
-    const modalRef = useRef(null);
+    const tasks = useSelector((state: {tasks: TaskState}) => state.tasks.tasks);
+    const title = useSelector((state: {tasks: TaskState}) => state.tasks.title);
+    const description = useSelector((state: {tasks: TaskState}) => state.tasks.description);
+    const time = useSelector((state: {tasks: TaskState}) => state.tasks.time);
+    const date = useSelector((state: {tasks: TaskState}) => state.tasks.date);
+    const modalRef = useRef<HTMLDivElement>(null);
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
 
     const task = tasks?.find(task => task.id === Number(id));
 
-    const handleClickOutside = (event) => {
-        if (modalRef.current && !modalRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+        if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
             dispatch(modalActions.resetModalData());
             onClose();
         }
     };
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
             dispatch(modalActions.resetModalData());
             onClose();
@@ -70,18 +104,18 @@ export const TaskModal = ({mode, onClose, openEditModal, onCreate, onSave, onRem
         return valid
     };
 
-    const validateField = (value, fieldName, maxLength) => {
+    const validateField = (value: string, fieldName: string, maxLength: number) => {
         if (!value) return `${fieldName} is required`;
         if (value.length > maxLength) return `Максимум ${maxLength} символов`;
         return '';
     };
 
-    const validateTime = (time) => {
+    const validateTime = (time: string) => {
         if (!/^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/.test(time)) return 'Enter a valid time';
         return '';
     };
 
-    const validateDate = (date) => {
+    const validateDate = (date: string) => {
         const today = new Date();
         const inputDate = new Date(date.split('.').reverse().join('-'));
         if (!/^\d{2}\.\d{2}\.\d{4}$/.test(date)) return 'Enter a valid date';
@@ -103,9 +137,9 @@ export const TaskModal = ({mode, onClose, openEditModal, onCreate, onSave, onRem
 
     const isShow = (() => {
         if (tasks.length === 0) return true;
-        return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER) ||
-            (VALID_MODES.includes(mode) && isValidId());
-    })();
+        return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER) 
+            || (VALID_MODES.includes(mode) && isValidId());
+    })();    
 
     if (!isShow) {
         return null;

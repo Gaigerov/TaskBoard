@@ -1,8 +1,8 @@
 import React from 'react';
 
-import {Desktop} from './breakpoints/Desktop';
-import {Tablet} from './breakpoints/Tablet';
-import {Mobile} from './breakpoints/Mobile';
+import {Desktop} from './breakpoints/_Desktop';
+import {Tablet} from './breakpoints/_Tablet';
+import {Mobile} from './breakpoints/_Mobile';
 import {useBreakpoint} from './breakpoints/useBreakpoint';
 
 export const Breakpoints = ({searchedTasks, onView, onEdit, onClone, onRemove, deleteMode}) => {

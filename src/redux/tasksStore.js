@@ -7,7 +7,6 @@ const authToken = Cookies.get('authToken');
 
 const loadTasksFromLocalStorage = () => {
     const tasks = localStorage.getItem('tasks');
-    console.log(tasks)
     if (tasks) {
         try {
             return JSON.parse(tasks);

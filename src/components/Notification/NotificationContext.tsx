@@ -1,13 +1,14 @@
-import React, {createContext, ReactNode, useContext, useState} from 'react';
+import {createContext, ReactNode, useContext, useState, FC} from 'react';
 import {Notification} from './Notification';
 
 interface NotificationType {
     id: number;
     message: string;
-    type: string;
+    type: 'success' | 'error' | 'info' | 'warning';
 }
 
-type NotificationContextType = (msg: string, type: string) => void;
+type NotificationContextType = (msg: string, type: 'success' | 'error' | 'info' | 'warning') => void;
+
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
@@ -15,15 +16,16 @@ type Props = {
     children: ReactNode; 
 }
 
-export const NotificationProvider: React.FC<Props> = ({children}) => {
+export const NotificationProvider: FC<Props> = ({children}) => {
     const [notifications, setNotifications] = useState<NotificationType[]>([]);
-    const showNotification = (msg: string, type: string) => {
-        const newNotification = {id: Date.now(), message: msg, type};
+    const showNotification: NotificationContextType = (msg, type) => {
+        const newNotification = { id: Date.now(), message: msg, type };
         setNotifications((prev) => [...prev, newNotification]);
         setTimeout(() => {
             handleClose(newNotification.id);
         }, 7000);
     };
+
 
     const handleClose = (id: number) => {
         setNotifications((prevNotifications) =>
@@ -51,5 +53,10 @@ export const NotificationProvider: React.FC<Props> = ({children}) => {
 };
 
 export const useNotification = () => {
-    return useContext(NotificationContext);
+    const context = useContext(NotificationContext);
+    if (context === undefined) {
+        throw new Error('useNotification must be used within a NotificationProvider');
+    }
+    return context;
+
 };

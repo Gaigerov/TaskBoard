@@ -1,20 +1,15 @@
-import {useState, useEffect, ChangeEvent, FormEvent, FC} from 'react';
+import React, {useState, useEffect} from 'react';
 import './AuthPage.css';
-import {MainPage} from './MainPage';
+import {MainPage} from './components/MainPage/MainPage';
 import {getSimpleData} from './components/api/getStorage';
 import Cookies from 'js-cookie';
-import {Loader} from './components/Loader/_Loader';
+import {Loader} from './components/Loader/Loader';
 
-interface State {
-    isLoading: boolean;
-    error: string | null;
-}
-
-export const AuthPage: FC = () => {
-    const [name, setName] = useState<string>('');
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [state, setState] = useState<State>({
+export const AuthPage = () => {
+    const [name, setName] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [state, setState] = useState({
         isLoading: false,
         error: null,
     });
@@ -23,13 +18,13 @@ export const AuthPage: FC = () => {
         setIsModalOpen(false);
     };
 
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e) => {
         setName(e.currentTarget.value);
     };
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setState(prevState => ({ ...prevState, isLoading: true }));
+        setState(prevState => ({...prevState, isLoading: true}));
         try {
             const encodedName = encodeURIComponent(name);
             const responseAuth = await fetch('https://simple-storage.vigdorov.ru/auth', {
@@ -41,6 +36,7 @@ export const AuthPage: FC = () => {
             if (responseAuth.ok) {
                 const authToken = await responseAuth.text();
                 Cookies.set('authToken', authToken, {expires: 3}); // Срок хранения токена 3 дня
+                Cookies.set('name', encodedName, {expires: 3});
                 setIsAuthenticated(true);
                 closeAuthModal();
             } else {
@@ -48,11 +44,23 @@ export const AuthPage: FC = () => {
             }
         } catch (error) {
             console.error('Ошибка при авторизации:', error);
-            setState({isLoading: false, error: (error as Error).message});
+            setState({isLoading: false, error: error.message});
         } finally {
             setState((prevState) => ({...prevState, isLoading: false}));
         }
     };
+
+    // Проверка наличия authToken в cookies
+    useEffect(() => {
+        const authToken = Cookies.get('authToken');
+        const name = Cookies.get('name');
+
+        if (authToken && name) {
+            setIsAuthenticated(true)
+            closeAuthModal();
+        }
+    }, [closeAuthModal]);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -61,7 +69,7 @@ export const AuthPage: FC = () => {
                     const authToken = Cookies.get('authToken');
                     await getSimpleData(authToken);
                 } catch (error) {
-                    setState({isLoading: false, error: (error as Error).message});
+                    setState({isLoading: false, error: error.message});
                 }
             }
         };
@@ -75,7 +83,7 @@ export const AuthPage: FC = () => {
 
     return (
         <>
-             {isModalOpen && (
+            {isModalOpen && (
                 <div className="modal">
                     <div className="modal-content">
                         <h2 className='modal-title'>Введите ваше имя</h2>

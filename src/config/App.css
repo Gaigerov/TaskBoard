@@ -8,6 +8,8 @@
 @import url('../components/Table/Table.css');
 @import url('../components/CustomSelect/CustomSelect.css');
 @import url('../components/Loader/Loader.css');
+@import url('../components/AuthPage/AuthPage.css');
+@import url('../components/Notification/Notification.css');
 
 ::-webkit-input-placeholder {
     /* WebKit browsers */
