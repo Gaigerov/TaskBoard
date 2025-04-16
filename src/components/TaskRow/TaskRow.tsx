@@ -62,7 +62,7 @@ export const TaskRow: FC<Props> = ({ task, isPastDue, onNavigateToView, onNaviga
 
                         <img className="icon cloneButton" src={cloneButton} alt="Clone" />
                     </div>
-                    <PopoverRemove task={task.id} onRemove={onDelete}>
+                    <PopoverRemove task={task} onRemove={onDelete}>
                         <div className='iconButton'>
                             <img className="icon deleteButton" src={deleteButton} alt="Delete" />
                         </div>

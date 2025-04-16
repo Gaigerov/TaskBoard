@@ -3,7 +3,7 @@ import {
     useNavigate,
 } from "react-router-dom";
 import {useSelector} from 'react-redux';
-import {Popover} from '../../old/_Popover';
+import {Popover} from '../Popover/Popover';
 import {VALID_MODE} from '../../constant';
 
 interface Task {
