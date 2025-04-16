@@ -1,4 +1,3 @@
-// Создаем асинхронный thunk для загрузки задач
 export const fetchTasks = createAsyncThunk(
     'tasks/fetchTasks',
     async () => {

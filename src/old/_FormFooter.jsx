@@ -5,9 +5,9 @@ import {
 import {useSelector, useDispatch} from 'react-redux';
 import {useNotification} from '../Notification/_NotificationContext';
 import {Button} from '../Button/_Button';
-import {VALID_MODE, TASK_STATUS} from '../../constant';
-import {modalActions} from '../../redux/modalStore';
-import {tasksActions} from '../../redux/tasksStore';
+import {VALID_MODE, TASK_STATUS} from '../constant';
+import {modalActions} from '../redux/modalStore';
+import {tasksActions} from '../redux/_tasksStore';
 
 
 export const FormFooter = ({task, mode, onCreate, onSave, onEdit, onRemove, onClone, onClose, onFilter, validate, clearStatusFilter}) => {

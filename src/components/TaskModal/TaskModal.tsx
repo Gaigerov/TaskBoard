@@ -8,12 +8,6 @@ import {FormBody} from '../ModalForm/FormBody';
 import {tasksActions} from '../../redux/tasksStore';
 import {modalActions} from '../../redux/modalStore';
 
-interface FilterTo {
-    search: string;
-    filterDate?: string;
-    filterStatus?: string;
-}
-
 interface Task {
     id: number;
     title: string;
@@ -41,7 +35,7 @@ interface Props {
     onSave: (task: Task) => void;
     onClone: (id: number) => void;
     onRemove: (id: number) => void;
-    onFilter: (filter: FilterTo) => void;
+    onFilter: (date: string, status: string) => void;
 }
 
 export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, onSave, onRemove, onClone, onFilter}) => {

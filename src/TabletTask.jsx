@@ -3,7 +3,7 @@ import {
     useNavigate,
 } from "react-router-dom";
 import {useSelector} from 'react-redux';
-import {Popover} from './components/Popover/_Popover';
+import {Popover} from './old/_Popover';
 import {VALID_MODE} from './constant';
 
 export const TabletTask = ({task, onView}) => {

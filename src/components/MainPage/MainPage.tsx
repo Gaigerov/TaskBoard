@@ -4,10 +4,9 @@ import {useNotification} from '../Notification/NotificationContext';
 import {useSelector, useDispatch} from 'react-redux';
 import {useBreakpoint} from '../../breakpoints/useBreakpoint';
 import {TASK_STATUS} from '../../constant';
-// import '../../config/App.css';
 import {Menu} from '../Menu/Menu';
 import {DesktopMenu} from '../DesktopMenu/DesktopMenu';
-import {Button} from '../Button/_Button';
+import {Button} from '../Button/Button';
 import {TaskModal} from '../TaskModal/TaskModal';
 import {TaskBoard} from '../TaskBoard/TaskBoard';
 import {TasksCalendar} from '../TasksCalendar/TasksCalendar';
@@ -17,12 +16,6 @@ import {modalActions} from '../../redux/modalStore';
 import desktopMenu from '../../image/desktop-menu.svg';
 import loop from '../../image/search.svg';
 import filter from '../../image/filter.svg';
-
-interface FilterTo {
-    search: string;
-    filterDate?: string;
-    filterStatus?: string;
-}
 
 interface Task {
     id: number;
@@ -37,19 +30,19 @@ interface RootState {
     tasks: {
         tasks: Task[];
         activePage: string;
-        filterTo: FilterTo;
+        filterTo: {
+            search: string | '',
+            filterDate?: string,
+            filterStatus?: string,
+        };
     };
-}
-
-interface Props {
-    onFilter: (filter: FilterTo) => void;
 }
 
 const objectKeys = <T extends Record<string, unknown>>(
     obj: T,
   ): Array<keyof T> => Object.keys(obj);
 
-export const MainPage: FC<Props> = ({onFilter}) => {
+export const MainPage: FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const breakpoint = useBreakpoint();
@@ -57,11 +50,10 @@ export const MainPage: FC<Props> = ({onFilter}) => {
     const {mode} = useParams<{mode?: string}>();
     const tasks = useSelector((state: RootState) => state.tasks.tasks) as Task[];
     const activePage = useSelector((state: RootState) => state.tasks.activePage);
-    const filterTo = useSelector((state: RootState) => state.tasks.filterTo) as FilterTo;
+    const filterTo = useSelector((state: RootState) => state.tasks.filterTo);
     const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
     const [isOpenSearchInput, setIsOpenSearchInput] = useState<boolean>(false);
 
-    type FilterKeys = keyof FilterTo;
     type TaskAction = () => ReturnType<typeof tasksActions[keyof typeof tasksActions]>;
 
     // Фильтрация задач
@@ -75,13 +67,12 @@ export const MainPage: FC<Props> = ({onFilter}) => {
         task.title.toLowerCase().includes(filterTo.search.toLowerCase())
     );
 
-    const handleFilterChange = (key: FilterKeys, value: string) => {
-        const newFilter: FilterTo = {
+    const handleFilterChange = (newDate: string, newStatus:string) => {
+        dispatch(tasksActions.setFilterTo({
             ...filterTo,
-            [key]: value,
-        };
-        dispatch(tasksActions.setFilterTo(newFilter));
-        onFilter(newFilter); 
+            filterDate: newDate,
+            filterStatus: newStatus,
+        }));
     };
 
     const handleClickOutside = (event: MouseEvent) => {

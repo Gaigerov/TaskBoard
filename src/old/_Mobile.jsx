@@ -1,7 +1,7 @@
 import React from 'react';
+import {Tasks} from './_Tasks';
 
-import {Tasks} from '../_Tasks';
-export const Tablet = ({searchedTasks, onView, onEdit, onClone, onRemove}) => {
+export const Mobile = ({searchedTasks, onView, onEdit, onClone, onRemove}) => {
     return (
         <Tasks
             searchedTasks={searchedTasks}

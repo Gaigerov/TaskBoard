@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {List} from 'react-virtualized';
-import {Task} from './Task';
-import {useBreakpoint} from './breakpoints/useBreakpoint';
+import {Task} from '../Task';
+import {useBreakpoint} from '../breakpoints/useBreakpoint';
 
 export const Tasks = ({searchedTasks, onEdit, onView, onRemove, onClone}) => {
     const listRef = useRef();

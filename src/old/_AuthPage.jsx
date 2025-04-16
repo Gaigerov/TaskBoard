@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import './AuthPage.css';
-import {MainPage} from './components/MainPage/MainPage';
-import {getSimpleData} from './components/api/getStorage';
+import {MainPage} from '../components/MainPage/MainPage';
+import {getSimpleData} from '../components/api/getStorage';
 import Cookies from 'js-cookie';
-import {Loader} from './components/Loader/Loader';
+import {Loader} from '../components/Loader/Loader';
 
 export const AuthPage = () => {
     const [name, setName] = useState('');

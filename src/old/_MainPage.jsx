@@ -1,19 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
-import {useNotification} from './components/Notification/NotificationContext';
+import {useNotification} from '../components/Notification/NotificationContext';
 import {useSelector, useDispatch} from 'react-redux';
-import {useBreakpoint} from './breakpoints/useBreakpoint';
+import {useBreakpoint} from '../breakpoints/useBreakpoint';
 import './config/App.css';
-import {TASK_STATUS} from './constant';
+import {TASK_STATUS} from '../constant';
 
-import {Menu} from './components/Menu/Menu';
-import {DesktopMenu} from './components/DesktopMenu/DesktopMenu';
+import {Menu} from '../components/Menu/Menu';
+import {DesktopMenu} from '../components/DesktopMenu/DesktopMenu';
 import {Button} from './components/Button/_Button';
-import {TaskModal} from './components/TaskModal/TaskModal'; 
-import {TaskBoard} from './components/TaskBoard/TaskBoard';
-import {TasksCalendar} from './components/TasksCalendar/TasksCalendar';
-import {tasksActions} from './redux/tasksStore';
-import {modalActions} from './redux/modalStore';
+import {TaskModal} from '../components/TaskModal/TaskModal'; 
+import {TaskBoard} from '../components/TaskBoard/TaskBoard';
+import {TasksCalendar} from '../components/TasksCalendar/TasksCalendar';
+import {tasksActions} from '../redux/_tasksStore';
+import {modalActions} from '../redux/modalStore';
 
 import desktopMenu from './image/desktop-menu.svg';
 import loop from './image/search.svg';

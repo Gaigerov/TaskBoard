@@ -13,12 +13,6 @@ import {DateInput} from '../Inputs/DateInput/DateInput';
 import {tasksActions} from '../../redux/tasksStore';
 import {modalActions} from '../../redux/modalStore';
 
-interface FilterTo {
-    search: string;
-    filterDate?: string;
-    filterStatus?: string;
-}
-
 interface Task {
     id: number;
     title: string;
@@ -100,12 +94,22 @@ export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRem
 
     const clearTitle = () => {
         dispatch(tasksActions.setTitle(''));
-        dispatch(modalActions.setErrors(''));
+        dispatch(modalActions.setErrors({
+            title: '',
+            description: '',
+            time: '',
+            date: '',
+        }));
     };
 
     const clearDescription = () => {
         dispatch(tasksActions.setDescription(''));
-        dispatch(modalActions.setErrors(''));
+        dispatch(modalActions.setErrors({
+            title: '',
+            description: '',
+            time: '',
+            date: '',
+        }));
     };
 
         const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {

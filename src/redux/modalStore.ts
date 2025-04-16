@@ -8,10 +8,10 @@ interface ModalData {
 }
 
 interface Errors {
-    title: string,
-    description: string,
-    time: string,
-    date: string,
+    title: string;
+    description: string;
+    time: string;
+    date: string;
 }
 
 interface ModalState {

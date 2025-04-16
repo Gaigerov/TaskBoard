@@ -1,5 +1,5 @@
 import {useState, useEffect, FC, ReactNode} from 'react';
-import {Button} from '../Button/_Button';
+import {Button} from '../../old/_Button';
 import {modalActions} from '../../redux/modalStore';
 import {useDispatch} from 'react-redux';
 

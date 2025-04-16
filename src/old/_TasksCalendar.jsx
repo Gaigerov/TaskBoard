@@ -1,9 +1,9 @@
 import React, {useState, useMemo} from 'react';
 import {useSelector} from 'react-redux';
-import {MobileTask} from './MobileTask';
-import {TabletTask} from './TabletTask';
-import {DesktopTask} from './DesktopTask';
-import {useBreakpoint} from './breakpoints/useBreakpoint';
+import {MobileTask} from '../MobileTask';
+import {TabletTask} from '../TabletTask';
+import {DesktopTask} from '../DesktopTask';
+import {useBreakpoint} from '../breakpoints/useBreakpoint';
 import chevronRight from "./image/ChevronRight.svg";
 import chevronLeft from "./image/ChevronLeft.svg";
 

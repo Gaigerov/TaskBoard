@@ -4,7 +4,7 @@ import {
 } from "react-router-dom";
 import {useSelector} from 'react-redux';
 import {TaskRow} from '../TaskRow/_TaskRow';
-import {VALID_MODE} from '../../constant';
+import {VALID_MODE} from '../constant';
 import {Pagination} from '../Pagination/_Pagination';
 
 export const Table = ({searchedTasks, onView, onEdit, onClone, deleteMode}) => {

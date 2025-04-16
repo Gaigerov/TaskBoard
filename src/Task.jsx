@@ -3,7 +3,7 @@ import {
     useNavigate,
 } from "react-router-dom";
 import {useSelector} from 'react-redux';
-import {Popover} from './components/Popover/_Popover';
+import {Popover} from './old/_Popover';
 import editButton from './image/edit.svg';
 import deleteButton from './image/delete.svg';
 import cloneButton from './image/clone.svg';

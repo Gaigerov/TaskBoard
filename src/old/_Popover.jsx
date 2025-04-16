@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useMemo, useCallback, useRef} from 'react';
-import {TASK_STATUS, TASK_STATUSES} from '../../constant';
+import {TASK_STATUS, TASK_STATUSES} from '../constant';
 import {useSearchParams} from "react-router-dom";
 import {useNotification} from '../Notification/_NotificationContext';
 import {useSelector, useDispatch} from 'react-redux';
-import {tasksActions} from '../../redux/tasksStore';
+import {tasksActions} from '../redux/_tasksStore';
 
 export const Popover = ({tableTask}) => {
     const dispatch = useDispatch();

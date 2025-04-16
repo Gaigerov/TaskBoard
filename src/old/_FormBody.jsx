@@ -2,15 +2,15 @@ import React, {useState, useEffect, Fragment} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import xButton from '../../image/xButton.svg';
 import chevronDown from '../../image/ChevronDown.svg';
-import {VALID_MODE} from '../../constant';
-import {TASK_STATUS, TASK_STATUSES} from '../../constant';
+import {VALID_MODE} from '../constant';
+import {TASK_STATUS, TASK_STATUSES} from '../constant';
 import {Popover} from '../Popover/_Popover';
-import {FormFooter} from './FormFooter';
-import {TextInput} from '../Inputs/TextInput/TextInput';
+import {FormFooter} from '../components/ModalForm/FormFooter';
+import {TextInput} from '../components/Inputs/TextInput/TextInput';
 import {TextArea} from '../Inputs/TextArea/_TextArea';
-import {TimeInput} from '../Inputs/TimeInput/TimeInput';
-import {DateInput} from '../Inputs/DateInput/DateInput';
-import {tasksActions} from '../../redux/tasksStore';
+import {TimeInput} from '../components/Inputs/TimeInput/TimeInput';
+import {DateInput} from '../components/Inputs/DateInput/DateInput';
+import {tasksActions} from '../redux/_tasksStore';
 
 export const FormBody = ({mode, task, onEdit, onCreate, onSave, onRemove, onClose, onClone, onFilter, validate}) => {
     const dispatch = useDispatch();

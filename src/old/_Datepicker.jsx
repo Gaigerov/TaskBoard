@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import chevronRight from "../../image/ChevronRight.svg"
 import chevronLeft from "../../image/ChevronLeft.svg"
 import {useDispatch} from 'react-redux';
-import {tasksActions} from '../../redux/tasksStore';
+import {tasksActions} from '../redux/tasksStore';
 
 export const Datepicker = ({onChangeDate}) => {
     const dispatch = useDispatch();

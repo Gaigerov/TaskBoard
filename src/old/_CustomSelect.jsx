@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import chevronDown from "../../image/ChevronDown.svg";
 import {useDispatch} from 'react-redux';
-import {tasksActions} from '../../redux/tasksStore';
+import {tasksActions} from '../redux/_tasksStore';
 
 export const CustomSelect = ({options, value}) => {
     const dispatch = useDispatch();
