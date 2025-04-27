@@ -1,4 +1,5 @@
-export const getSimpleData = async (authToken) => {
+import {Task} from '../../types'
+export const getSimpleData = async (authToken: string): Promise<Task[]> => {
     const headers = new Headers({
         'content-type': 'application/json',
         Authorization: authToken,
@@ -13,7 +14,7 @@ export const getSimpleData = async (authToken) => {
         throw new Error('Ошибка получения списка хранилищ: ' + responseStorageList.statusText);
     }
 
-    const storageList = await responseStorageList.json();
+    const storageList: {data: {}, storageName: string, id: string}[] = await responseStorageList.json();
 
     const storage = storageList.find(storage => storage.storageName === 'tasks');
     if (!storage) {

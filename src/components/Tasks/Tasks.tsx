@@ -14,10 +14,10 @@ interface Task {
 
 interface Props {
     searchedTasks: Task[];
-    onEdit: (task: Task) => void;
-    onView: (task: Task) => void;
+    onEdit: (id: number) => void;
+    onView: (id: number) => void;
     onClone: (id: number) => void;
-    onRemove: (task: Task) => void;
+    onRemove: (id: number) => void;
 }
 
 export const Tasks: FC<Props> = ({searchedTasks, onEdit, onView, onRemove, onClone}) => {

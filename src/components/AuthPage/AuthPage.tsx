@@ -1,9 +1,10 @@
 import {useState, useEffect, ChangeEvent, FormEvent, FC} from 'react';
 import {MainPage} from '../MainPage/MainPage';
-import {getSimpleData} from '../api/getStorage';
 import Cookies from 'js-cookie';
 import {Loader} from '../Loader/Loader';
 import '../../config/App.css';
+import {fetchTasks} from '../../redux/tasksStore';
+import {useAppDispatch} from '../../hooks';
 
 interface State {
     isLoading: boolean;
@@ -11,6 +12,7 @@ interface State {
 }
 
 export const AuthPage: FC = () => {
+    const dispatch = useAppDispatch();
     const [name, setName] = useState<string>('');
     const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -41,6 +43,7 @@ export const AuthPage: FC = () => {
             if (responseAuth.ok) {
                 const authToken = await responseAuth.text();
                 Cookies.set('authToken', authToken, {expires: 3}); // Срок хранения токена 3 дня
+                Cookies.set('name', encodedName, {expires: 3});
                 setIsAuthenticated(true);
                 closeAuthModal();
             } else {
@@ -70,13 +73,12 @@ export const AuthPage: FC = () => {
             if (isAuthenticated) {
                 try {
                     const authToken = Cookies.get('authToken');
-                    await getSimpleData(authToken);
+                    if (authToken) {dispatch(fetchTasks(authToken))}
                 } catch (error) {
                     setState({isLoading: false, error: (error as Error).message});
                 }
             }
         };
-
         fetchData();
     }, [isAuthenticated]);
 
@@ -95,7 +97,7 @@ export const AuthPage: FC = () => {
                                 type="text"
                                 value={name}
                                 onChange={handleInputChange}
-                                placeholder="Ваше имя"
+                                placeholder="Имя"
                                 className='modal-input'
                                 required
                             />

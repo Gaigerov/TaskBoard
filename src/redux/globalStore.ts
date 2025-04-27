@@ -1,12 +1,16 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {tasksReducer} from './tasksStore';
 import {modalReducer} from './modalStore';
-import {authReducer} from './authSlice';
 
-export default configureStore({
+const store = configureStore({
     reducer: {
-        auth: authReducer,
         tasks: tasksReducer,
         modal: modalReducer,
     },
 });
+
+export default store;
+
+export type AppStore = typeof store
+export type RootState = ReturnType<AppStore['getState']>
+export type AppDispatch = AppStore['dispatch']

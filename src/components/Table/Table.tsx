@@ -6,15 +6,7 @@ import {useSelector} from 'react-redux';
 import {TaskRow} from '../TaskRow/TaskRow';
 import {VALID_MODE} from '../../constant';
 import {Pagination} from '../Pagination/Pagination';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../../types';
 
 interface TaskState {
     tasksPerPage: number;
@@ -22,8 +14,8 @@ interface TaskState {
 
 interface Props {
     searchedTasks: Task[];
-    onView: (task: Task) => void;
-    onEdit: (task: Task) => void;
+    onView: (id: number) => void;
+    onEdit: (id: number) => void;
     onClone: (id: number) => void;
     deleteMode: (id: number) => void;
 }
@@ -45,12 +37,12 @@ export const Table: FC<Props> = ({searchedTasks, onView, onEdit, onClone, delete
 
     const handleNavigateToEdit = (task: Task) => {
         navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
-        onEdit(task);
+        onEdit(task.id);
     }
 
     const handleNavigateToView = (task: Task) => {
         navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
-        onView(task);
+        onView(task.id);
     }
 
     return (

@@ -1,21 +1,13 @@
 import {FC} from 'react';
 import {Tasks} from '../components/Tasks/Tasks';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../types';
 
 interface Props {
     searchedTasks: Task[];
-    onView: (task: Task) => void;
-    onEdit: (task: Task) => void;
+    onView: (id: number) => void;
+    onEdit: (id: number) => void;
     onClone: (id: number) => void;
-    onRemove: (task: Task) => void;
+    onRemove: (id: number) => void;
 }
 
 export const Tablet: FC<Props> = ({searchedTasks, onView, onEdit, onClone, onRemove}) => {

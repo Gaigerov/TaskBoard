@@ -7,18 +7,10 @@ import {FormHeader} from '../ModalForm/FormHeader';
 import {FormBody} from '../ModalForm/FormBody';
 import {tasksActions} from '../../redux/tasksStore';
 import {modalActions} from '../../redux/modalStore';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../../types';
 
 interface TaskState {
-    tasks: Task[],
+    data: Task[],
     id: number;
     title: string;
     description: string;
@@ -30,7 +22,7 @@ interface TaskState {
 interface Props {
     mode: string;
     onClose: () => void;
-    openEditModal: (newTask: Task) => void;
+    openEditModal: (id: number) => void;
     onCreate: (task: Task) => void;
     onSave: (task: Task) => void;
     onClone: (id: number) => void;
@@ -40,7 +32,7 @@ interface Props {
 
 export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, onSave, onRemove, onClone, onFilter}) => {
     const dispatch = useDispatch();
-    const tasks = useSelector((state: {tasks: TaskState}) => state.tasks.tasks);
+    const data = useSelector((state: {tasks: TaskState}) => state.tasks.data);
     const title = useSelector((state: {tasks: TaskState}) => state.tasks.title);
     const description = useSelector((state: {tasks: TaskState}) => state.tasks.description);
     const time = useSelector((state: {tasks: TaskState}) => state.tasks.time);
@@ -49,7 +41,7 @@ export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, on
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
 
-    const task = tasks?.find(task => task.id === Number(id));
+    const task = data?.find(task => task.id === Number(id));
 
     const handleClickOutside = (event: MouseEvent) => {
         if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
@@ -91,7 +83,7 @@ export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, on
     }, [task]);
 
     const isValidId = () => {
-        const valid = tasks?.some(t => t.id.toString() === id);
+        const valid = data?.some(t => t.id.toString() === id);
         if (!valid) {
             console.log('Некорректный id', 'error');
         };
@@ -130,18 +122,17 @@ export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, on
     };
 
     const isShow = (() => {
-        if (tasks.length === 0) return true;
+        if (data.length === 0) return true;
         return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER)
             || (VALID_MODES.includes(mode) && isValidId());
     })();
 
-    if (!isShow) {
+    if (!isShow || !task) {
         return null;
     }
 
     return (
         <div className="modalOverlay" ref={modalRef}>
-            {task && (
                 <ModalForm>
                     <FormHeader task={task} mode={mode} onClose={onClose} />
                     <FormBody
@@ -157,7 +148,6 @@ export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, on
                         validate={validate}
                     />
                 </ModalForm>
-            )}
         </div>
     );
 };

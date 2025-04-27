@@ -1,10 +1,10 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface ModalData {
-    title: string,
-    description: string,
-    time: string,
-    date: string,
+    title: string | undefined,
+    description: string | undefined,
+    time: string | undefined,
+    date: string | undefined,
 }
 
 interface Errors {
@@ -15,23 +15,13 @@ interface Errors {
 }
 
 interface ModalState {
-    isCreateModalOpen: boolean,
-    isFilterModalOpen: boolean,
-    isEditModalOpen: boolean,
-    isViewModalOpen: boolean,
-    isRemoveModalOpen: boolean,
     currentTaskId: number | null,
     modalData: ModalData,
     errors: Errors,
-}
+} 
 
 // Начальное состояние
 const initialState: ModalState = {
-    isCreateModalOpen: false,
-    isFilterModalOpen: false,
-    isEditModalOpen: false,
-    isViewModalOpen: false,
-    isRemoveModalOpen: false,
     currentTaskId: null,
     modalData: {
         title: '',
@@ -47,58 +37,13 @@ const initialState: ModalState = {
     },
 };
 
-interface OpenModalPayload {
-    modalType: 'create' | 'filter' | 'edit' | 'view' | 'remove';
-    payload?: any;
-}
-
 const modalSlice = createSlice({
     name: 'modal',
     initialState,
     reducers: {
-        openModal: (state, action: PayloadAction<OpenModalPayload>) => {
-            const {modalType, payload} = action.payload;
-            state.isCreateModalOpen = false;
-            state.isFilterModalOpen = false;
-            state.isEditModalOpen = false;
-            state.isViewModalOpen = false;
-            state.isRemoveModalOpen = false;
-            switch (modalType) {
-                case 'create':
-                    state.isCreateModalOpen = true;
-                    state.currentTaskId = null;
-                    state.modalData = initialState.modalData; 
-                    break;
-                case 'filter':
-                    state.isFilterModalOpen = true;
-                    state.currentTaskId = null;
-                    break;
-                case 'edit':
-                    state.isEditModalOpen = true;
-                    state.currentTaskId = payload?.id || null;
-                    state.modalData = payload; 
-                    break;
-                case 'view':
-                    state.isViewModalOpen = true;
-                    state.currentTaskId = payload?.id || null;
-                    break;
-                case 'remove':
-                    state.isRemoveModalOpen = true;
-                    state.currentTaskId = payload?.id || null;
-                    break;
-                default:
-                    break;
-            }
-        },
-        closeAllModals: (state) => {
-            state.isCreateModalOpen = false;
-            state.isFilterModalOpen = false;
-            state.isEditModalOpen = false;
-            state.isViewModalOpen = false;
-            state.isRemoveModalOpen = false;
+        openModal(state, action: PayloadAction<ModalData>) {
+            state.modalData = action.payload;
             state.currentTaskId = null;
-            state.modalData = initialState.modalData; 
-            state.errors = initialState.errors; 
         },
         resetModalData: (state) => {
             state.modalData = initialState.modalData; 

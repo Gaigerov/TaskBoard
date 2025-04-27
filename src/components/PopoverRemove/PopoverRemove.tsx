@@ -2,15 +2,7 @@ import {useState, useEffect, FC, ReactNode} from 'react';
 import {Button} from '../Button/Button';
 import {modalActions} from '../../redux/modalStore';
 import {useDispatch} from 'react-redux';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../../types';
 
 interface Props {
     children: ReactNode;
@@ -26,7 +18,7 @@ export const PopoverRemove: FC<Props> = ({children, task, onRemove}) => {
     };
 
     const handleRemoveTask = (id: number) => {
-        onRemove(task.id);
+        onRemove(id);
         dispatch(modalActions.resetModalData());
         setIsShow(false);
     }

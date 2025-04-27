@@ -5,15 +5,7 @@ import {
 import {useSelector} from 'react-redux';
 import {Popover} from '../Popover/Popover';
 import {VALID_MODE} from '../../constant';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../../types';
 
 interface ModalState {
     currentTaskId: number;
@@ -21,7 +13,7 @@ interface ModalState {
 
 interface Props {
     task: Task;
-    onView: (task: Task) => void;
+    onView: (id: number) => void;
 }
 
 export const TabletTask: FC<Props> = ({task, onView}) => {
@@ -32,7 +24,7 @@ export const TabletTask: FC<Props> = ({task, onView}) => {
     const handleNavigateToView = (task: Task) => {
             navigate('/');
             navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
-            onView(task);
+            onView(task.id);
     }
 
     const taskDate = new Date(task.date.split('.').reverse().join('-'));

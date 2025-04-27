@@ -10,12 +10,12 @@ import cloneButton from '../../image/clone.svg';
 import {VALID_MODE} from '../../constant';
 
 interface Task {
-        id: number;
-        title: string;
-        description: string;
-        date: string;
-        time: string;
-        status: string;
+    id: number;
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    status: string;
 }
 
 interface ModalState {
@@ -24,9 +24,9 @@ interface ModalState {
 
 interface TaskProps {
     task: Task;
-    onEdit: (task: Task) => void;
-    onView: (task: Task) => void; 
-    onRemove: (task: Task) => void;
+    onEdit: (id: number) => void;
+    onView: (id: number) => void;
+    onRemove: (id: number) => void;
     onClone: (id: number) => void;
 }
 
@@ -35,21 +35,21 @@ export const Task: FC<TaskProps> = ({task, onEdit, onView, onRemove, onClone}) =
     const currentTaskId = useSelector((state: {modal: ModalState}) => state.modal.currentTaskId);
 
     const handleNavigateToEdit = () => {
-            navigate('/');
-            navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
-            onEdit(task);
+        navigate('/');
+        navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
+        onEdit(task.id);
     }
 
     const handleNavigateToDelete = () => {
-            navigate('/');
-            navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
-            onRemove(task);
+        navigate('/');
+        navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
+        onRemove(task.id);
     }
 
     const handleNavigateToView = () => {
-            navigate('/');
-            navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
-            onView(task);
+        navigate('/');
+        navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
+        onView(task.id);
     }
 
     const taskDate = new Date(task.date.split('.').reverse().join('-'));
@@ -57,7 +57,7 @@ export const Task: FC<TaskProps> = ({task, onEdit, onView, onRemove, onClone}) =
     const isPastDue = taskDate < currentDate && task.status !== 'Done';
 
     return (
-        <div 
+        <div
             className='taskContainer'
             onClick={handleNavigateToView}
             style={{

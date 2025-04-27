@@ -1,20 +1,12 @@
 import {FC} from 'react';
 import {Breakpoints} from '../Breakpoints/Breakpoints';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../../types';
 
 interface Props {
     searchedTasks: Task[];
-    openEditModal: (task: Task) => void;
-    openViewModal: (task: Task) => void;
-    openRemoveModal: (task: Task) => void;
+    openEditModal: (id: number) => void;
+    openViewModal: (id: number) => void;
+    openRemoveModal: (id: number) => void;
     cloneTask: (id: number) => void;
     deleteMode: (id: number) => void;
 }

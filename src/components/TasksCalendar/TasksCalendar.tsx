@@ -6,24 +6,16 @@ import {DesktopTask} from '../DesktopTask/DesktopTask';
 import {useBreakpoint} from '../../breakpoints/useBreakpoint';
 import chevronRight from "../../image/ChevronRight.svg";
 import chevronLeft from "../../image/ChevronLeft.svg";
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    status: string;
-    date: string;
-    time: string;
-}
+import {Task} from '../../types';
 
 interface RootState {
     tasks: {
-        tasks: Task[];
+        data: Task[];
     };
 }
 
 type Props = {
-    onView: (task: Task) => void;
+    onView: (id: number) => void;
 }
 
 const parseDate = (dateString: string) => {
@@ -35,7 +27,7 @@ export const TasksCalendar: FC<Props> = ({onView}) => {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [secondDate, setSecondDate] = useState<Date>(new Date(new Date().setDate(new Date().getDate() + 1)));
     const breakpoint = useBreakpoint();
-    const tasks = useSelector((state: RootState) => state.tasks.tasks) as Task[];
+    const tasks = useSelector((state: RootState) => state.tasks.data) as Task[];
 
     const formatDateToDDMMYYYY = (date: Date) => {
         const day = String(date.getDate()).padStart(2, '0');

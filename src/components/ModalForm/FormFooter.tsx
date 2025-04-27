@@ -8,15 +8,7 @@ import {Button} from '../Button/Button';
 import {VALID_MODE, TASK_STATUS} from '../../constant';
 import {modalActions} from '../../redux/modalStore';
 import {tasksActions} from '../../redux/tasksStore';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../../types';
 
 interface TaskState {
     title: string;
@@ -34,7 +26,7 @@ interface TaskState {
 interface Props {
     mode: string;
     task: Task;
-    onEdit: (task: Task) => void;
+    onEdit: (id: number) => void;
     onCreate: (task: Task) => void;
     onSave: (task: Task) => void;
     onRemove: (taskId: number) => void;
@@ -94,7 +86,7 @@ export const FormFooter: FC<Props> = ({task, mode, onCreate, onSave, onEdit, onF
     const handleNavigateToEdit = (task: Task) => {
         navigate('/');
         navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
-        onEdit(task);
+        onEdit(task.id);
         showNotification('Редактирование задачи', 'info');
     }
 

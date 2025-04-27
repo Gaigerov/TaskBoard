@@ -4,15 +4,7 @@ import chevronLeft from "../../image/ChevronLeft.svg";
 import chevronsRight from "../../image/ChevronsRight.svg";
 import chevronsLeft from "../../image/ChevronsLeft.svg";
 import {CustomSelect} from '../CustomSelect/CustomSelect';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../../types';
 
 interface Props {
     searchedTasks: Task[];

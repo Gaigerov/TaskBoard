@@ -1,19 +1,11 @@
 import {FC} from 'react';
 import {Table} from '../components/Table/Table';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../types';
 
 interface Props {
     searchedTasks: Task[];
-    onView: (task: Task) => void;
-    onEdit: (task: Task) => void;
+    onView: (id: number) => void;
+    onEdit: (id: number) => void;
     onClone: (id: number) => void;
     deleteMode: (id: number) => void;
 }

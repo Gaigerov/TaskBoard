@@ -3,7 +3,7 @@ import {useParams, useNavigate} from 'react-router-dom';
 import {useNotification} from '../Notification/NotificationContext';
 import {useSelector, useDispatch} from 'react-redux';
 import {useBreakpoint} from '../../breakpoints/useBreakpoint';
-import {TASK_STATUS} from '../../constant';
+import {TASK_STATUS, VALID_MODE} from '../../constant';
 import {Menu} from '../Menu/Menu';
 import {DesktopMenu} from '../DesktopMenu/DesktopMenu';
 import {Button} from '../Button/Button';
@@ -16,19 +16,11 @@ import {modalActions} from '../../redux/modalStore';
 import desktopMenu from '../../image/desktop-menu.svg';
 import loop from '../../image/search.svg';
 import filter from '../../image/filter.svg';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../../types';
 
 interface RootState {
     tasks: {
-        tasks: Task[];
+        data: Task[];
         activePage: string;
         filterTo: {
             search: string | '',
@@ -40,7 +32,7 @@ interface RootState {
 
 const objectKeys = <T extends Record<string, unknown>>(
     obj: T,
-  ): Array<keyof T> => Object.keys(obj);
+): Array<keyof T> => Object.keys(obj);
 
 export const MainPage: FC = () => {
     const dispatch = useDispatch();
@@ -48,16 +40,17 @@ export const MainPage: FC = () => {
     const breakpoint = useBreakpoint();
     const showNotification = useNotification();
     const {mode} = useParams<{mode?: string}>();
-    const tasks = useSelector((state: RootState) => state.tasks.tasks) as Task[];
+    const data = useSelector((state: RootState) => state.tasks.data) as Task[];
     const activePage = useSelector((state: RootState) => state.tasks.activePage);
     const filterTo = useSelector((state: RootState) => state.tasks.filterTo);
     const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
     const [isOpenSearchInput, setIsOpenSearchInput] = useState<boolean>(false);
+    const [currentTaskId, setCurrentTaskId] = useState<number | null>(null);
 
     type TaskAction = () => ReturnType<typeof tasksActions[keyof typeof tasksActions]>;
 
     // Фильтрация задач
-    const filteredTasks = tasks.filter(task => {
+    const filteredTasks = data.filter(task => {
         const filterStatus = filterTo.filterStatus ? task.status === filterTo.filterStatus : true;
         const filterDate = filterTo.filterDate ? task.date === filterTo.filterDate : true;
         return filterStatus && filterDate;
@@ -67,7 +60,7 @@ export const MainPage: FC = () => {
         task.title.toLowerCase().includes(filterTo.search.toLowerCase())
     );
 
-    const handleFilterChange = (newDate: string, newStatus:string) => {
+    const handleFilterChange = (newDate: string, newStatus: string) => {
         dispatch(tasksActions.setFilterTo({
             ...filterTo,
             filterDate: newDate,
@@ -106,34 +99,38 @@ export const MainPage: FC = () => {
     };
 
     const closeModal = () => {
-        dispatch(modalActions.closeAllModals());
+        setCurrentTaskId(null);
         navigate('/');
     };
 
-    // Открытие модальных окон для создания, редактирования, просмотра и удаления задач
     const openCreateModal = () => {
-        navigate('/create');
-        dispatch(modalActions.openModal({modalType: 'create'}));
-    };
-
-    const openEditModal = (task: Task) => {
-        dispatch(modalActions.openModal({modalType: 'edit', payload: task}));
-    };
-
-    const openViewModal = (task: Task) => {
-        dispatch(modalActions.openModal({modalType: 'view', payload: task}));
-    };
-
-    const openRemoveModal = (task: Task) => {
-        dispatch(modalActions.openModal({modalType: 'remove', payload: {id: task.id}}));
+        const modalData = {
+            title: '',
+            description: '',
+            time: '',
+            date: ''
+        };
+        dispatch(modalActions.openModal(modalData));
+        navigate('create');
     };
 
     const openFilterModal = () => {
-        dispatch(modalActions.openModal({modalType: 'filter'}));
-        navigate('/filter');
+        setCurrentTaskId(null);
+        navigate('filter'); 
     };
 
+    const openEditModal = (id: number) => {
+        setCurrentTaskId(id);
+    };
+
+    const openViewModal = (id: number) => {
+        setCurrentTaskId(id);
+    };
     
+    const openRemoveModal = (id: number) => {
+        setCurrentTaskId(id);
+    };
+
     const handleTaskAction = async function (
         action: TaskAction,
         successMessage: string,
@@ -148,7 +145,7 @@ export const MainPage: FC = () => {
             closeModal();
         }
     };
-    
+
     // Обработчики создания, редактирования, удаления и клонирования задач
     const handleCreateTask = (newTask: Task) => {
         handleTaskAction(() => tasksActions.addTask(newTask), 'Задача создана успешно', 'Ошибка при создании задачи');
@@ -171,7 +168,7 @@ export const MainPage: FC = () => {
             filterDate: null,
             filterStatus: TASK_STATUS.EMPTY,
         };
-    
+
         return objectKeys(initialFilterTo).reduce((count, key) => {
             const currentValue = filterTo[key];
             return count + (currentValue !== initialFilterTo[key] ? 1 : 0);

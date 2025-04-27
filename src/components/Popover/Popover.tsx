@@ -4,15 +4,7 @@ import {useSearchParams} from "react-router-dom";
 import {useNotification} from '../Notification/NotificationContext';
 import {useSelector, useDispatch} from 'react-redux';
 import {tasksActions} from '../../redux/tasksStore';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../../types';
 
 interface TaskState {
     tasks: Task[];

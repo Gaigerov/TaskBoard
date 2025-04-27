@@ -1,15 +1,7 @@
 import {useEffect, useState, FC} from 'react';
 import xButton from '../../image/xButton.svg';
 import {VALID_MODE} from '../../constant';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../../types';
 
 interface Props {
     task: Task;

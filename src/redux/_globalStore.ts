@@ -1,6 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {tasksReducer} from './tasksStore';
-import {modalReducer} from './modalStore';
+import { tasksReducer } from './tasksStore';
+import { modalReducer } from './modalStore'; 
 
 interface RootState {
     tasks: ReturnType<typeof tasksReducer>;

@@ -12,15 +12,7 @@ import {TimeInput} from '../Inputs/TimeInput/TimeInput';
 import {DateInput} from '../Inputs/DateInput/DateInput';
 import {tasksActions} from '../../redux/tasksStore';
 import {modalActions} from '../../redux/modalStore';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../../types';
 
 interface TaskState {
     title: string;
@@ -47,7 +39,7 @@ interface ModalState {
 interface Props {
     mode: string;
     task: Task;
-    onEdit: (task: Task) => void;
+    onEdit: (id: number) => void;
     onCreate: (task: Task) => void;
     onSave: (task: Task) => void;
     onRemove: (id: number) => void;

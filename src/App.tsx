@@ -12,6 +12,7 @@ import store from './redux/globalStore';
 import './config/App.css';
 import {AuthPage} from './components/AuthPage/AuthPage';
 
+
 const router = createHashRouter([
     {
         path: "/:mode?",

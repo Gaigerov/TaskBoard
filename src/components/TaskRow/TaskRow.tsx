@@ -5,15 +5,7 @@ import {PopoverRemove} from '../PopoverRemove/PopoverRemove';
 import editButton from '../../image/edit.svg'
 import deleteButton from '../../image/delete.svg';
 import cloneButton from '../../image/clone.svg';
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    status: string;
-}
+import {Task} from '../../types';
 
 interface ModalState {
     currentTaskId: number;
