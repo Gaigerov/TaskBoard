@@ -9,7 +9,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: 0px;
+    padding: 0;
     margin: 0 0 8px 0;
     color: var(--dark-grey);
     text-wrap: wrap;
@@ -23,18 +23,18 @@
     justify-content: flex-end;
     align-items: center;
     gap: 10px;
-    padding: 0px;
+    padding: 0;
     margin: 0 0 12px 0;
     color: var(--light-gray);
 }
 
-.taskTimeViewMode {
+.taskTimeViewMode, .taskDateViewMode {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     color: var(--dark-grey);
     font-size: 12px;
     font-weight: 400;
@@ -43,20 +43,6 @@
     text-align: left;
 }
 
-.taskDateViewMode {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 0px;
-    margin: 0px;
-    color: var(--dark-grey);
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 15px;
-    letter-spacing: 0%;
-    text-align: left;
-}
 .modalOverlay {
     display: flex;
     position: absolute;
@@ -65,7 +51,6 @@
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
-    display: flex;
     width: 100%;
     height: 100%;
     justify-content: center;
@@ -83,29 +68,31 @@
     font-weight: bold;
 }
 
-.modalCloseButton:hover {
+.modalCloseButton:hover, .modalCloneButton:hover {
     cursor: pointer;
-    filter: invert(45%) sepia(15%) saturate(267%) hue-rotate(166deg) brightness(96%) contrast(86%);
-}
 
-.modalCloneButton:hover {
-    cursor: pointer;
-    color: var(--secondary-light);
+    &.modalCloseButton:hover {
+        filter: invert(45%) sepia(15%) saturate(267%) hue-rotate(166deg) brightness(96%) contrast(86%);
+    }
+
+    &.modalCloneButton:hover {
+        color: var(--secondary-light);
+    }
 }
 
 .modalInput {
     display: flex;
     width: 100%;
     min-height: max-content;
-    flex-direction: column;
-    text-wrap: wrap;
+    flex-direction: column; // Убедитесь, что это нужно
     border: 1px solid var(--light-grey);
     border-radius: 8px;
-    flex-direction: row;
     justify-content: flex-start;
     align-items: center;
     gap: 4px;
-    padding: 8px 16px 8px 16px;
+    padding: 8px 16px;
+
+    // Уберите лишний flex-direction
 }
 
 .modalHeader {
@@ -115,9 +102,8 @@
     align-items: center;
     word-break: break-all;
     width: 100%;
-    height: auto;
-    align-self: start;
 }
+
 .modalTaskContent {
     display: flex;
     flex-direction: column;
@@ -140,7 +126,6 @@
     font-size: 28px;
     font-weight: 400;
     line-height: 34.13px;
-    text-align: left;
 }
 
 .modalButtons {
@@ -148,23 +133,31 @@
     flex-direction: row;
     gap: 8px;
     margin-top: auto;
-}
 
-.modalCloseButton {
-    display: flex;
-    align-items: flex-start;
-    padding: 2px;
-    width: 16px;
-    height: 16px;
-    margin-right: 6px;
-}
+    .modalCloseButton {
+        display: flex;
+        align-items: flex-start;
+        padding: 2px;
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
 
-.modalCloneButton {
-    display: flex;
-    align-items: end;
-    padding: 8px;
-    width: 20px;
-    height: 20px;
+        &:hover {
+            cursor: pointer; 
+        }
+    }
+
+    .modalCloneButton {
+        display: flex;
+        align-items: end;
+        padding: 8px;
+        width: 20px;
+        height: 20px;
+
+        &:hover {
+            cursor: pointer; 
+        }
+    }
 }
 
 .modalModeText {
@@ -174,35 +167,28 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 19.5px;
-    hyphens: auto;
-}
 
-.modalModeText__description {
-    margin: 0;
-    word-break: break-all;
+    &__description {
+        margin: 0;
+        word-break: break-all; 
+    }
+
+    &__time, &__date {
+        margin: 0;
+        font-size: 12px; 
+        text-align: right; 
+    }
 }
 
 .modalModeDate {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 10px;
-    margin: 0;
-}
-
-.modalModeText__time {
-    margin: 0;
-    font-size: 12px;
-    text-align: right;
-}
-
-.modalModeText__date {
-    margin: 0;
-    font-size: 12px;
-    text-align: right;
+   display:flex; 
+   flex-direction:row; 
+   justify-content:flex-end; 
+   align-items:center; 
+   gap:10px; 
+   margin:0; 
 }
 
 .Container__remove {
-    position: relative;
+   position: relative; 
 }

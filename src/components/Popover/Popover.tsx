@@ -7,7 +7,7 @@ import {tasksActions} from '../../redux/tasksStore';
 import {Task} from '../../types';
 
 interface TaskState {
-    tasks: Task[];
+    data: Task[];
 }
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 
 export const Popover: FC<Props> = ({tableTask}) => {
     const dispatch = useDispatch();
-    const tasks = useSelector((state: {tasks: TaskState}) => state.tasks.tasks);
+    const tasks = useSelector((state: {tasks: TaskState}) => state.tasks.data);
     const showNotification = useNotification();
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
@@ -58,7 +58,7 @@ export const Popover: FC<Props> = ({tableTask}) => {
     const updateTaskStatus = useCallback((taskId: number, newStatus: string) => {
         const currentTask = tasks.find(task => task.id === taskId); // Получаем текущую задачу из состояния
         if (currentTask) {
-            dispatch(tasksActions.editTask({ id: taskId, status: newStatus })); // Передаем только id и новый статус
+            // dispatch(tasksActions.editTask({id: taskId, status: newStatus})); // Передаем только id и новый статус
             showNotification(`Статус задачи '${currentTask.title}' обновлён на '${newStatus}'`, 'info');
         } else {
             showNotification(`Задача с ID ${taskId} не найдена`, 'error');

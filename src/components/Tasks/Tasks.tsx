@@ -32,12 +32,12 @@ export const Tasks: FC<Props> = ({searchedTasks, onEdit, onView, onRemove, onClo
         const updateDimensions = () => {
             if (listRef.current) {
                 setListWidth(listRef.current.offsetWidth);
-                setListHeight(listRef.current.offsetHeight); // Устанавливаем высоту родительского контейнера
+                setListHeight(listRef.current.offsetHeight);
             }
         };
 
         window.addEventListener('resize', updateDimensions);
-        updateDimensions(); // Устанавливаем начальные размеры
+        updateDimensions();
 
         return () => {
             window.removeEventListener('resize', updateDimensions);

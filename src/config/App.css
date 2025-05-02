@@ -1,9 +1,9 @@
 @import url('../config/font.css');
 @import url('../config/variables.css');
-@import url('../config/Modal.css');
+@import url('../config/Modal.scss');
 @import url('../components/Menu/Menu.css');
 @import url('../components/DesktopMenu/DesktopMenu.css');
-@import url('../config/Buttons.css');
+@import url('../config/Buttons.scss');
 @import url('../components/Datepicker/Datepicker.css');
 @import url('../components/Table/Table.css');
 @import url('../components/CustomSelect/CustomSelect.css');
@@ -110,6 +110,7 @@ input {
     height: 36px;
     margin: 0;
 }
+
 .headerFinderInput {
     display: flex;
     width: 100%;

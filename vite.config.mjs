@@ -26,11 +26,11 @@ export default defineConfig({
             '@': '/src',
         },
     },
-    css: {
-        preprocessorOptions: {
-            scss: {
-                additionalData: './src/config/App.css',
-            },
-        },
-    },
+    // css: {
+    //     preprocessorOptions: {
+    //         scss: {
+    //             additionalData: '../src/config/App.css',
+    //         },
+    //     },
+    // },
 });

@@ -1,10 +1,10 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface ModalData {
-    title: string | undefined,
-    description: string | undefined,
-    time: string | undefined,
-    date: string | undefined,
+    title: string;
+    description: string;
+    time: string;
+    date: string;
 }
 
 interface Errors {
@@ -15,14 +15,12 @@ interface Errors {
 }
 
 interface ModalState {
-    currentTaskId: number | null,
     modalData: ModalData,
     errors: Errors,
 } 
 
 // Начальное состояние
 const initialState: ModalState = {
-    currentTaskId: null,
     modalData: {
         title: '',
         description: '',
@@ -41,19 +39,18 @@ const modalSlice = createSlice({
     name: 'modal',
     initialState,
     reducers: {
-        openModal(state, action: PayloadAction<ModalData>) {
-            state.modalData = action.payload;
-            state.currentTaskId = null;
+        openModal(state, action: PayloadAction<{modalData: ModalData; taskId?: number}>) {
+            state.modalData = action.payload.modalData;
         },
         resetModalData: (state) => {
             state.modalData = initialState.modalData; 
         },
         setErrors(state, action: PayloadAction<Errors>) {
-            const {title, description, time, date} = action.payload;
-            state.errors.title = title || '';
-            state.errors.description = description || '';
-            state.errors.time = time || '';
-            state.errors.date = date || '';
+            state.errors = { ...state.errors, ...action.payload };
+        },
+        closeModal(state) {
+            state.modalData = initialState.modalData;
+            state.errors = initialState.errors;
         },
     },
 });

@@ -69,18 +69,18 @@ export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, on
         };
     }, [mode]);
 
-    useEffect(() => {
-        if (task) {
-            dispatch(tasksActions.editTask({
-                title: task.title,
-                description: task.description,
-                time: task.time,
-                date: task.date,
-            }));
-        } else {
-            dispatch(modalActions.resetModalData());
-        }
-    }, [task]);
+    // useEffect(() => {
+    //     if (task) {
+    //         dispatch(tasksActions.editTask({
+    //             title: task.title,
+    //             description: task.description,
+    //             time: task.time,
+    //             date: task.date,
+    //         }));
+    //     } else {
+    //         dispatch(modalActions.resetModalData());
+    //     }
+    // }, [task]);
 
     const isValidId = () => {
         const valid = data?.some(t => t.id.toString() === id);
@@ -122,7 +122,7 @@ export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, on
     };
 
     const isShow = (() => {
-        if (data.length === 0) return true;
+        if (data?.length === 0) return true;
         return (mode === VALID_MODE.CREATE || mode === VALID_MODE.FILTER)
             || (VALID_MODES.includes(mode) && isValidId());
     })();

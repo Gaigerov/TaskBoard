@@ -1,0 +1,154 @@
+.btn {
+    transition: 0.5s all;
+    text-decoration: none;
+    width: auto;
+    padding: 8px 12px;
+
+    &:active {
+        transform: scale(0.98);
+        box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    }
+}
+
+.menuButtonContainer,
+.searchButtonContainer,
+.filterButtonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+
+    &.searchButtonContainer,
+    &.filterButtonContainer {
+        position: relative;
+    }
+}
+
+.menuButton {
+    display: flex;
+    width: 20px;
+    height: 20px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.editButton,
+.cloneButton,
+.deleteButton {
+    display: grid;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.cloneButton:hover {
+    filter: invert(26%) sepia(87%) saturate(1316%) hue-rotate(199deg) brightness(99%) contrast(114%);
+}
+
+.editButton:hover {
+    filter: invert(55%) sepia(83%) saturate(1017%) hue-rotate(13deg) brightness(109%) contrast(94%);
+}
+
+.deleteButton:hover {
+    filter: invert(31%) sepia(24%) saturate(5892%) hue-rotate(333deg) brightness(83%) contrast(94%);
+}
+
+.inputClearButton {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 8px 0 0 -30px;
+    justify-content: center;
+    padding: 2px 8px 2px 2px;
+    width: 16px;
+    height: 16px;
+
+    &:hover {
+        cursor: pointer;
+        color: var(--secondary-light);
+    }
+}
+
+.inputClearStatus {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 35px;
+    margin: 9px 0 0 0;
+    justify-content: center;
+    padding: 2px 8px 2px 2px;
+    width: 12px;
+    height: 12px;
+}
+
+.downButton,
+.downButtonInDate {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.Button_create,
+.Button_cancel,
+.Button_save,
+.Button_clone,
+.Button_edit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.5px;
+
+    &.Button_create {
+        background-color: var(--success);
+        color: var(--light);
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--success-light);
+        }
+    }
+
+    &.Button_cancel {
+        background-color: var(--secondary);
+        color: var(--light);
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--secondary-light);
+            color: var(--light);
+        }
+    }
+
+    &.Button_save,
+    &.Button_clone {
+        background-color: var(--warning);
+        color: var(--dark-grey);
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--warning-light);
+        }
+    }
+
+    &.Button_edit {
+        background-color: var(--info);
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--info-light);
+        }
+    }
+}

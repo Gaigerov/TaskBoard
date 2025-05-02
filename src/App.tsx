@@ -9,6 +9,7 @@ import {NotificationProvider} from './components/Notification/NotificationContex
 import {Provider} from 'react-redux';
 import store from './redux/globalStore';
 
+
 import './config/App.css';
 import {AuthPage} from './components/AuthPage/AuthPage';
 

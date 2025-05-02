@@ -17,18 +17,7 @@ import desktopMenu from '../../image/desktop-menu.svg';
 import loop from '../../image/search.svg';
 import filter from '../../image/filter.svg';
 import {Task} from '../../types';
-
-interface RootState {
-    tasks: {
-        data: Task[];
-        activePage: string;
-        filterTo: {
-            search: string | '',
-            filterDate?: string,
-            filterStatus?: string,
-        };
-    };
-}
+import {RootState} from '../../redux/globalStore';
 
 const objectKeys = <T extends Record<string, unknown>>(
     obj: T,
@@ -40,14 +29,13 @@ export const MainPage: FC = () => {
     const breakpoint = useBreakpoint();
     const showNotification = useNotification();
     const {mode} = useParams<{mode?: string}>();
+    const {title, description, date, time} = useSelector((state: RootState) => state.tasks);
     const data = useSelector((state: RootState) => state.tasks.data) as Task[];
     const activePage = useSelector((state: RootState) => state.tasks.activePage);
     const filterTo = useSelector((state: RootState) => state.tasks.filterTo);
     const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
     const [isOpenSearchInput, setIsOpenSearchInput] = useState<boolean>(false);
-    const [currentTaskId, setCurrentTaskId] = useState<number | null>(null);
-
-    type TaskAction = () => ReturnType<typeof tasksActions[keyof typeof tasksActions]>;
+    const [currentTaskId, setCurrentTaskId] = useState<null | number>(null);
 
     // Фильтрация задач
     const filteredTasks = data.filter(task => {
@@ -100,6 +88,7 @@ export const MainPage: FC = () => {
 
     const closeModal = () => {
         setCurrentTaskId(null);
+        dispatch(modalActions.closeModal());
         navigate('/');
     };
 
@@ -110,9 +99,10 @@ export const MainPage: FC = () => {
             time: '',
             date: ''
         };
-        dispatch(modalActions.openModal(modalData));
+        dispatch(modalActions.openModal({modalData}));
         navigate('create');
     };
+    
 
     const openFilterModal = () => {
         setCurrentTaskId(null);
@@ -126,41 +116,61 @@ export const MainPage: FC = () => {
     const openViewModal = (id: number) => {
         setCurrentTaskId(id);
     };
-    
+
     const openRemoveModal = (id: number) => {
         setCurrentTaskId(id);
     };
 
-    const handleTaskAction = async function (
-        action: TaskAction,
-        successMessage: string,
-        errorMessage: string
-    ) {
+    const handleCreateTask = () => {
+        const newTask: Task = {
+            id: Date.now(),
+            title: title,
+            description: description,
+            time: time,
+            date: date,
+            status: TASK_STATUS.TO_DO,
+        };
+        if (!newTask.title || !newTask.description) {
+            return;
+        }
         try {
-            dispatch(action());
-            showNotification(successMessage, 'success');
+            dispatch(tasksActions.addTask(newTask));
+            showNotification('Задача создана', 'success');
+            dispatch(modalActions.closeModal());
         } catch (error) {
-            showNotification(errorMessage, 'error');
-        } finally {
-            closeModal();
+            showNotification('Ошибка при создании задачи!', 'error');
         }
     };
 
-    // Обработчики создания, редактирования, удаления и клонирования задач
-    const handleCreateTask = (newTask: Task) => {
-        handleTaskAction(() => tasksActions.addTask(newTask), 'Задача создана успешно', 'Ошибка при создании задачи');
-    };
-
     const handleEditTask = (task: Task) => {
-        handleTaskAction(() => tasksActions.editTask(task), 'Задача отредактирована', 'Ошибка при редактировании задачи');
+        dispatch(tasksActions.editTask(task));
+        showNotification(`Задача успешно отредактирована`, 'success');
+        dispatch(modalActions.closeModal());
     };
 
-    const handleDeleteTask = (id: number) => {
-        handleTaskAction(() => tasksActions.removeTask(id), 'Задача удалена', 'Ошибка при удалении задачи');
+    const handleDeleteTask = (taskId: number) => {
+        dispatch(tasksActions.removeTask(taskId));
+        showNotification(`Задача с ID:${taskId} удалена`, 'success');
+        dispatch(modalActions.closeModal());
     };
-
-    const cloneTask = (id: number) => {
-        handleTaskAction(() => tasksActions.cloneTask(id), 'Задача скопирована в конец списка', 'Ошибка при клонировании задачи');
+    
+    const handleCloneTask = (taskId: number) => {
+        const taskToClone = data.find(task => task.id === taskId);
+        if (taskToClone) {
+            const newTask: Task = {
+                id: Date.now(), 
+                title: taskToClone.title,
+                description: taskToClone.description,
+                time: taskToClone.time,
+                date: taskToClone.date,
+                status: TASK_STATUS.TO_DO,
+            };
+            dispatch(tasksActions.addTask(newTask));
+            showNotification(`Задача с ID:${taskId} успешно скопирована`, 'success');
+            dispatch(modalActions.closeModal());
+        } else {
+            showNotification(`Задача с ID:${taskId} не найдена`, 'error');
+        }
     };
 
     const countChangedFields = () => {
@@ -185,7 +195,7 @@ export const MainPage: FC = () => {
                     openEditModal={openEditModal}
                     openViewModal={openViewModal}
                     openRemoveModal={openRemoveModal}
-                    cloneTask={cloneTask}
+                    cloneTask={handleCloneTask}
                     deleteMode={handleDeleteTask}
                 />;
             case 'calendar':
@@ -283,7 +293,7 @@ export const MainPage: FC = () => {
                         openEditModal={openEditModal}
                         onRemove={handleDeleteTask}
                         onClose={closeModal}
-                        onClone={cloneTask}
+                        onClone={handleCloneTask}
                         onFilter={handleFilterChange}
                     />
                 }
