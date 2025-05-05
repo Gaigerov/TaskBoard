@@ -1,5 +1,5 @@
 import {useState, useEffect, Fragment, FC, ChangeEvent} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import xButton from '../../image/xButton.svg';
 import chevronDown from '../../image/ChevronDown.svg';
 import {VALID_MODE} from '../../constant';
@@ -13,6 +13,7 @@ import {DateInput} from '../Inputs/DateInput/DateInput';
 import {tasksActions} from '../../redux/tasksStore';
 import {modalActions} from '../../redux/modalStore';
 import {Task} from '../../types';
+import {useAppDispatch} from '../../hooks';
 
 interface TaskState {
     title: string;
@@ -38,7 +39,7 @@ interface ModalState {
 
 interface Props {
     mode: string;
-    task: Task;
+    task: Task | undefined;
     onEdit: (id: number) => void;
     onCreate: (task: Task) => void;
     onSave: (task: Task) => void;
@@ -50,7 +51,7 @@ interface Props {
 }
 
 export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRemove, onClose, onClone, onFilter, validate}) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const title = useSelector((state: {tasks: TaskState}) => state.tasks.title);
     const description = useSelector((state: {tasks: TaskState}) => state.tasks.description);
     const time = useSelector((state: {tasks: TaskState}) => state.tasks.time);
@@ -60,7 +61,7 @@ export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRem
     const filterTo = useSelector((state: {tasks: TaskState}) => state.tasks.filterTo);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedStatus, setSelectedStatus] = useState<string>(filterTo.filterStatus);
-    const [selectedDate, setSelectedDate] = useState<string>(mode === VALID_MODE.EDIT ? task.date : filterTo.filterDate);
+    const [selectedDate, setSelectedDate] = useState<string>(mode === VALID_MODE.EDIT ? task?.date ?? '' : filterTo.filterDate);
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -211,10 +212,10 @@ export const FormBody: FC<Props> = ({mode, task, onEdit, onCreate, onSave, onRem
                 {mode === VALID_MODE.VIEW && (
                     <div>
                         <Popover tableTask={task} />
-                        <p className="taskDescriptionViewMode">{task.description}</p>
+                        <p className="taskDescriptionViewMode">{task?.description}</p>
                         <div className="frameOfTaskDateViewMode">
-                            <p className="taskTimeViewMode">{task.time}</p>
-                            <p className="taskDateViewMode">{task.date}</p>
+                            <p className="taskTimeViewMode">{task?.time}</p>
+                            <p className="taskDateViewMode">{task?.date}</p>
                         </div>
                     </div>
                 )}

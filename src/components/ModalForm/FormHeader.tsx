@@ -4,7 +4,7 @@ import {VALID_MODE} from '../../constant';
 import {Task} from '../../types';
 
 interface Props {
-    task: Task;
+    task: Task | undefined;
     mode: string;
     onClose: () => void;
 }
@@ -44,7 +44,7 @@ export const FormHeader: FC<Props> = ({task, mode, onClose}) => {
             {mode === VALID_MODE.VIEW && (
                 <div className="modalHeaderViewMode">
                     <h2 className="modalHeaderName">
-                        {task.title}
+                        {task?.title}
                     </h2>
                     <div onClick={onClose}><img className="modalCloseButton" src={xButton} alt="Закрыть" /></div>
                 </div>
@@ -58,7 +58,7 @@ export const FormHeader: FC<Props> = ({task, mode, onClose}) => {
                         </div>
                     </div>
                     <p className="modalRemoveParagraph">Are you sure you want to delete the task "
-                        <span className="modalBoldText">{task.title}</span>"?
+                        <span className="modalBoldText">{task?.title}</span>"?
                     </p>
                 </div>
             )}

@@ -34,7 +34,7 @@ export const AuthPage: FC = () => {
         setState(prevState => ({...prevState, isLoading: true}));
         try {
             const encodedName = encodeURIComponent(name);
-            const responseAuth = await fetch('https://simple-storage.vigdorov.ru/auth', {
+            const responseAuth = await fetch('http://localhost:5173/api/auth', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({login: encodedName}),

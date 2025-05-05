@@ -2,13 +2,14 @@ import {FC} from 'react';
 import {
     useNavigate,
 } from "react-router-dom";
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useNotification} from '../Notification/NotificationContext';
 import {Button} from '../Button/Button';
 import {VALID_MODE, TASK_STATUS} from '../../constant';
 import {modalActions} from '../../redux/modalStore';
 import {tasksActions} from '../../redux/tasksStore';
 import {Task} from '../../types';
+import {useAppDispatch} from '../../hooks';
 
 interface TaskState {
     title: string;
@@ -25,20 +26,20 @@ interface TaskState {
 
 interface Props {
     mode: string;
-    task: Task;
+    task: Task | undefined;
     onEdit: (id: number) => void;
     onCreate: (task: Task) => void;
     onSave: (task: Task) => void;
     onRemove: (taskId: number) => void;
     onClose: () => void;
     onClone: (taskId: number) => void;
-    onFilter: (selectedDate?:string | undefined, selectedStatus?: string | undefined) => void;
+    onFilter: (selectedDate?: string | undefined, selectedStatus?: string | undefined) => void;
     validate: () => boolean;
     clearStatusFilter: () => void;
 }
 
 export const FormFooter: FC<Props> = ({task, mode, onCreate, onSave, onEdit, onFilter, onRemove, onClone, onClose, validate, clearStatusFilter}) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const title = useSelector((state: {tasks: TaskState}) => state.tasks.title);
     const description = useSelector((state: {tasks: TaskState}) => state.tasks.description);
     const time = useSelector((state: {tasks: TaskState}) => state.tasks.time);
@@ -46,9 +47,12 @@ export const FormFooter: FC<Props> = ({task, mode, onCreate, onSave, onEdit, onF
     const navigate = useNavigate();
     const showNotification = useNotification();
 
-    const handleNavigateToDelete = (task: Task) => {
-        navigate('/');
-        navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
+    const handleNavigateToDelete = (task: Task | undefined) => {
+        if (task) {
+            navigate(`/${VALID_MODE.REMOVE}?id=${task.id}`);
+        } else {
+            console.error('Error to delete: task is empty')
+        }
     }
 
     const resetGlobalStore = () => {
@@ -59,7 +63,7 @@ export const FormFooter: FC<Props> = ({task, mode, onCreate, onSave, onEdit, onF
         if (validate()) {
             if (mode === VALID_MODE.CREATE) {
                 onCreate({id: Date.now(), title, description, time, date, status: TASK_STATUS.TO_DO});
-            } else if (mode === VALID_MODE.EDIT) {
+            } else if (mode === VALID_MODE.EDIT && task) {
                 onSave({...task, title, description, time, date});
             }
             resetGlobalStore();
@@ -73,21 +77,32 @@ export const FormFooter: FC<Props> = ({task, mode, onCreate, onSave, onEdit, onF
     };
 
     const handleRemoveTask = () => {
-        onRemove(task.id);
-        resetGlobalStore();
-        onClose();
+        if (task) {
+            onRemove(task.id);
+            resetGlobalStore();
+            onClose();
+        } else {
+            console.error('Remove error: task is empty')
+        }
     };
 
     const handleCloneTask = () => {
-        onClone(task.id);
-        onClose();
+        if (task) {
+            onClone(task.id);
+            onClose();
+        } else {
+            console.error('Clone error: task is empty')
+        }
     }
 
-    const handleNavigateToEdit = (task: Task) => {
-        navigate('/');
-        navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
-        onEdit(task.id);
-        showNotification('Редактирование задачи', 'info');
+    const handleNavigateToEdit = (task: Task | undefined) => {
+        if (task) {
+            navigate(`/${VALID_MODE.EDIT}?id=${task.id}`);
+            onEdit(task.id);
+            showNotification('Редактирование задачи', 'info');
+        } else {
+            console.error('Error to edit: task is empty')
+        }
     }
 
     const handleDropFilter = () => {
@@ -96,7 +111,7 @@ export const FormFooter: FC<Props> = ({task, mode, onCreate, onSave, onEdit, onF
             search: '',
             filterDate: undefined,
             filterStatus: TASK_STATUS.EMPTY,
-        }));    
+        }));
         showNotification('Фильтры сброшены', 'info');
     }
 

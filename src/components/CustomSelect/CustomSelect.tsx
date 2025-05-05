@@ -1,7 +1,8 @@
 import {useState, useEffect, useRef, FC} from 'react';
 import chevronDown from "../../image/ChevronDown.svg";
-import {useDispatch} from 'react-redux';
+
 import {tasksActions} from '../../redux/tasksStore';
+import {useAppDispatch} from '../../hooks';
 
 type Props = {
     options: number[];
@@ -9,7 +10,7 @@ type Props = {
 }
 
 export const CustomSelect: FC<Props> = ({options, value}) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const selectRef = useRef<HTMLDivElement | null>(null);
 

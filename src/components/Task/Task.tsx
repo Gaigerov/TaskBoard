@@ -35,20 +35,17 @@ export const Task: FC<TaskProps> = ({task, onEdit, onView, onRemove, onClone}) =
     const currentTaskId = useSelector((state: {modal: ModalState}) => state.modal.currentTaskId);
 
     const handleNavigateToEdit = () => {
-        navigate('/');
-        navigate(`${VALID_MODE.EDIT}?id=${task.id}`);
+        navigate(`/${VALID_MODE.EDIT}?id=${task.id}`);
         onEdit(task.id);
     }
 
     const handleNavigateToDelete = () => {
-        navigate('/');
-        navigate(`${VALID_MODE.REMOVE}?id=${task.id}`);
+        navigate(`/${VALID_MODE.REMOVE}?id=${task.id}`);
         onRemove(task.id);
     }
 
     const handleNavigateToView = () => {
-        navigate('/');
-        navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
+        navigate(`/${VALID_MODE.VIEW}?id=${task.id}`);
         onView(task.id);
     }
 

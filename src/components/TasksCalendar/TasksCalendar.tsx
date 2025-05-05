@@ -117,15 +117,11 @@ export const TasksCalendar: FC<Props> = ({onView}) => {
 
     return (
         <>
-            {breakpoint === 'mobile' || breakpoint === 'tablet'  && (
+            {breakpoint === 'mobile' && (
                 <>
                     <div className="dateInCalendarChanger">
                         <img src={chevronLeft} className='chevronButton' onClick={() => changeDate('prev')} />
                         <span className='dateInCalendar'>{formatDateToDDMMYYYY(currentDate)}</span>
-                        {breakpoint === 'tablet' && (
-                            <span className='dateInCalendar'>{formatDateToDDMMYYYY(secondDate)}</span>
-                        )}
-
                         <img src={chevronRight} className='chevronButton' onClick={() => changeDate('next')} />
                     </div>
                     <div>

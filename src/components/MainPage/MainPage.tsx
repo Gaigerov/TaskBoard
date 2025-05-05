@@ -1,16 +1,16 @@
 import {useState, useEffect, ChangeEvent, FC} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 import {useNotification} from '../Notification/NotificationContext';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useBreakpoint} from '../../breakpoints/useBreakpoint';
-import {TASK_STATUS, VALID_MODE} from '../../constant';
+import {TASK_STATUS} from '../../constant';
 import {Menu} from '../Menu/Menu';
 import {DesktopMenu} from '../DesktopMenu/DesktopMenu';
 import {Button} from '../Button/Button';
 import {TaskModal} from '../TaskModal/TaskModal';
 import {TaskBoard} from '../TaskBoard/TaskBoard';
 import {TasksCalendar} from '../TasksCalendar/TasksCalendar';
-import {tasksActions} from '../../redux/tasksStore';
+import {saveTask, tasksActions} from '../../redux/tasksStore';
 import {modalActions} from '../../redux/modalStore';
 
 import desktopMenu from '../../image/desktop-menu.svg';
@@ -18,19 +18,20 @@ import loop from '../../image/search.svg';
 import filter from '../../image/filter.svg';
 import {Task} from '../../types';
 import {RootState} from '../../redux/globalStore';
+import {useAppDispatch} from '../../hooks';
 
 const objectKeys = <T extends Record<string, unknown>>(
     obj: T,
 ): Array<keyof T> => Object.keys(obj);
 
 export const MainPage: FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const breakpoint = useBreakpoint();
     const showNotification = useNotification();
     const {mode} = useParams<{mode?: string}>();
     const {title, description, date, time} = useSelector((state: RootState) => state.tasks);
-    const data = useSelector((state: RootState) => state.tasks.data) as Task[];
+    const tasks = useSelector((state: RootState) => state.tasks.tasks) as Task[];
     const activePage = useSelector((state: RootState) => state.tasks.activePage);
     const filterTo = useSelector((state: RootState) => state.tasks.filterTo);
     const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
@@ -38,7 +39,7 @@ export const MainPage: FC = () => {
     const [currentTaskId, setCurrentTaskId] = useState<null | number>(null);
 
     // Фильтрация задач
-    const filteredTasks = data.filter(task => {
+    const filteredTasks = tasks.filter(task => {
         const filterStatus = filterTo.filterStatus ? task.status === filterTo.filterStatus : true;
         const filterDate = filterTo.filterDate ? task.date === filterTo.filterDate : true;
         return filterStatus && filterDate;
@@ -134,7 +135,7 @@ export const MainPage: FC = () => {
             return;
         }
         try {
-            dispatch(tasksActions.addTask(newTask));
+            dispatch(saveTask(newTask));
             showNotification('Задача создана', 'success');
             dispatch(modalActions.closeModal());
         } catch (error) {
@@ -143,19 +144,19 @@ export const MainPage: FC = () => {
     };
 
     const handleEditTask = (task: Task) => {
-        dispatch(tasksActions.editTask(task));
+        // dispatch(editTask(task));
         showNotification(`Задача успешно отредактирована`, 'success');
         dispatch(modalActions.closeModal());
     };
 
     const handleDeleteTask = (taskId: number) => {
-        dispatch(tasksActions.removeTask(taskId));
+        // dispatch(removeTask(taskId));
         showNotification(`Задача с ID:${taskId} удалена`, 'success');
         dispatch(modalActions.closeModal());
     };
     
     const handleCloneTask = (taskId: number) => {
-        const taskToClone = data.find(task => task.id === taskId);
+        const taskToClone = tasks.find(task => task.id === taskId);
         if (taskToClone) {
             const newTask: Task = {
                 id: Date.now(), 
@@ -165,7 +166,7 @@ export const MainPage: FC = () => {
                 date: taskToClone.date,
                 status: TASK_STATUS.TO_DO,
             };
-            dispatch(tasksActions.addTask(newTask));
+            // dispatch(saveTask(newTask));
             showNotification(`Задача с ID:${taskId} успешно скопирована`, 'success');
             dispatch(modalActions.closeModal());
         } else {

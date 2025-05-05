@@ -1,15 +1,16 @@
 import {FC, JSX, useState} from 'react';
 import chevronRight from "../../image/ChevronRight.svg"
 import chevronLeft from "../../image/ChevronLeft.svg"
-import {useDispatch} from 'react-redux';
+
 import {tasksActions} from '../../redux/tasksStore';
+import {useAppDispatch} from '../../hooks';
 
 type Props = {
     onChangeDate: (date: string) => void;
 }
 
 export const Datepicker: FC<Props> = ({onChangeDate}) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [displayDate, setDisplayDate] = useState<Date>(new Date());
     const [isTodaySelected, setIsTodaySelected] = useState<boolean>(true);

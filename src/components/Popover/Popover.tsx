@@ -2,20 +2,21 @@ import {useState, useEffect, useMemo, useCallback, useRef, FC} from 'react';
 import {TASK_STATUS, TASK_STATUSES} from '../../constant';
 import {useSearchParams} from "react-router-dom";
 import {useNotification} from '../Notification/NotificationContext';
-import {useSelector, useDispatch} from 'react-redux';
-import {tasksActions} from '../../redux/tasksStore';
+import {useSelector} from 'react-redux';
+// import {editTask} from '../../redux/tasksStore';
 import {Task} from '../../types';
+import {useAppDispatch} from '../../hooks';
 
 interface TaskState {
     data: Task[];
 }
 
 interface Props {
-    tableTask: Task;
+    tableTask: Task | undefined;
 }
 
 export const Popover: FC<Props> = ({tableTask}) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const tasks = useSelector((state: {tasks: TaskState}) => state.tasks.data);
     const showNotification = useNotification();
     const [searchParams] = useSearchParams();
@@ -56,9 +57,9 @@ export const Popover: FC<Props> = ({tableTask}) => {
     }, []);
 
     const updateTaskStatus = useCallback((taskId: number, newStatus: string) => {
-        const currentTask = tasks.find(task => task.id === taskId); // Получаем текущую задачу из состояния
+        const currentTask = tasks.find(task => task.id === taskId);
         if (currentTask) {
-            // dispatch(tasksActions.editTask({id: taskId, status: newStatus})); // Передаем только id и новый статус
+            // dispatch(editTask({id: taskId, status: newStatus})); // Передаем только id и новый статус
             showNotification(`Статус задачи '${currentTask.title}' обновлён на '${newStatus}'`, 'info');
         } else {
             showNotification(`Задача с ID ${taskId} не найдена`, 'error');

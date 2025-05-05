@@ -15,6 +15,14 @@ export default defineConfig({
         port: 5173,
         open: true,
         cors: true,
+        proxy: {
+            '/api': {
+              target: 'https://simple-storage.vigdorov.ru',
+              changeOrigin: true,
+              secure: false,
+              rewrite: (path) => path.replace(/^\/api/, '')
+            }
+          }
     },
     build: {
         outDir: 'build',

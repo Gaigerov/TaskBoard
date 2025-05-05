@@ -21,8 +21,7 @@ export const DesktopTask: FC<Props> = ({task, onView}) => {
     const currentTaskId = useSelector((state: {modal: ModalState}) => state.modal.currentTaskId);
 
     const handleNavigateToView = (task: Task) => {
-        navigate('/');
-        navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
+        navigate(`/${VALID_MODE.VIEW}?id=${task.id}`);
         onView(task.id);
     }
 

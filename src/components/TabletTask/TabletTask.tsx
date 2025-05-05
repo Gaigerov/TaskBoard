@@ -22,8 +22,7 @@ export const TabletTask: FC<Props> = ({task, onView}) => {
 
 
     const handleNavigateToView = (task: Task) => {
-            navigate('/');
-            navigate(`${VALID_MODE.VIEW}?id=${task.id}`);
+            navigate(`/${VALID_MODE.VIEW}?id=${task.id}`);
             onView(task.id);
     }
 

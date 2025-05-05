@@ -1,13 +1,14 @@
 import {useEffect, useRef, FC} from 'react';
 import {useSearchParams} from "react-router-dom";
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {VALID_MODE, VALID_MODES} from '../../constant';
 import {ModalForm} from '../ModalForm/ModalForm';
 import {FormHeader} from '../ModalForm/FormHeader';
 import {FormBody} from '../ModalForm/FormBody';
-import {tasksActions} from '../../redux/tasksStore';
+// import {editTask, saveTask} from '../../redux/tasksStore';
 import {modalActions} from '../../redux/modalStore';
 import {Task} from '../../types';
+import {useAppDispatch} from '../../hooks';
 
 interface TaskState {
     data: Task[],
@@ -31,7 +32,7 @@ interface Props {
 }
 
 export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, onSave, onRemove, onClone, onFilter}) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const data = useSelector((state: {tasks: TaskState}) => state.tasks.data);
     const title = useSelector((state: {tasks: TaskState}) => state.tasks.title);
     const description = useSelector((state: {tasks: TaskState}) => state.tasks.description);
@@ -71,7 +72,7 @@ export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, on
 
     // useEffect(() => {
     //     if (task) {
-    //         dispatch(tasksActions.editTask({
+    //         dispatch(saveTask({
     //             title: task.title,
     //             description: task.description,
     //             time: task.time,
@@ -127,7 +128,7 @@ export const TaskModal: FC<Props> = ({mode, onClose, openEditModal, onCreate, on
             || (VALID_MODES.includes(mode) && isValidId());
     })();
 
-    if (!isShow || !task) {
+    if (!isShow) {
         return null;
     }
 

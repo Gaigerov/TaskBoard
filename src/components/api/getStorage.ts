@@ -5,7 +5,7 @@ export const getSimpleData = async (authToken: string): Promise<Task[]> => {
         Authorization: authToken,
     });
 
-    const responseStorageList = await fetch('https://simple-storage.vigdorov.ru/storages', {
+    const responseStorageList = await fetch('http://localhost:5173/api/storages', {
         method: 'GET',
         headers,
     });
@@ -23,7 +23,7 @@ export const getSimpleData = async (authToken: string): Promise<Task[]> => {
 
     const storageId = storage.id;
 
-    const responseStorage = await fetch(`https://simple-storage.vigdorov.ru/storages/${storageId}`, {
+    const responseStorage = await fetch(`http://localhost:5173/api/storages/${storageId}`, {
         method: 'GET',
         headers,
     });

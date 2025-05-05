@@ -15,12 +15,14 @@ interface Errors {
 }
 
 interface ModalState {
+    currentTaskId: number | null,
     modalData: ModalData,
     errors: Errors,
 } 
 
 // Начальное состояние
 const initialState: ModalState = {
+    currentTaskId: null,
     modalData: {
         title: '',
         description: '',

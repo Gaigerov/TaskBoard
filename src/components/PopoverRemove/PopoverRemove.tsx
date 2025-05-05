@@ -1,8 +1,8 @@
 import {useState, useEffect, FC, ReactNode} from 'react';
 import {Button} from '../Button/Button';
 import {modalActions} from '../../redux/modalStore';
-import {useDispatch} from 'react-redux';
 import {Task} from '../../types';
+import {useAppDispatch} from '../../hooks';
 
 interface Props {
     children: ReactNode;
@@ -12,7 +12,7 @@ interface Props {
 
 export const PopoverRemove: FC<Props> = ({children, task, onRemove}) => {
     const [isShow, setIsShow] = useState(false);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const tooglePopup = () => {
         setIsShow(!isShow);
     };
