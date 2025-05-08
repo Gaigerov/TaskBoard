@@ -5,7 +5,7 @@ export const saveTaskToStorage = async (payload: {
     storageName: string,
 }, authToken: string) => {
     const response = await fetch('http://localhost:5173/api/storages', {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': authToken,

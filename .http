@@ -2,7 +2,7 @@
 @host = https://simple-storage.vigdorov.ru
 @user = mikhail
 @auth = c3af38b1-151f-4978-a231-459d2351891b
-@storage_id = 6817ac44687546864fb1f5ac
+@storage_id = 68192da3d70f300c16a16e46
 
 ### Auth
 POST {{host}}/auth HTTP/1.1

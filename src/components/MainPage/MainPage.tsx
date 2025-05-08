@@ -31,13 +31,13 @@ export const MainPage: FC = () => {
     const showNotification = useNotification();
     const {mode} = useParams<{mode?: string}>();
     const {title, description, date, time} = useSelector((state: RootState) => state.tasks);
-    const tasks = useSelector((state: RootState) => state.tasks.tasks) as Task[];
+    const tasks = useSelector((state: RootState) => state.tasks.tasks) ?? [];
     const activePage = useSelector((state: RootState) => state.tasks.activePage);
     const filterTo = useSelector((state: RootState) => state.tasks.filterTo);
     const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
     const [isOpenSearchInput, setIsOpenSearchInput] = useState<boolean>(false);
     const [currentTaskId, setCurrentTaskId] = useState<null | number>(null);
-
+    
     // Фильтрация задач
     const filteredTasks = tasks.filter(task => {
         const filterStatus = filterTo.filterStatus ? task.status === filterTo.filterStatus : true;
@@ -166,7 +166,7 @@ export const MainPage: FC = () => {
                 date: taskToClone.date,
                 status: TASK_STATUS.TO_DO,
             };
-            // dispatch(saveTask(newTask));
+            dispatch(saveTask(newTask));
             showNotification(`Задача с ID:${taskId} успешно скопирована`, 'success');
             dispatch(modalActions.closeModal());
         } else {
