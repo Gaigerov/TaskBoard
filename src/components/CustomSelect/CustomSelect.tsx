@@ -34,12 +34,12 @@ export const CustomSelect: FC<Props> = ({options, value}) => {
 
     return (
         <div className="customSelect" ref={selectRef}>
-            <div className="customSelectTrigger" onClick={() => setIsOpen(!isOpen)}>
+            <div className="customSelect__trigger" onClick={() => setIsOpen(!isOpen)}>
                 {value}
                 <img src={chevronDown} alt="chevronDown" />
             </div>
             {isOpen && (
-                <ul className="customOptions">
+                <ul className="customSelect__customOptions">
                     {options.map((option) => (
                         <li
                             key={option}

@@ -26,25 +26,25 @@ export const TaskRow: FC<Props> = ({ task, isPastDue, onNavigateToView, onNaviga
     return (
         <tr
             onClick={() => onNavigateToView(task)}
-            className='trContainer'
+            className='tableRow'
             style={{
                 backgroundColor: currentTaskId === task.id ? 'var(--light-grey)' : '',
             }}
         >
-            <td className='tdContainer'>
+            <td className='tableRow__ceil'>
                 <Popover tableTask={task} />
             </td>
-            <td className='tdContainer'>{task.title}</td>
-            <td className='tdContainer'>{task.description}</td>
-            <td className='tdContainer taskDateContainer' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>
-                <div className='taskDateContainer_spanTime'>
+            <td className='tableRow__ceil'>{task.title}</td>
+            <td className='tableRow__ceil'>{task.description}</td>
+            <td className='tableRow__ceil taskDateContainer' style={{color: isPastDue ? 'red' : 'var(--dark)'}}>
+                <div className='taskDateContainer__time'>
                     {task.time}
                 </div>
-                <div className='taskDateContainer_spanDate'>
+                <div className='taskDateContainer__date'>
                     {task.date}
                 </div>
             </td>
-            <td className='tdContainer'>
+            <td className='tableRow__ceil'>
                 <div className="controls" onClick={(e) => e.stopPropagation()}>
                     <div onClick={() => onNavigateToEdit(task)} className='iconButton'>
                         <img className="icon editButton" src={editButton} alt="Edit" />

@@ -84,15 +84,13 @@
     display: flex;
     width: 100%;
     min-height: max-content;
-    flex-direction: column; // Убедитесь, что это нужно
+    flex-direction: column;
     border: 1px solid var(--light-grey);
     border-radius: 8px;
     justify-content: flex-start;
     align-items: center;
     gap: 4px;
     padding: 8px 16px;
-
-    // Уберите лишний flex-direction
 }
 
 .modalHeader {
@@ -126,6 +124,7 @@
     font-size: 28px;
     font-weight: 400;
     line-height: 34.13px;
+    padding-left: 12px;
 }
 
 .modalButtons {
@@ -138,9 +137,9 @@
         display: flex;
         align-items: flex-start;
         padding: 2px;
-        width: 16px;
-        height: 16px;
-        margin-right: 6px;
+        width: 19px;
+        height: 19px;
+        margin-right: 12px;
 
         &:hover {
             cursor: pointer; 

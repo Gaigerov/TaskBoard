@@ -1,15 +1,16 @@
 @use '../config/font.css';
 @use '../config/variables.css';
 @use '../config/Modal.scss';
-@use '../components/Menu/Menu.css';
-@use '../components/DesktopMenu/DesktopMenu.css';
+@use '../components/Menu/Menu.scss';
+@use '../components/DesktopMenu/DesktopMenu.scss';
 @use '../config/Buttons.scss';
-@use '../components/Datepicker/Datepicker.css';
-@use '../components/Table/Table.css';
-@use '../components/CustomSelect/CustomSelect.css';
-@use '../components/Loader/Loader.css';
-@use '../components/AuthPage/AuthPage.css';
-@use '../components/Notification/Notification.css';
+@use '../components/Datepicker/Datepicker.scss';
+@use '../components/Table/Table.scss';
+@use '../components/CustomSelect/CustomSelect.scss';
+@use '../components/Loader/Loader.scss';
+@use '../components/AuthPage/AuthPage.scss';
+@use '../components/Notification/Notification.scss';
+@use '../components/Pagination/Pagination.scss';
 
 ::-webkit-input-placeholder {
     color: var(--light-grey);
@@ -67,6 +68,7 @@ label {
     line-height: 14.63px;
     text-align: left;
     margin-top: 8px;
+    padding: 0 12px;
 }
 
 textarea {
@@ -86,7 +88,7 @@ input {
     flex-direction: column;
     width: auto;
     height: 100vh;
-    margin: 0;
+    margin: 0 32px;
     padding: 0;
     -ms-overflow-style: none; /* Internet Explorer 10+ */
     scrollbar-width: none; /* Firefox */
@@ -111,6 +113,16 @@ input {
     gap: 8px;
     grid-template-columns: repeat(3, 36px);
     height: 36px;
+}
+
+.controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 0px;
+    width: max-content;
 }
 
 .headerFinderInput {
@@ -190,8 +202,6 @@ input {
         }
     }
 }
-
-
 
 .customSelector {
     display: flex;
@@ -371,60 +381,141 @@ input {
     align-items: center;
 }
 
+@media (max-width: 1199px) {
+    label {
+        font-size: $font-size-medium;
+        margin-top: 4px;
+    }
 
+    .modalContent {
+        width: 400px;
+        background: white;
+        padding: 16px;
+        border-radius: 16px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
 
-@media (max-width: 1200px) {
     .controlsContainer {
         grid-template-columns: repeat(2, 36px);
-        gap: 4px; 
+        gap: 4px;
     }
+
+    .controls {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        padding: 0px;
+        width: max-content;
+    }
+
     .headerFinderInput {
-        padding-left: 12px; 
-        padding-right: 12px; 
-        height: auto; 
+        padding-left: 12px;
+        padding-right: 12px;
+        height: auto;
     }
 
     .taskStatusSelector {
-        flex-direction: column; 
-        align-items: stretch; 
-        gap: 8px; 
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
     }
 }
 
 @media (max-width: 768px) {
     html,
     body {
-        font-size: $font-size-large; 
-        overflow-y: auto; 
+        font-size: $font-size-large;
+        overflow-y: auto;
     }
 
     .controlsContainer {
         grid-template-columns: repeat(1, auto);
-        gap: 2px; 
+        gap: 2px;
+    }
+
+    .modalContent {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: auto;
+        background: white;
+        padding: 4px 12px 16px 12px;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .headerFinderInput,
     .taskStatusSelector,
     .inputContainer {
         width: calc(100% - 16px);
-        padding-left: 8px; 
-        padding-right: 8px; 
-        font-size: $font-size-medium; 
+        padding-left: 8px;
+        padding-right: 8px;
+        font-size: $font-size-medium;
     }
 }
 
-@media (max-width: 480px) {
-    label {
-        font-size: $font-size-small; 
-        margin-top: 4px; 
+@media (min-width: 1200px) {
+    .tasksContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        position: relative;
+        height: 100%;
+
+    //     &:hover {
+    //         cursor: pointer;
+    //         background-color: var(--light-grey);
+    //     }
+    
+        &__scroller {
+            height: 100%;
+        }
     }
 
-    .headerFinderInput,
-    .taskStatusSelector,
-    .inputContainer {
-        width: calc(100% - 16px);
-        padding-left: 8px; 
-        padding-right: 8px;
-        font-size: $font-size-medium; 
+    .gradient-top,
+    .gradient-bottom {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 25px;
+    }
+
+    .gradient-top {
+        top: 46px;
+        background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 95%);
+    }
+
+    .gradient-bottom {
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 80%);
+    }
+    
+    .modalContent {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 450px;
+        height: 100%;
+        background-color: var(--light);
+        padding: 16px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        box-sizing: border-box;
+    }
+
+    .controls {
+        display: flex;
+        order: 1;
+        grid-row: 1 / 3;
+        grid-column: 2 / 2;
+        flex: 0 1 calc(160px);
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        margin: 0;
     }
 }

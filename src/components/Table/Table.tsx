@@ -47,25 +47,25 @@ export const Table: FC<Props> = ({searchedTasks, onView, onEdit, onClone, delete
 
     return (
         <div className='tablePageContainer'>
-            <table className='tableContainer'>
-                <thead className='tableHeadContainer'>
-                    <tr className='trTitles'>
-                        <th className='thContainer'>
+            <table className='table'>
+                <thead className='table__head'>
+                    <tr className='table__titles'>
+                        <th className='table__title'>
                             Status
                         </th>
-                        <th className='thContainer'>
+                        <th className='table__title'>
                             Title
                         </th>
-                        <th className='thContainer'>
+                        <th className='table__title'>
                             Description
                         </th>
-                        <th className='thContainer'>
+                        <th className='table__title'>
                             Date
                         </th>
-                        <th className='thContainer'></th>
+                        <th className='table__title'></th>
                     </tr>
                 </thead>
-                <tbody className='tableBodyContainer'>
+                <tbody className='table__body'>
                     {currentTasks.map((task) => {
                         const taskDate = parseDDMMYYYY(task.date);
                         const isPastDue = taskDate < currentDate;

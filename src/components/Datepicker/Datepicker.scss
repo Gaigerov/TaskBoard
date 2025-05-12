@@ -1,0 +1,149 @@
+@media screen and (max-width: 769px) {
+    .datepicker {
+        background-color: var(--white);
+        position: absolute;
+        bottom: calc(100% + 4px);
+        right: 0;
+        padding: 8px 16px;
+        border-radius: 8px;
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 400;
+            margin-bottom: 12px;
+            padding: 0;
+
+            .monthInHeader {
+                margin: 0;
+                display: flex;
+                align-items: center;
+                min-width: max-content;
+            }
+
+            .monthChanger {
+                display: flex;
+                flex-direction: row;
+                margin: 0;
+            }
+
+            .radioInput {
+                display: flex;
+                align-items: center;
+                margin: 0 11px;
+            }
+        }
+
+        &__days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            font-size: 12px;
+            font-weight: 400;
+            padding: 0;
+
+            .day {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+                margin: 1px;
+                padding: 0;
+
+                &.today {
+                    background-color: var(--white);
+                }
+
+                &.selected {
+                    color: var(--primary);
+                    font-weight: bold;
+                    letter-spacing: 0%;
+                }
+
+                &.prev-month,
+                &.next-month {
+                    color: var(--light-grey);
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 770px) {
+    .datepicker {
+        background-color: var(--white);
+        position: absolute;
+        top: calc(100% + 4px);
+        right: 0;
+        padding: 8px 16px;
+        border-radius: 8px;
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 400;
+            margin-bottom: 12px;
+            padding: 0;
+
+            .monthInHeader {
+                margin: 0;
+                display: flex;
+                align-items: center;
+                min-width: max-content;
+            }
+
+            .monthChanger {
+                display: flex;
+                flex-direction: row;
+                margin: 0;
+            }
+
+            .radioInput {
+                display: flex;
+                align-items: center;
+                margin: 0 11px;
+            }
+        }
+
+        &__days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            font-size: 12px;
+            font-weight: 400;
+            padding: 0;
+
+            .day {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+                margin: 1px;
+                padding: 0;
+
+                &.today {
+                    background-color: var(--white);
+                }
+
+                &.selected {
+                    color: var(--primary);
+                    font-weight: bold;
+                    letter-spacing: 0%;
+                }
+
+                &.prev-month,
+                &.next-month {
+                    color: var(--light-grey);
+                }
+            }
+        }
+    }
+}

@@ -86,7 +86,7 @@ export const Datepicker: FC<Props> = ({onChangeDate}) => {
 
     return (
         <div className="datepicker">
-            <div className="header">
+            <div className="datepicker__header">
                 <div className='monthInHeader'>
                     {displayDate.toLocaleString('default', {month: 'long'}).charAt(0).toUpperCase() +
                         displayDate.toLocaleString('default', {month: 'long'}).slice(1) + ' '}
@@ -104,7 +104,7 @@ export const Datepicker: FC<Props> = ({onChangeDate}) => {
                     <img src={chevronRight} onClick={() => changeMonth(1)}></img>
                 </div>
             </div>
-            <div className="days">
+            <div className="datepicker__days">
                 {renderDays()}
             </div>
         </div>

@@ -2,7 +2,7 @@ import {useState, useEffect, ChangeEvent, FormEvent, FC} from 'react';
 import {MainPage} from '../MainPage/MainPage';
 import Cookies from 'js-cookie';
 import {Loader} from '../Loader/Loader';
-import '../../config/App.css';
+import '../../config/App.scss';
 import {fetchTasks} from '../../redux/tasksStore';
 import {useAppDispatch} from '../../hooks';
 
@@ -90,20 +90,20 @@ export const AuthPage: FC = () => {
         <>
             {isModalOpen && (
                 <div className="modal">
-                    <div className="modal-content">
-                        <h2 className='modal-title'>Введите ваше имя</h2>
-                        <form className='modal-form' onSubmit={handleSubmit}>
+                    <div className="modal__content">
+                        <h2 className='modal__title'>Введите ваше имя</h2>
+                        <form className='modal__form' onSubmit={handleSubmit}>
                             <input
                                 type="text"
                                 value={name}
                                 onChange={handleInputChange}
                                 placeholder="Имя"
-                                className='modal-input'
+                                className='modal__formInput'
                                 required
                             />
-                            <button type="submit" className='modal-button' disabled={state.isLoading}>Войти</button>
+                            <button type="submit" className='modal__formButton' disabled={state.isLoading}>Войти</button>
                         </form>
-                        {state.error && <p className="modal-error">{state.error}</p>}
+                        {state.error && <p className="modal__error">{state.error}</p>}
                     </div>
                 </div>
             )}

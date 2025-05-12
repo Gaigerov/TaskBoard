@@ -22,9 +22,9 @@ interface MenuProps {
 }
 
 const MenuButton: FC<ButtonProps> = ({src, title, isActive, onClick}) => (
-    <div className={`Menu_buttonContainer ${isActive ? 'active' : ''}`} onClick={onClick}>
-        <img className="Menu_buttonImage" src={src} alt={title} />
-        <h3 className='Menu_buttonTitle'>{title}</h3>
+    <div className={`menu__buttonContainer ${isActive ? 'active' : ''}`} onClick={onClick}>
+        <img className="menu__buttonImage" src={src} alt={title} />
+        <h3 className='menu__buttonTitle'>{title}</h3>
     </div>
 );
 
@@ -42,7 +42,7 @@ export const Menu: FC <MenuProps> = ({goToTaskBoard, goToCalendar}) => {
     };
 
     return (
-        <div className='menuContainer'>
+        <div className='menu'>
             {menuItems.map((item, index) => (
                 <MenuButton 
                     key={index} 

@@ -274,7 +274,7 @@ export const MainPage: FC = () => {
                             </div>
                         </div>
                     )}
-                    <Button type="createButton" onClick={openCreateModal} name="Create" />
+                    <Button type="main" onClick={openCreateModal} name="Create" />
                 </div>
 
                 {renderPage()}

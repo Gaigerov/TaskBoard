@@ -58,7 +58,7 @@ export const Pagination: FC<Props> = ({searchedTasks, tasksPerPage, currentPage,
     };
 
     return (
-        <div className='footerContainer'>
+        <div className='pagination'>
             <div className="taskOnPageContainer">
                 <label className='labelTasksPerPage' htmlFor="tasksPerPage">Task on page</label>
                 <CustomSelect

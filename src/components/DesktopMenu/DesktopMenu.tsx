@@ -22,9 +22,9 @@ interface MenuProps {
 }
 
 const MenuButton: FC<ButtonProps> = ({src, title, isActive, onClick}) => (
-    <div className={`DesktopMenu_buttonContainer ${isActive ? 'active' : ''}`} onClick={onClick}>
-        <img className="DesktopMenu_buttonImage" src={src} alt={title} />
-        <h3 className='DesktopMenu_buttonTitle'>{title}</h3>
+    <div className={`DesktopMenu__buttonContainer ${isActive ? 'active' : ''}`} onClick={onClick}>
+        <img className="DesktopMenu__buttonImage" src={src} alt={title} />
+        <h3 className='DesktopMenu__buttonTitle'>{title}</h3>
     </div>
 );
 

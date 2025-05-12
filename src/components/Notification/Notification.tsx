@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './Notification.css';
+import './Notification.scss';
 import checkCircle from '../../image/сheckСircle.svg';
 import alertCircle from '../../image/alertCircle.svg';
 import helpCircle from '../../image/helpCircle.svg';
@@ -57,11 +57,11 @@ export const Notification: React.FC<Props> = ({message, type, onClose}) => {
     if (!isVisible) return null;
 
     return (
-        <div className='notificationContainer' style={{backgroundColor}} onClick={handleClick}>
-            <img className="iconNotification" src={iconNotification} />
-            <div className="messageContainer">
-                <span className="titleNotification">{titleNotification}</span>
-                <span className="messageNotification">{message}</span>
+        <div className='notification' style={{backgroundColor}} onClick={handleClick}>
+            <img className="notification__icon" src={iconNotification} />
+            <div className="message">
+                <span className="message__title">{titleNotification}</span>
+                <span className="message__notification">{message}</span>
             </div>
         </div>
     );
