@@ -1,11 +1,15 @@
+import {createAsyncThunk} from '@reduxjs/toolkit';
 import {Task} from '../../types'
-export const getSimpleData = async (authToken: string): Promise<Task[]> => {
+
+let storageId = '';
+
+export const getSimpleData = async (authToken: string): Promise<{tasks: Task[]}> => {
     const headers = new Headers({
         'content-type': 'application/json',
         Authorization: authToken,
     });
 
-    const responseStorageList = await fetch('http://localhost:5173/api/storages', {
+    const responseStorageList = await fetch('http://localhost:5174/api/storages', {
         method: 'GET',
         headers,
     });
@@ -21,9 +25,9 @@ export const getSimpleData = async (authToken: string): Promise<Task[]> => {
         throw new Error('Хранилище с именем "tasks" не найдено');
     }
 
-    const storageId = storage.id;
+    storageId = storage.id;
 
-    const responseStorage = await fetch(`http://localhost:5173/api/storages/${storageId}`, {
+    const responseStorage = await fetch(`http://localhost:5174/api/storages/${storageId}`, {
         method: 'GET',
         headers,
     });
@@ -41,3 +45,58 @@ export const getSimpleData = async (authToken: string): Promise<Task[]> => {
     return data;
 };
 
+export const saveTaskToStorage = async (payload: {
+    data: {tasks: Task[]},
+}, authToken: string) => {
+    const response = await fetch(`http://localhost:5174/api/storages/${storageId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authToken,
+        },
+        body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+};
+
+export const createTask = createAsyncThunk('tasks/createTask', async (payload: {
+tasks: Task[], authToken: string,
+}) => {
+    const response = await fetch(`http://localhost:5174/api/storages/${storageId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': payload.authToken,
+        },
+        body: JSON.stringify({data: {tasks: payload.tasks}}),
+    });
+    return await response.json()
+})
+
+export const updateTask = createAsyncThunk('tasks/updateTask',
+    async (updatedTask: Task) => {
+        const response = await fetch(`http://localhost:5174/api/storages/${updatedTask.id}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(updatedTask),
+        })
+        return await response.json();
+    })
+
+export const api = {
+    saveData: async (data: any) => {
+        const response = await fetch(`http://localhost:5174/api/storages/${storageId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        return response.json();
+    }
+};

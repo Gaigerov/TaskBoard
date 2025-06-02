@@ -1,9 +1,9 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import {TASK_STATUS} from '../constant';
-import {getSimpleData} from '../components/api/getStorage';
+import {api, createTask, getSimpleData, saveTaskToStorage, updateTask} from '../components/api/getStorage';
 import {Task} from '../types';
-import {saveTaskToStorage} from '../components/api/saveTaskToStorage';
 import Cookies from 'js-cookie';
+import {AppStore} from './globalStore';
 
 interface State {
     tasks: Task[],
@@ -42,7 +42,7 @@ export const fetchTasks = createAsyncThunk(
     'tasks/fetchTasks',
     async (authToken: string) => {
         const data = await getSimpleData(authToken);
-        return data;
+        return data.tasks;
     }
 );
 
@@ -54,21 +54,31 @@ const getAuthTokenOrThrow = () => {
 
 export const saveTask = createAsyncThunk(
     'tasks/saveTask',
-    async (task: Task, { rejectWithValue }) => {
+    async (tasks: Task[], {rejectWithValue}) => {
         try {
             const authToken = getAuthTokenOrThrow();
             const apiPayload = {
                 data: {
-                    tasks: [task], 
+                    tasks,
                 },
-                storageName: "tasks",
             };
 
             const result = await saveTaskToStorage(apiPayload, authToken);
-            return result; 
+            return result;
         } catch {
             return rejectWithValue("HTTP error!");
         }
+    }
+);
+
+
+// Создаем асинхронный thunk для сохранения данных на бэкенд
+export const saveDataToBackend = createAsyncThunk(
+    'data/saveDataToBackend',
+    async (_, {getState}) => {
+        const state = getState(); // Получаем текущее состояние store
+        const response = await api.saveData(state); // Отправляем запрос на бэкенд
+        return response.data;
     }
 );
 
@@ -108,6 +118,9 @@ export const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
+        saveData: (state, action) => {
+            state.tasks = action.payload;
+        },
         clearTasks(state) {
             state.tasks = [];
         },
@@ -151,16 +164,37 @@ export const tasksSlice = createSlice({
             .addCase(fetchTasks.fulfilled, (state, action) => {
                 state.tasks = action.payload;
             })
-            .addCase(saveTask.fulfilled, (state, action) => {
-                state.tasks.push(action.payload); 
-                state.title = '';
-                state.description = '';
-                state.date = '';
-                state.time = '';
-                state.isDirty = false;
+            .addCase(createTask.fulfilled, (state, action) => {
+                state.tasks.push(action.payload.data.tasks[action.payload.data.tasks.length - 1]);
             })
+            .addCase(updateTask.fulfilled, (state, action) => {
+                const index = state.tasks.findIndex(task => task.id === action.payload.id);
+                if (index !== -1) {
+                    state.tasks[index] = action.payload;
+                }
+            })
+            // .addCase(saveTask.fulfilled, (state, action) => {
+            //     state.tasks.push(action.payload);
+            //     state.title = '';
+            //     state.description = '';
+            //     state.date = '';
+            //     state.time = '';
+            //     state.isDirty = false;
+            // })
     },
 });
+
+// // Создаем middleware для автоматического запуска сохранения на бэкенд
+// export const autoSaveMiddleware = store<AppStore> => next => action => {
+//     const result = next(action);
+
+//     // Если это action saveData, запускаем сохранение на бэкенд
+//     if (action.type === 'data/saveData') {
+//         store.dispatch(saveDataToBackend());
+//     }
+
+//     return result;
+// };
 
 export const tasksActions = tasksSlice.actions;
 export const tasksReducer = tasksSlice.reducer;

@@ -2,9 +2,9 @@ import {Task} from '../../types';
 
 export const saveTaskToStorage = async (payload: {
     data: { tasks: Task[] },
-    storageName: string,
+    storageId: string,
 }, authToken: string) => {
-    const response = await fetch('http://localhost:5173/api/storages', {
+    const response = await fetch(`http://localhost:5173/api/storages/${payload.storageId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

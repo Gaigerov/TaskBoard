@@ -2,7 +2,7 @@ import {useState, useEffect, ChangeEvent, FormEvent, FC} from 'react';
 import {MainPage} from '../MainPage/MainPage';
 import Cookies from 'js-cookie';
 import {Loader} from '../Loader/Loader';
-import '../../config/App.scss';
+import '../../config/App.css';
 import {fetchTasks} from '../../redux/tasksStore';
 import {useAppDispatch} from '../../hooks';
 

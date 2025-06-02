@@ -104,9 +104,10 @@
         box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
     }
 
-    &.Button_main {
+    &__main {
         background-color: var(--primary);
         color: var(--light);
+        margin-right: 32px;
 
         &:hover {
             cursor: pointer;
@@ -115,7 +116,7 @@
         }
     }
 
-    &.Button_create {
+    &__create {
         background-color: var(--success);
         color: var(--light);
 
@@ -124,8 +125,7 @@
             background-color: var(--success-light);
         }
     }
-
-    &.Button_cancel {
+    &__cancel {
         background-color: var(--secondary);
         color: var(--light);
 
@@ -136,8 +136,8 @@
         }
     }
 
-    &.Button_save,
-    &.Button_clone {
+    &__save,
+    &__clone {
         background-color: var(--warning);
         color: var(--dark-grey);
 
@@ -147,12 +147,22 @@
         }
     }
 
-    &.Button_edit {
+    &__edit {
         background-color: var(--info);
 
         &:hover {
             cursor: pointer;
             background-color: var(--info-light);
+        }
+    }
+
+        &__remove {
+        background-color: var(--danger);
+        color: var(--white);
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--danger-light);
         }
     }
 }

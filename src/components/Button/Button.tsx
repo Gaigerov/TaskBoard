@@ -8,7 +8,7 @@ type Props = {
 
 export const Button: FC<Props> = ({name, onClick, type}) => {
 
-    const modificator = type ? `Button_${type}` : '';
+    const modificator = type ? `Button__${type}` : '';
     const className = `Button ${modificator}`;
 
     return (

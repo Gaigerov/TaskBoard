@@ -19,6 +19,8 @@ import filter from '../../image/filter.svg';
 import {Task} from '../../types';
 import {RootState} from '../../redux/globalStore';
 import {useAppDispatch} from '../../hooks';
+import {createTask} from '../api/getStorage';
+import Cookies from 'js-cookie';
 
 const objectKeys = <T extends Record<string, unknown>>(
     obj: T,
@@ -37,16 +39,17 @@ export const MainPage: FC = () => {
     const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
     const [isOpenSearchInput, setIsOpenSearchInput] = useState<boolean>(false);
     const [currentTaskId, setCurrentTaskId] = useState<null | number>(null);
-    
+        console.log('filterTasks', tasks)
     // Фильтрация задач
     const filteredTasks = tasks.filter(task => {
+
         const filterStatus = filterTo.filterStatus ? task.status === filterTo.filterStatus : true;
         const filterDate = filterTo.filterDate ? task.date === filterTo.filterDate : true;
         return filterStatus && filterDate;
     });
 
-    const searchedTasks = filteredTasks.filter(task =>
-        task.title.toLowerCase().includes(filterTo.search.toLowerCase())
+    const searchedTasks = filteredTasks.filter((task) => {
+        return task.title.toLowerCase().includes(filterTo.search.toLowerCase())}
     );
 
     const handleFilterChange = (newDate: string, newStatus: string) => {
@@ -135,7 +138,8 @@ export const MainPage: FC = () => {
             return;
         }
         try {
-            dispatch(saveTask(newTask));
+            const authToken = Cookies.get('authToken')!;
+            dispatch(createTask({tasks: tasks.concat([newTask]), authToken}));
             showNotification('Задача создана', 'success');
             dispatch(modalActions.closeModal());
         } catch (error) {
@@ -166,7 +170,7 @@ export const MainPage: FC = () => {
                 date: taskToClone.date,
                 status: TASK_STATUS.TO_DO,
             };
-            dispatch(saveTask(newTask));
+            dispatch(tasksActions.saveData(newTask));
             showNotification(`Задача с ID:${taskId} успешно скопирована`, 'success');
             dispatch(modalActions.closeModal());
         } else {

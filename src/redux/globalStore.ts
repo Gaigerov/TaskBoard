@@ -1,5 +1,7 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {tasksReducer} from './tasksStore';
+import {
+    // autoSaveMiddleware, 
+    tasksReducer} from './tasksStore';
 import {modalReducer} from './modalStore';
 
 const store = configureStore({
@@ -7,6 +9,8 @@ const store = configureStore({
         tasks: tasksReducer,
         modal: modalReducer,
     },
+    // middleware: (getDefaultMiddleware) =>
+    //     getDefaultMiddleware().concat(autoSaveMiddleware)
 });
 
 export default store;

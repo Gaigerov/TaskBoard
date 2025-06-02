@@ -17,7 +17,7 @@
     position: relative;
     overflow: hidden;
 
-    &.__head {
+    &__head {
         position: sticky;
         top: 0;
         background-color: white;
@@ -44,6 +44,23 @@
         align-items: center;
         gap: 10px;
         padding: 11px 8px;
+
+        &:nth-child(1) {
+            width: 84px;
+        }
+
+        &:nth-child(2) {
+            width: 184px;
+        }
+
+        &:nth-child(3) {
+            width: calc(50%);
+            margin-right: auto;
+        }
+
+        &:nth-child(5) {
+            width: 124px;
+        }
     }
 
     &__body {
@@ -64,7 +81,7 @@
                 cursor: pointer;
                 background-color: var(--light-grey);
             }
-            
+
             &:first-child {
                 margin-top: 25px;
             }
@@ -73,29 +90,20 @@
                 margin-bottom: 30px;
             }
 
-            &:nth-child(1),
-            .tableRow__ceil:nth-child(1) {
+            &__ceil:nth-child(1) {
                 width: 84px;
             }
 
-            &:nth-child(2),
-            .tableRow__ceil:nth-child(2) {
+            &__ceil:nth-child(2) {
                 width: 184px;
-                margin-right: auto;
             }
 
-            &:nth-child(3),
-            .tableRow__ceil:nth-child(3) {
+            &__ceil:nth-child(3) {
                 width: calc(50%);
                 margin-right: auto;
             }
 
-            &:nth-child(4) {
-                width: 104px;
-            }
-
-            &:nth-child(5),
-            .tableRow__ceil:nth-child(5) {
+            &__ceil:nth-child(5) {
                 width: 124px;
             }
 
@@ -112,7 +120,7 @@
                 &__time {
                     width: auto;
                 }
-            
+
                 &__date {
                     width: auto;
                 }

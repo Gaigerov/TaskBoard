@@ -1,30 +1,26 @@
-@import url('../config/font.css');
-@import url('../config/variables.css');
-@import url('../config/Modal.scss');
-@import url('../components/Menu/Menu.css');
-@import url('../components/DesktopMenu/DesktopMenu.css');
-@import url('../config/Buttons.scss');
-@import url('../components/Datepicker/Datepicker.css');
-@import url('../components/Table/Table.css');
-@import url('../components/CustomSelect/CustomSelect.css');
-@import url('../components/Loader/Loader.css');
-@import url('../components/AuthPage/AuthPage.css');
-@import url('../components/Notification/Notification.css');
+@use '../config/font.css';
+@use '../config/variables.css';
+@use '../config/Modal.scss';
+@use '../components/Menu/Menu.scss';
+@use '../components/DesktopMenu/DesktopMenu.scss';
+@use '../config/Buttons.scss';
+@use '../components/Datepicker/Datepicker.scss';
+@use '../components/Table/Table.scss';
+@use '../components/CustomSelect/CustomSelect.scss';
+@use '../components/Loader/Loader.scss';
+@use '../components/AuthPage/AuthPage.scss';
+@use '../components/Notification/Notification.scss';
 
 ::-webkit-input-placeholder {
-    /* WebKit browsers */
     color: var(--light-grey);
 }
 :-moz-placeholder {
-    /* Mozilla Firefox 4 to 18 */
     color: var(--light-grey);
 }
 ::-moz-placeholder {
-    /* Mozilla Firefox 19+ */
     color: var(--light-grey);
 }
 :-ms-input-placeholder {
-    /* Internet Explorer 10+ */
     color: var(--light-grey);
 }
 
@@ -32,8 +28,7 @@
     display: none;
 }
 
-html,
-body {
+html, body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -41,7 +36,6 @@ body {
 }
 
 div {
-    margin: 0;
     margin: 0;
 }
 
@@ -87,18 +81,20 @@ input {
     height: 100vh;
     margin: 0;
     padding: 0;
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
     box-sizing: content-box;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
-.pageContainer::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
-}
-
-.tasksContainer::-webkit-scrollbar {
-    width: 0;
-    height: 0;
+.tasksContainer {
+    &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
 }
 
 .controlsContainer {
@@ -139,9 +135,19 @@ input {
     flex-direction: row;
 }
 
-.modalContainer__time {
-    max-width: 78px;
-    margin-right: 10px;
+.modalContainer {
+    &__time {
+        max-width: 78px;
+        margin-right: 10px;
+    }
+
+    &__status {
+        width: 100%;
+    }
+
+    &__date {
+        width: 100%;
+    }
 }
 
 .taskStatusSelector {
@@ -234,27 +240,21 @@ input {
     color: var(--grey);
     border-radius: 8px;
     width: auto;
+
+    &:hover {
+        background-color: var(--light-grey);
+        color: var(--light);
+    }
 }
 
-.customStatus:hover {
-    background-color: var(--light-grey);
-    color: var(--light);
-}
-
-.modalInput__time {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 4px;
-}
-
-.modalContainer__status {
-    width: 100%;
-}
-
-.modalContainer__date {
-    width: 100%;
+.modalInput {
+    &__time {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 4px;
+    }
 }
 
 .iconButton {
@@ -463,36 +463,41 @@ input {
         justify-content: center;
         position: relative;
         height: 100%;
-    }
 
-    .taskContainer:hover {
-        cursor: pointer;
-        background-color: var(--light-grey);
-    }
+        &::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 35px;
+            z-index: 1;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
+        }
 
-    .tasksContainer::before {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 35px;
-        z-index: 1;
-        background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
-    }
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 35px;
+            z-index: 1;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
+        }
 
-    .tasksContainer::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 35px;
-        z-index: 1;
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
-    }
+        &__scroller {
+            overflow-y: scroll;
+            width: auto;
+            height: 100%;
+        }
 
-    .tasksContainer__scroller {
-        overflow-y: scroll;
-        width: auto;
-        height: 100%;
+        .taskContainer {
+            &:first-child {
+                margin-top: 30px;
+            }
+
+            &:last-child {
+                margin-bottom: 30px;
+            }
+        }
     }
 
     .taskContainer {
@@ -506,14 +511,11 @@ input {
         border-radius: 10px;
         background-color: var(--light);
         box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
-    }
 
-    .tasksContainer .taskContainer:first-child {
-        margin-top: 30px;
-    }
-
-    .tasksContainer .taskContainer:last-child {
-        margin-bottom: 30px;
+        &:hover {
+            cursor: pointer;
+            background-color: var(--light-grey);
+        }
     }
 
     .tasksContainerMobile {
@@ -674,8 +676,6 @@ input {
         border-radius: 16px 16px 0 0;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
-
-
 }
 
 .datepickerContainer {
@@ -694,31 +694,47 @@ input {
         justify-content: center;
         position: relative;
         height: 100%;
-    }
 
-    .taskContainer:hover {
-        cursor: pointer;
-        background-color: var(--light-grey);
-    }
+        &:hover {
+            cursor: pointer;
+            background-color: var(--light-grey);
+        }
 
-    .tasksContainer::before {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 35px;
-        top: 0;
-        z-index: 1;
-        background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
-    }
+        &::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 35px;
+            top: 0;
+            z-index: 1;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
+        }
 
-    .tasksContainer::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 35px;
-        z-index: 1;
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 35px;
+            z-index: 1;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
+        }
+
+        &__scroller {
+            overflow-y: scroll;
+            width: auto;
+            padding-bottom: 50px;
+        }
+
+        .taskContainer {
+            &:first-child {
+                margin-top: 30px;
+            }
+
+            &:last-child {
+                margin-bottom: 30px;
+            }
+        }
     }
 
     .flexContainer {
@@ -729,20 +745,6 @@ input {
         height: max-content;
     }
 
-    .tasksContainer__scroller {
-        overflow-y: scroll;
-        width: auto;
-        padding-bottom: 50px;
-    }
-
-    .tasksContainer .taskContainer:first-child {
-        margin-top: 30px;
-    }
-
-    .tasksContainer .taskContainer:last-child {
-        margin-bottom: 30px;
-    }
-
     .dateInCalendar {
         display: flex;
         justify-content: center;
@@ -750,14 +752,14 @@ input {
         margin: 0;
         width: 100%;
         padding: 10px;
-    }
 
-    .dateInCalendarChanger {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 0 32px;
-        margin-top: 32px;
+        &Changer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 32px;
+            margin-top: 32px;
+        }
     }
 
     .listOfTasks {
@@ -781,14 +783,6 @@ input {
 
     .taskInContainer {
         width: 48%;
-    }
-
-    .dateInCalendar {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0;
-        padding: 0 24px;
     }
 
     .timeInCalendar {
@@ -914,8 +908,6 @@ input {
         color: var(--light-grey);
     }
 
-
-
     .taskTime {
         display: flex;
         flex-direction: row;
@@ -962,7 +954,6 @@ input {
         display: flex;
         flex-direction: column;
     }
-
 
     .dateTableCalendar {
         display: flex;
@@ -1060,13 +1051,6 @@ input {
         color: var(--grey);
     }
 
-
-    .statusButton {
-        display: flex;
-        justify-content: flex-start;
-        margin-left: 10px;
-    }
-
     .statusContainer {
         position: absolute;
         top: 0;
@@ -1096,10 +1080,10 @@ input {
         justify-content: flex-start;
         position: relative;
         height: 100%;
-    }
 
-    .tasksContainer__scroller {
-        height: 100%;
+        &__scroller {
+            height: 100%;
+        }
     }
 
     .taskContainer {
